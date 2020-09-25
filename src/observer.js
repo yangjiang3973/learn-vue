@@ -1,3 +1,5 @@
+const { Dep } = require('./dep.js');
+
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
 class Observer {
@@ -16,8 +18,10 @@ class Observer {
 
         Object.keys(obj).forEach((key) => {
             let val = obj[key]; // save the old value
+            let dep = new Dep();
             Object.defineProperty(obj, key, {
                 get: function () {
+                    if (Dep.target) dep.addDep(Dep.target);
                     return val;
                 },
                 set: function (newVal) {
@@ -25,6 +29,7 @@ class Observer {
                         if (typeof newVal === 'object') this.observe(newVal);
                         this.$callback(newVal, val); // pass by value or ref?
                         val = newVal;
+                        dep.notify();
                     }
                 }.bind(this), // need to bind this! otherwise this points to obj...
             });
