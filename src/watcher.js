@@ -1,3 +1,5 @@
+let uid = 0;
+
 class Watcher {
     constructor() {}
     get(key) {
@@ -6,3 +8,5 @@ class Watcher {
         Dep.target = null;
     }
 }
+
+module.exports.Watcher = Watcher;

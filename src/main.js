@@ -1,8 +1,8 @@
-const { Observer } = require('./observer');
+// const { Observer } = require('./observer');
 
-var callback = function (newVal, oldVal) {
-    alert(`the old value: ${oldVal}, changed to newVal: ${newVal}`);
-};
+// var callback = function (newVal, oldVal) {
+//     alert(`the old value: ${oldVal}, changed to newVal: ${newVal}`);
+// };
 
 // var data = {
 //     a: 200,
@@ -16,15 +16,15 @@ var callback = function (newVal, oldVal) {
 //     },
 // };
 
-var arrTest1 = [1, 2, 3, 4];
-var arrTest2 = [1, 2, 3, [10, 11, 12]];
-var arrTest3 = { a: 200, b: [1, 2, 3], c: 'ccc' };
+// var arrTest1 = [1, 2, 3, 4];
+// var arrTest2 = [1, 2, 3, [10, 11, 12]];
+// var arrTest3 = { a: 200, b: [1, 2, 3], c: 'ccc' };
 
 // var j = new Observer(data, callback);
 
-var j = new Observer(arrTest1, callback);
-var k = new Observer(arrTest2, callback);
-var i = new Observer(arrTest3, callback);
+// var j = new Observer(arrTest1, callback);
+// var k = new Observer(arrTest2, callback);
+// var i = new Observer(arrTest3, callback);
 
 // data.a = 250;
 // data.level1.b = 'sss';
@@ -40,5 +40,13 @@ var i = new Observer(arrTest3, callback);
 // arrTest2[3].push(13);
 // console.log(arrTest2);
 
-arrTest3.b.push(4);
-console.log('arrTest3', arrTest3);
+// arrTest3.b.push(4);
+// console.log('arrTest3', arrTest3);
+
+const { MVVM } = require('./mvvm');
+let vm = new MVVM({
+    el: '#app',
+    data: {
+        word: 'Hello World!',
+    },
+});

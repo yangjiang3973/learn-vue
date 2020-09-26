@@ -15,11 +15,8 @@ class Compiler {
     }
 
     node2Fragment(el) {
-        // NOTE: I do not understand here
-        // is it equal to `var child;` ?
         var fragment = document.createDocumentFragment(),
             child;
-        // NOTE: I also doubt here
         while ((child = el.firstChild)) {
             fragment.appendChild(child);
         }
@@ -35,7 +32,7 @@ class Compiler {
             var reg = /\{\{(.*)\}\}/;
             if (me.isElementNode(node)) me.compile(node);
             else if (me.isTextNode(node) && reg.test(text))
-                me.compile(node, RegExp.$1);
+                me.compileText(node, RegExp.$1);
 
             if (node.childNodes && node.childNodes.length) {
                 me.compileElement(node);
@@ -46,7 +43,7 @@ class Compiler {
     compile(node) {
         let nodeAttrs = node.attributes;
         let me = this;
-        [].slice.call(nodeAttr).forEach((attr) => {
+        [].slice.call(nodeAttrs).forEach((attr) => {
             let attrName = attr.name;
             if (me.isDirective(attrName)) {
                 let exp = attr.value;
@@ -56,8 +53,30 @@ class Compiler {
                 } else {
                     compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
                 }
+
+                node.removeAttribute(attrName);
             }
         });
+    }
+
+    compileText(node, exp) {
+        compileUtil.text(node, this.$vm, exp);
+    }
+
+    isElementNode(node) {
+        return node.nodeType === Node.ELEMENT_NODE;
+    }
+
+    isTextNode(node) {
+        return node.nodeType === Node.TEXT_NODE;
+    }
+
+    isDirective(attr) {
+        return attr.startsWith('v-');
+    }
+
+    isEventDirective(attr) {
+        return attr.startsWith('on');
     }
 }
 
@@ -66,9 +85,9 @@ let compileUtil = {
         this.bind(node, vm, exp, 'text');
     },
     bind: function (node, vm, exp, dir) {
-        let updateFn = update[dir + 'Updater'];
+        let updateFn = updater[dir + 'Updater'];
         // first time init view?
-        updateFn && updateFn(node, vm[exp]);
+        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word
         new Watcher(vm, exp, function (value, oldValue) {
             updateFn && updateFn(node, value, oldValue);
         });
@@ -81,3 +100,5 @@ let updater = {
         node.textContent = typeof value == 'undefined' ? '' : value;
     },
 };
+
+module.exports.Compiler = Compiler;
