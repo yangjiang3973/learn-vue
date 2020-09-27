@@ -20,16 +20,17 @@ class Observer {
             let val = obj[key]; // save the old value
             let dep = new Dep();
             Object.defineProperty(obj, key, {
+                enumerable: true,
                 get: function () {
-                    if (Dep.target) dep.addDep(Dep.target);
+                    if (Dep.target) dep.depend();
                     return val;
                 },
                 set: function (newVal) {
                     if (newVal !== val) {
                         if (typeof newVal === 'object') this.observe(newVal);
-                        this.$callback(newVal, val); // pass by value or ref?
+                        // this.$callback(newVal, val); // pass by value or ref?
                         val = newVal;
-                        dep.notify();
+                        dep.notify(newVal, val);
                     }
                 }.bind(this), // need to bind this! otherwise this points to obj...
             });

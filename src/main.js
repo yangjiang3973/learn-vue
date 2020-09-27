@@ -49,4 +49,14 @@ let vm = new MVVM({
     data: {
         word: 'Hello World!',
     },
+    // method: {
+    //     changeWord() {
+    //         this.word = 'fuck world!';
+    //     },
+    // },
 });
+
+setTimeout(() => {
+    vm.word = 'fuck';
+    console.log(vm);
+}, 2000);

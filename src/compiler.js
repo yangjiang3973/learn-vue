@@ -1,3 +1,6 @@
+const { Watcher } = require('./watcher');
+const { Dep } = require('./dep');
+
 class Compiler {
     constructor(el, vm) {
         this.$vm = vm;
@@ -87,10 +90,11 @@ let compileUtil = {
     bind: function (node, vm, exp, dir) {
         let updateFn = updater[dir + 'Updater'];
         // first time init view?
-        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word
-        new Watcher(vm, exp, function (value, oldValue) {
+        const watcher = new Watcher(vm, exp, function (value, oldValue) {
             updateFn && updateFn(node, value, oldValue);
         });
+        Dep.target = watcher;
+        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word
     },
 };
 

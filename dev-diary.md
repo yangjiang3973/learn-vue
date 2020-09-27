@@ -12,6 +12,14 @@
 
 # 2020-09-25
 
-1. 初始化视图，先不进行更新功能
+1. (DONE) 初始化视图，先不进行更新功能
 
-2. (IN PROGRESS) stop at compiler.js line#90
+2. (DONE) stop at compiler.js line#90
+
+# 2020-09-27
+
+1. (DONE) Data Proxy
+
+2. update view after data changed
+
+3. Event listener

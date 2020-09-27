@@ -6,13 +6,24 @@ class Dep {
         this.subs = [];
     }
 
+    static target = null;
+
+    // why need to ask watcher to addToDep?
+    // depend() {
+    //     Dep.target.addToDep(this);
+    // }
+    depend() {
+        this.addSub(this.target);
+        this.target = null;
+    }
+
     addSub(sub) {
         this.subs.push(sub);
     }
 
-    notify() {
+    notify(newVal, val) {
         this.subs.forEach((sub) => {
-            sub.update();
+            sub.update(newVal, val);
         });
     }
 }
