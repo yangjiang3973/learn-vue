@@ -48,6 +48,7 @@ let vm = new MVVM({
     el: '#app',
     data: {
         word: 'Hello World!',
+        msg: 'greeting',
     },
     // method: {
     //     changeWord() {
@@ -58,5 +59,6 @@ let vm = new MVVM({
 
 setTimeout(() => {
     vm.word = 'fuck';
+    vm.msg = 'cao!';
     console.log(vm);
 }, 2000);

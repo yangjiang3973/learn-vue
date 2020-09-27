@@ -1,6 +1,6 @@
 const { Compiler } = require('./compiler');
 const { Watcher } = require('./watcher');
-const { Observer } = require('./compiler');
+const { Observer } = require('./observer');
 
 class MVVM {
     constructor(options) {
@@ -11,7 +11,7 @@ class MVVM {
             this._proxyData(key);
         });
 
-        // observe(data, this);  // observe
+        new Observer(this._data); // observe
 
         this.$compile = new Compiler(options.el || document.body, this);
     }

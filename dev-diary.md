@@ -20,6 +20,6 @@
 
 1. (DONE) Data Proxy
 
-2. update view after data changed
+2. (DONE)update view after data changed
 
 3. Event listener

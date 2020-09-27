@@ -3,11 +3,10 @@ const { Dep } = require('./dep.js');
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
 class Observer {
-    constructor(obj, callback) {
+    constructor(obj) {
         if (typeof obj !== 'object') {
             console.error('This parameter must be an object：' + obj);
         }
-        this.$callback = callback;
         this.observe(obj);
     }
 
@@ -22,7 +21,9 @@ class Observer {
             Object.defineProperty(obj, key, {
                 enumerable: true,
                 get: function () {
-                    if (Dep.target) dep.depend();
+                    if (Dep.target) {
+                        dep.depend();
+                    }
                     return val;
                 },
                 set: function (newVal) {
