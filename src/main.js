@@ -50,11 +50,11 @@ let vm = new MVVM({
         word: 'Hello World!',
         msg: 'greeting',
     },
-    // method: {
-    //     changeWord() {
-    //         this.word = 'fuck world!';
-    //     },
-    // },
+    methods: {
+        changeWord() {
+            this.word = 'fuck world!';
+        },
+    },
 });
 
 setTimeout(() => {

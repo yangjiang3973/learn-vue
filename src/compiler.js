@@ -87,14 +87,36 @@ let compileUtil = {
     text: function (node, vm, exp) {
         this.bind(node, vm, exp, 'text');
     },
+    model: function (node, vm, exp) {
+        this.bind(node, vm, exp, 'model');
+
+        // reverse binding
+        node.addEventListener(
+            'input',
+            (e) => {
+                vm[exp] = e.target.value;
+            },
+            false
+        );
+    },
     bind: function (node, vm, exp, dir) {
         let updateFn = updater[dir + 'Updater'];
         // first time init view?
+        // maybe move the following code to watcher's constructor
+        // 在自身实例化时往属性订阅器(dep)里面添加自己
         const watcher = new Watcher(vm, exp, function (value, oldValue) {
             updateFn && updateFn(node, value, oldValue);
         });
         Dep.target = watcher;
         updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word
+    },
+    eventHandler: function (node, vm, exp, dir) {
+        const eventType = dir.split(':')[1];
+        const fn = vm[exp];
+
+        if (eventType && fn) {
+            node.addEventListener(eventType, fn.bind(vm), false);
+        }
     },
 };
 
@@ -102,6 +124,9 @@ let updater = {
     textUpdater: function (node, value) {
         // NOTE: node.textContent=value if value is not undefined
         node.textContent = typeof value == 'undefined' ? '' : value;
+    },
+    modelUpdater: function (node, value) {
+        node.value = typeof value == 'undefined' ? '' : value;
     },
 };
 

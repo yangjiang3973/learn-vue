@@ -20,6 +20,12 @@
 
 1. (DONE) Data Proxy
 
-2. (DONE)update view after data changed
+2. (DONE) update view after data changed
 
-3. Event listener
+3. (DONE) update data when input's content changes(`v-model`)
+
+4. (DONE) Event listener(`v-on:click`)
+
+# 2020-09-28
+
+1.
