@@ -1,10 +1,10 @@
 # 2020-09-22
 
-1. 了解 MVVM，实现数据的双向绑定。
+1. (DONE) 了解 MVVM，实现数据的双向绑定。
 
 # 2020-09-25
 
-1. (IN PROGRESS) 实现 observer 之外的 watcher 和 compiler
+1. (DONE) 实现 observer 之外的 watcher 和 compiler
 
 可能是最终要实现的目标（怎么用）有点模糊，用 vue 写个简单的例子，看看要实现的双向绑定的最终效果。
 
@@ -28,4 +28,12 @@
 
 # 2020-09-28
 
-1.
+1. 实现 vue 0.11 的功能？先看看 vue 0.11 版本的情况，了解下！
+
+2. async batch updates？
+
+3. unit test? Karma, jest? Karma first. Learn it!
+
+# 2020-09-30
+
+1. read sorce code of vue 0.10
