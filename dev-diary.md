@@ -37,3 +37,15 @@
 # 2020-09-30
 
 1. read sorce code of vue 0.10
+
+# 202-10-12
+
+1. (IN PROGRESS) setup unit test
+
+so I need to learn karma + jasmine first
+
+karma 是一个可以在多个浏览器中执行 js 代码的简单工具。它不是一个完整的测试框架，没有断言库，只是启动了一个 http 服务器，然后生成测试 html 文件，执行测试用例的 js。
+
+karma 需要配合断言库使用，比如 jasmine 或者 mocha
+
+1.1 ignore vue's test and write a small demo to run karma and jasmine successfully.
