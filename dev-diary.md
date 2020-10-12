@@ -48,4 +48,6 @@ karma 是一个可以在多个浏览器中执行 js 代码的简单工具。它�
 
 karma 需要配合断言库使用，比如 jasmine 或者 mocha
 
-1.1 ignore vue's test and write a small demo to run karma and jasmine successfully.
+(DONE) 1.1 ignore vue's test and write a small demo to run karma and jasmine successfully.
+
+2. read source code of vue 0.11 and implement features in my repo

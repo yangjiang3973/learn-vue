@@ -1,6 +1,7 @@
 const { Compiler } = require('./compiler');
 const { Watcher } = require('./watcher');
 const { Observer } = require('./observer');
+const _ = require('./utils');
 
 // let vm = new MVVM({
 //     el: '#app',
@@ -18,11 +19,14 @@ const { Observer } = require('./observer');
 class MVVM {
     constructor(options) {
         this.$options = options || {};
-        this._data = options.data;
+        this._data = options.data || {};
         this._methods = options.methods;
         // data proxy
         Object.keys(this._data).forEach((key) => {
-            this._proxyData(key);
+            // check reserved key word
+            if (!_.isReserved(key)) {
+                this._proxyData(key);
+            }
         });
 
         Object.keys(this._methods).forEach((key) => {
@@ -35,8 +39,13 @@ class MVVM {
     }
 
     _proxyData(key) {
+        // need to store ref to self here
+        // because these getter/setters might
+        // be called by child instances!
+        // var self = this; // if no this line, what will happened?
         Object.defineProperty(this, key, {
             enumerable: true,
+            configurable: true,
             get: () => {
                 return this._data[key];
             },

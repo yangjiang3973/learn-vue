@@ -108,7 +108,7 @@ let compileUtil = {
             updateFn && updateFn(node, value, oldValue);
         });
         Dep.target = watcher;
-        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word
+        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word  // vm[exp] first time call getter to add sub
     },
     eventHandler: function (node, vm, exp, dir) {
         const eventType = dir.split(':')[1];
