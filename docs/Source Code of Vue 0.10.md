@@ -39,4 +39,22 @@ exports.extend = function (to, from) {
 
 vue.js -> instance/init.js -> instance/scope.js -> observer/index.js
 
-TODO: 到了 observer 这里了
+## 2020-10-13
+
+1. observer almost done, and I have a general understanding about it.
+
+then move to `directive.js`? no, I even have no idea where it is used
+
+`watcher.js`? no, go to `compile` stage, from front end to back end
+
+Q: 从哪里进入 compile 的？
+
+`lifecycle.js`. 在`init.js`里 call 了\$mount(lifecycle export 出来的)
+
+在`lifecycle`里有两处 compile 相关，一个是 `this.\_compile`（来自 instance/compile.js），一个是 `compile`（compiler/compile.js）
+
+当然，在 this.\_compile 里也用到了`compiler/compile.js`
+
+2. found a video about roll up: https://www.bilibili.com/video/BV1qt4y1y7e8?p=5
+
+## 2020-10-14

@@ -1,4 +1,5 @@
 const { Dep } = require('./dep.js');
+const _ = require('./utils');
 
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
@@ -16,10 +17,13 @@ class Observer {
         }
 
         Object.keys(obj).forEach((key) => {
+            // skip $ or _
+            if (_.isReserverd(key)) return; //* NOTE: why $ or _ maybe in data?
             let val = obj[key]; // save the old value
             let dep = new Dep();
             Object.defineProperty(obj, key, {
                 enumerable: true,
+                configurable: true,
                 get: function () {
                     if (Dep.target) {
                         dep.depend();

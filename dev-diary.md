@@ -38,7 +38,7 @@
 
 1. read sorce code of vue 0.10
 
-# 202-10-12
+# 2020-10-12
 
 1. (IN PROGRESS) setup unit test
 
@@ -51,3 +51,21 @@ karma 需要配合断言库使用，比如 jasmine 或者 mocha
 (DONE) 1.1 ignore vue's test and write a small demo to run karma and jasmine successfully.
 
 2. read source code of vue 0.11 and implement features in my repo
+
+# 2020-10-13
+
+1. need to understand `$add/$delete` methods, in order to learn source code better
+
+2. Q: `require('./object');` without assigning to any variable?? no export in file `object`?
+
+Ans: `A` require file `B` means to add B to A directly. Since in file B, functions get called immediately,
+
+so when running A, B's functions will also run.
+
+# 2020-10-14
+
+1. 为什么需要$set, $delete 等等？
+
+因为 getter 和 setter 存在的缺陷：只能监听到属性的更改，不能监听到属性的删除与添加。
+
+2. transclude 的意思是内嵌，这个步骤会把你 template 里给出的模板转换成一段 dom，然后抽取出你 el 选项指定的 dom 里的内容，把这段模板 dom 嵌入到 el 里面去
