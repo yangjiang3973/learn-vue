@@ -80,6 +80,8 @@ so when running A, B's functions will also run.
 
     1.2 分源文件进行 debug，更好的看清文件之间的跳转和关系? 这个版本的打包有 source map 之类的吗？
 
+    TODO: 新思路，在 learn-vue 这个 repo 先用 webpack 进行打包，放到 devserver，然后把 debugger 变成 attach 而不是 launch？
+
 2. compile 是个很大的模块，仔细研究下 compile！分析下关键节点，看看该位置的变量内容，比如 directive
 
     把 compile 的流程理出来！
