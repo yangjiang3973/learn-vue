@@ -58,3 +58,15 @@ Q: 从哪里进入 compile 的？
 2. found a video about roll up: https://www.bilibili.com/video/BV1qt4y1y7e8?p=5
 
 ## 2020-10-14
+
+TODO: 到了 compile/compile.js, 真长啊
+
+```js
+// collectDirectives() at compiler/compile.js
+dirs.push({
+    name: dirName,
+    descriptors: dirParser.parse(attr.value),
+    def: dirDef,
+    transcluded: transcluded,
+});
+```

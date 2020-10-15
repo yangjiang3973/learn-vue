@@ -69,3 +69,17 @@ so when running A, B's functions will also run.
 因为 getter 和 setter 存在的缺陷：只能监听到属性的更改，不能监听到属性的删除与添加。
 
 2. transclude 的意思是内嵌，这个步骤会把你 template 里给出的模板转换成一段 dom，然后抽取出你 el 选项指定的 dom 里的内容，把这段模板 dom 嵌入到 el 里面去
+
+3. 如何打断点来看 vue 的代码呢？找找教程或者工具？学习下，很有用！
+
+# 2020-10-15
+
+1. 想打断点看看最简单的`v-text`命令是怎么走完整个流程的。
+
+    1.1. (DONE) 可以 debug 打包后的 vue.js
+
+    1.2 分源文件进行 debug，更好的看清文件之间的跳转和关系? 这个版本的打包有 source map 之类的吗？
+
+2. compile 是个很大的模块，仔细研究下 compile！分析下关键节点，看看该位置的变量内容，比如 directive
+
+    把 compile 的流程理出来！
