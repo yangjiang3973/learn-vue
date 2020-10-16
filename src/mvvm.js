@@ -24,7 +24,7 @@ class MVVM {
         // data proxy
         Object.keys(this._data).forEach((key) => {
             // check reserved key word
-            if (!_.isReserved(key)) {
+            if (!_.isReserverd(key)) {
                 this._proxyData(key);
             }
         });

@@ -8,6 +8,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'mini-vue.js',
+        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // for vscode debugger to map source files
     },
     module: {
         rules: [

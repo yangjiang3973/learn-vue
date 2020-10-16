@@ -85,3 +85,5 @@ so when running A, B's functions will also run.
 2. compile 是个很大的模块，仔细研究下 compile！分析下关键节点，看看该位置的变量内容，比如 directive
 
     把 compile 的流程理出来！
+
+# 2020-10-16

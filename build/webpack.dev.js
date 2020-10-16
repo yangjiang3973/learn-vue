@@ -5,10 +5,12 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
     mode: 'development', //can also passed by cli: webpack --mode=production
-    devtool: 'eval-source-map',
+    // devtool: 'eval-source-map',
+    devtool: 'source-map',
     devServer: {
         host: '0.0.0.0',
         contentBase: 'dist',
+        writeToDisk: true,
         publicPath: '/',
         compress: true,
         port: 8989,
