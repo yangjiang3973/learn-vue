@@ -1,20 +1,18 @@
 const { Watcher } = require('./watcher');
 const { Dep } = require('./dep');
+const { compile } = require('./compile/compile');
 
 class Compiler {
     constructor(el, vm) {
+        // 3 stages: transclude, compile and link
         this.$vm = vm;
         this.$el = this.isElementNode(el) ? el : document.querySelector(el);
 
-        if (this.$el) {
-            this.$fragment = this.node2Fragment(this.$el);
-            this.init();
-            this.$el.appendChild(this.$fragment);
-        }
-    }
-
-    init() {
-        this.compileElement(this.$fragment);
+        const linkStage = compile(this.$el);
+        linkStage();
+        // this.$fragment = this.node2Fragment(this.$el);
+        // this.init();
+        // this.$el.appendChild(this.$fragment);
     }
 
     node2Fragment(el) {
@@ -26,6 +24,9 @@ class Compiler {
 
         return fragment;
     }
+    // init() {
+    //     this.compileElement(this.$fragment);
+    // }
 
     compileElement(el) {
         let childNodes = el.childNodes;
@@ -123,10 +124,10 @@ let compileUtil = {
 let updater = {
     textUpdater: function (node, value) {
         // NOTE: node.textContent=value if value is not undefined
-        node.textContent = typeof value == 'undefined' ? '' : value;
+        node.textContent = typeof value === 'undefined' ? '' : value;
     },
     modelUpdater: function (node, value) {
-        node.value = typeof value == 'undefined' ? '' : value;
+        node.value = typeof value === 'undefined' ? '' : value;
     },
 };
 

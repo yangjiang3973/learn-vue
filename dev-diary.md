@@ -78,12 +78,27 @@ so when running A, B's functions will also run.
 
     1.1. (DONE) 可以 debug 打包后的 vue.js
 
-    1.2 分源文件进行 debug，更好的看清文件之间的跳转和关系? 这个版本的打包有 source map 之类的吗？
+    1.2 (DONE) 分源文件进行 debug，更好的看清文件之间的跳转和关系? 这个版本的打包有 source map 之类的吗？
 
-    TODO: 新思路，在 learn-vue 这个 repo 先用 webpack 进行打包，放到 devserver，然后把 debugger 变成 attach 而不是 launch？
+    (DONE): 新思路，在 learn-vue 这个 repo 先用 webpack 进行打包，放到 devserver，然后把 debugger 变成 attach 而不是 launch？
+    （不用 attach）
 
 2. compile 是个很大的模块，仔细研究下 compile！分析下关键节点，看看该位置的变量内容，比如 directive
 
     把 compile 的流程理出来！
 
 # 2020-10-16
+
+1. (DONE) setup webpack and vscode debugger in original vue repo to debug source code
+
+2. (DONE) use a simle `v-text` node to see how compile work?
+
+# 2020-10-17
+
+1. Q: why use so many closures when compile to links?
+
+2. TODO: in compile, still use 3 stages but not use closures to create link.
+
+so maybe can understand why vue uses this way.
+
+3. TODO: start writing more directives and refactor previous code(especially compile part)

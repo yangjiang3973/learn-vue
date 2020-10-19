@@ -15,8 +15,7 @@ const _ = require('./utils');
 //         },
 //     },
 // });
-
-class MVVM {
+class Aue {
     constructor(options) {
         this.$options = options || {};
         this._data = options.data || {};
@@ -29,9 +28,9 @@ class MVVM {
             }
         });
 
-        Object.keys(this._methods).forEach((key) => {
-            this._proxyMethods(key);
-        });
+        // Object.keys(this._methods).forEach((key) => {
+        //     this._proxyMethods(key);
+        // });
 
         new Observer(this._data); // observe
 
@@ -68,4 +67,4 @@ class MVVM {
     }
 }
 
-module.exports.MVVM = MVVM;
+module.exports.Aue = Aue;

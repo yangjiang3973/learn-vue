@@ -43,22 +43,14 @@
 // arrTest3.b.push(4);
 // console.log('arrTest3', arrTest3);
 
-const { MVVM } = require('./mvvm');
-let vm = new MVVM({
+const { Aue } = require('./aue');
+let vm = new Aue({
     el: '#app',
     data: {
         word: 'Hello World!',
-        msg: 'greeting',
-    },
-    methods: {
-        changeWord() {
-            this.word = 'fuck world!';
-        },
     },
 });
 
 setTimeout(() => {
     vm.word = 'fuck';
-    vm.msg = 'cao!';
-    console.log(vm);
 }, 2000);
