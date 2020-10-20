@@ -1,6 +1,8 @@
 const _ = require('../utils');
 const directives = require('../directives/index'); //NOTE: can i remove /index
 const dirParser = require('../parsers/directive');
+
+/* return links: [{node, dirs}] */
 module.exports.compile = function compile(el) {
     if (el.hasChildNodes()) {
         return compileNodeList(el.childNodes);
@@ -17,7 +19,6 @@ function compileNodeList(nodeList) {
             compileNodeList(node.childNodes);
         }
     }
-    console.log('compileNodeList -> nodeLink', links); // need to optimize, if not dir, no need to add to links
     return links;
     // [].slice.call(childNodes).forEach((node) => {
     //     var text = node.textContent;

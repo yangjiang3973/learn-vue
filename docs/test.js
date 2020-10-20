@@ -128,14 +128,30 @@
 // console.log(b.z);
 // console.log(b.x);
 
-class Student {
-    constructor(name) {
-        this.name = name;
-    }
-    hello() {
-        console.log('name:', this.name);
-    }
-}
+// class Student {
+//     constructor(name) {
+//         this.name = name;
+//     }
+//     hello() {
+//         console.log('name:', this.name);
+//     }
+// }
 
-const s = new Student('yang');
-s.hello();
+// const s = new Student('yang');
+// s.hello();
+
+let A = function (name) {
+    this.name = name;
+};
+
+let B = function () {
+    console.log('B -> arguments', arguments);
+    A.apply(this, arguments);
+};
+
+B.prototype.getName = function () {
+    return this.name;
+};
+
+let b = new B('seven');
+console.log(b.getName());

@@ -1,18 +1,31 @@
 const { Watcher } = require('./watcher');
 const { Dep } = require('./dep');
+const { Directive } = require('./directive');
 const { compile } = require('./compile/compile');
 const _ = require('./utils');
 
 class Compiler {
     constructor(el, vm) {
         // 3 stages: transclude, compile and link
-        this.$vm = vm;
+        // this.$vm = vm;
         this.$el = _.isElementNode(el) ? el : document.querySelector(el);
 
         //TODO:transclude
         //compile
-        const dirs = compile(this.$el);
+        const links = compile(this.$el);
+        console.log('Compiler -> constructor -> links', links);
         // link
+        links.forEach((link) => {
+            const { node, dirs } = link;
+            if (!dirs) return;
+            dirs.forEach((dir) => {
+                const { name, def, descriptors } = dir;
+                // vm._bindDir(node, dir);
+                vm._directives.push(
+                    new Directive(name, node, vm, descriptors, def) //* `host` is not passed yet
+                );
+            });
+        });
         // linkStage();
         // this.$fragment = this.node2Fragment(this.$el);
         // this.init();

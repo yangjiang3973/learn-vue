@@ -18,6 +18,7 @@ const _ = require('./utils');
 class Aue {
     constructor(options) {
         this.$options = options || {};
+        this._directives = []; // all directives
         this._data = options.data || {};
         this._methods = options.methods;
         // data proxy

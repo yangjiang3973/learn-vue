@@ -183,7 +183,7 @@ function PrimaryStudent(props) {
     Student.call(this, props);
     this.grade = props.grade || 1;
 }
-PrimaryStudent.prototype = Object.create(foo.prototype);
+PrimaryStudent.prototype = Object.create(Student.prototype);
 PrimaryStudent.prototype.contrustor = PrimaryStudent;
 var inst = new PrimaryStudent({ name: 'Yang', grage: 100 });
 ```

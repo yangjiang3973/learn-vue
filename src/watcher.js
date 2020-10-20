@@ -1,7 +1,7 @@
 let uid = 0;
 
 class Watcher {
-    constructor(vm, exp, cb) {
+    constructor(vm, exp, cb, options) {
         this.cb = cb;
         this.vm = vm;
         this.exp = exp;
