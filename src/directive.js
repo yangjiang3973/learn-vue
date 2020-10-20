@@ -15,11 +15,10 @@ class Directive {
         this.el.removeAttribute('v-' + this.name);
         this.bind = def.bind;
         this.update = def.update; // TODO: use `_.extend like vue`
-        console.log('aaaa');
         this.bind();
         this._watcherExp = this.expression;
         const update = function (val, oldVal) {
-            this.update(val, oldVal); // TODO: need to bind this?
+            this.update(val, oldVal);
         }.bind(this);
         const watcher = new Watcher(
             this.vm,

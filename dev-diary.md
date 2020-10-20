@@ -97,8 +97,14 @@ so when running A, B's functions will also run.
 
 1. Q: why use so many closures when compile to links?
 
-2. TODO: in compile, still use 3 stages but not use closures to create link.
+2. TODO: in compile, still use 3 stages but not use closures to create link for more directives and other features.
 
 so maybe can understand why vue uses this way.
 
 3. TODO: start writing more directives and refactor previous code(especially compile part)
+
+# 2020-10-20
+
+1. finished the main logic structure and make `v-text` work
+
+2. TODO: add unit tests like vue

@@ -21,9 +21,11 @@ class Compiler {
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
                 // vm._bindDir(node, dir);
-                vm._directives.push(
-                    new Directive(name, node, vm, descriptors, def) //* `host` is not passed yet
-                );
+                descriptors.forEach((desc) => {
+                    vm._directives.push(
+                        new Directive(name, node, vm, desc, def) //* `host` is not passed yet
+                    );
+                });
             });
         });
         // linkStage();
