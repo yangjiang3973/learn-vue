@@ -103,14 +103,14 @@ so maybe can understand why vue uses this way.
 
 3. TODO: start writing more directives and refactor previous code(especially compile part)
 
-    3.1 v-text (done)
-    3.2 v-model
-    3.3 on:click
-    3.4 v-if
+    3.1 v-text (DONE)
+    3.2 v-model (DONE)
+    3.3 on:click (DONE) NOTE: 0.11 syntax is differnt `v-on='click: '`, changed on 1.0. but I followed 1.0's syntax
+    3.4 v-if()
     3.5 v-repeat
 
 # 2020-10-20
 
-1. finished the main logic structure and make `v-text` work
+1. (DONE) finished the main logic structure and make `v-text` work
 
 2. TODO: add unit tests like vue for implemented directives and functions

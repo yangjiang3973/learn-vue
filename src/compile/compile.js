@@ -15,6 +15,7 @@ function compileNodeList(nodeList) {
         node = nodeList[i];
         const dirs = compileNode(node);
         links.push({ node, dirs });
+        // need to check terminal directive, if terminal, stop compiling sub tree
         if (node.hasChildNodes()) {
             compileNodeList(node.childNodes);
         }
@@ -40,24 +41,20 @@ function compileNode(node) {
 }
 
 function compileElement(node) {
+    let dirs = [];
     let nodeAttrs = Array.from(node.attributes);
-    const dirs = collectDirectives(nodeAttrs);
+    // check terminal directive here
+    let terminalDir = checkTerminalDirectives(nodeAttrs); //return v-if
+    if (!terminalDir) {
+        dirs = collectDirectives(nodeAttrs);
+        return dirs;
+    } else {
+        return [terminalDir];
+    }
+}
 
-    return dirs;
-    // [].slice.call(nodeAttrs).forEach((attr) => {
-    //     let attrName = attr.name;
-    //     if (me.isDirective(attrName)) {
-    //         let exp = attr.value;
-    //         var dir = attrName.substring(2);
-    //         if (me.isEventDirective(dir)) {
-    //             compileUtil.eventHandler(node, me.$vm, exp, dir);
-    //         } else {
-    //             compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
-    //         }
-
-    //         node.removeAttribute(attrName);
-    //     }
-    // });
+function checkTerminalDirectives(attrs) {
+    const terminalDirectives = ['repeat', 'if', 'component'];
 }
 
 function collectDirectives(nodeAttrs) {
@@ -70,8 +67,14 @@ function collectDirectives(nodeAttrs) {
     let dirs = [];
     nodeAttrs.forEach((attr) => {
         if (_.isDirective(attr.name)) {
-            const dirName = attr.name.substring(2);
-            const dirDef = directives[dirName];
+            let dirName = attr.name.substring(2); // need to check event handler, such as v-on:click, vue 1.0 uses regExp
+            let dirDef;
+            if (_.isEventDirective(dirName)) {
+                dirDef = directives[dirName.substring(0, 2)];
+            } else {
+                dirDef = directives[dirName];
+            }
+
             if (dirDef) {
                 dirs.push({
                     name: dirName,
@@ -86,53 +89,53 @@ function collectDirectives(nodeAttrs) {
     return dirs;
 }
 
-function compileText(node, exp) {
-    compileUtil.text(node, this.$vm, exp);
-}
+// function compileText(node, exp) {
+//     compileUtil.text(node, this.$vm, exp);
+// }
 
-let compileUtil = {
-    text: function (node, vm, exp) {
-        this.bind(node, vm, exp, 'text');
-    },
-    model: function (node, vm, exp) {
-        this.bind(node, vm, exp, 'model');
+// let compileUtil = {
+//     text: function (node, vm, exp) {
+//         this.bind(node, vm, exp, 'text');
+//     },
+//     model: function (node, vm, exp) {
+//         this.bind(node, vm, exp, 'model');
 
-        // reverse binding
-        node.addEventListener(
-            'input',
-            (e) => {
-                vm[exp] = e.target.value;
-            },
-            false
-        );
-    },
-    bind: function (node, vm, exp, dir) {
-        let updateFn = updater[dir + 'Updater'];
-        // first time init view?
-        // maybe move the following code to watcher's constructor
-        // 在自身实例化时往属性订阅器(dep)里面添加自己
-        const watcher = new Watcher(vm, exp, function (value, oldValue) {
-            updateFn && updateFn(node, value, oldValue);
-        });
-        Dep.target = watcher;
-        updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word  // vm[exp] first time call getter to add sub
-    },
-    eventHandler: function (node, vm, exp, dir) {
-        const eventType = dir.split(':')[1];
-        const fn = vm[exp];
+//         // reverse binding
+//         node.addEventListener(
+//             'input',
+//             (e) => {
+//                 vm[exp] = e.target.value;
+//             },
+//             false
+//         );
+//     },
+//     bind: function (node, vm, exp, dir) {
+//         let updateFn = updater[dir + 'Updater'];
+//         // first time init view?
+//         // maybe move the following code to watcher's constructor
+//         // 在自身实例化时往属性订阅器(dep)里面添加自己
+//         const watcher = new Watcher(vm, exp, function (value, oldValue) {
+//             updateFn && updateFn(node, value, oldValue);
+//         });
+//         Dep.target = watcher;
+//         updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word  // vm[exp] first time call getter to add sub
+//     },
+//     eventHandler: function (node, vm, exp, dir) {
+//         const eventType = dir.split(':')[1];
+//         const fn = vm[exp];
 
-        if (eventType && fn) {
-            node.addEventListener(eventType, fn.bind(vm), false);
-        }
-    },
-};
+//         if (eventType && fn) {
+//             node.addEventListener(eventType, fn.bind(vm), false);
+//         }
+//     },
+// };
 
-let updater = {
-    textUpdater: function (node, value) {
-        // NOTE: node.textContent=value if value is not undefined
-        node.textContent = typeof value === 'undefined' ? '' : value;
-    },
-    modelUpdater: function (node, value) {
-        node.value = typeof value === 'undefined' ? '' : value;
-    },
-};
+// let updater = {
+//     textUpdater: function (node, value) {
+//         // NOTE: node.textContent=value if value is not undefined
+//         node.textContent = typeof value === 'undefined' ? '' : value;
+//     },
+//     modelUpdater: function (node, value) {
+//         node.value = typeof value === 'undefined' ? '' : value;
+//     },
+// };

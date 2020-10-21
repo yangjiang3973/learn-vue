@@ -49,8 +49,13 @@ let vm = new Aue({
     data: {
         word: 'Hello World!',
     },
+    methods: {
+        changeWord: function () {
+            this.word = 'fuck world';
+        },
+    },
 });
 
-setTimeout(() => {
-    vm.word = 'fuck';
-}, 2000);
+// setTimeout(() => {
+//     vm.word = 'fuck';
+// }, 2000);

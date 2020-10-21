@@ -16,6 +16,7 @@ class Directive {
         this.bind = def.bind;
         this.update = def.update; // TODO: use `_.extend like vue`
         this.bind();
+        console.log('Directive -> _bind -> this.bind', this.bind);
         this._watcherExp = this.expression;
         const update = function (val, oldVal) {
             this.update(val, oldVal);

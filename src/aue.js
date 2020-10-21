@@ -29,9 +29,9 @@ class Aue {
             }
         });
 
-        // Object.keys(this._methods).forEach((key) => {
-        //     this._proxyMethods(key);
-        // });
+        Object.keys(this._methods).forEach((key) => {
+            this._proxyMethods(key);
+        });
 
         new Observer(this._data); // observe
 

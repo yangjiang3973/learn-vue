@@ -140,18 +140,38 @@
 // const s = new Student('yang');
 // s.hello();
 
-let A = function (name) {
-    this.name = name;
-};
+// let A = function (name) {
+//     this.name = name;
+// };
 
-let B = function () {
-    console.log('B -> arguments', arguments);
-    A.apply(this, arguments);
-};
+// let B = function () {
+//     console.log('B -> arguments', arguments);
+//     A.apply(this, arguments);
+// };
 
-B.prototype.getName = function () {
-    return this.name;
-};
+// B.prototype.getName = function () {
+//     return this.name;
+// };
 
-let b = new B('seven');
-console.log(b.getName());
+// let b = new B('seven');
+// console.log(b.getName());
+
+function test() {
+    Array.prototype.push.call(arguments, 4);
+    console.log(arguments);
+}
+test(1, 2, 3);
+// Function.prototype.uncurrying = function () {
+//     let self = this;
+//     return function () {
+//         let obj = Array.prototype.shift.call(arguments);
+//         return self.apply(obj, arguments);
+//     };
+// };
+
+// let push = Array.prototype.push.uncurrying();
+
+// (function () {
+//     push(arguments, 4); // currying, so add more params
+//     console.log('arguments', arguments);
+// })(1, 2, 3);

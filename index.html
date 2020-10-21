@@ -11,6 +11,8 @@
     <body>
         <div id="app">
             <p v-text="word"></p>
+            <input type="text" v-model="word">
+            <button v-on:click='changeWord'>click to change</button>
         </div>
     </body>
 </html>
