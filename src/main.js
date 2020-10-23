@@ -54,6 +54,9 @@ let vm = new Aue({
         changeWord: function () {
             this.word = 'fuck world';
         },
+        changeFlag: function () {
+            this.flag = true;
+        },
     },
 });
 

@@ -1,6 +1,7 @@
 const { Watcher } = require('./watcher');
 const { Dep } = require('./dep');
 const { Directive } = require('./directive');
+const directives = require('./directives/index'); //NOTE: can i remove /index
 const compile = require('./compile/compile');
 const _ = require('./utils');
 
@@ -12,7 +13,7 @@ class Compiler {
 
         //TODO:transclude
         //compile
-        const links = compile(this.$el);
+        const links = compile(this.$el, directives);
         // link
         links.forEach((link) => {
             const { node, dirs } = link;

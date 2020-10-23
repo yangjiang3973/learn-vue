@@ -12,6 +12,7 @@ class Directive {
     }
 
     _bind(def) {
+        console.log('Directive -> _bind -> this.el', this.el);
         this.el.removeAttribute('v-' + this.name);
         this.bind = def.bind;
         this.update = def.update; // TODO: use `_.extend like vue`
