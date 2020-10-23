@@ -3,7 +3,7 @@ const directives = require('../directives/index'); //NOTE: can i remove /index
 const dirParser = require('../parsers/directive');
 
 /* return links: [{node, dirs}] */
-module.exports.compile = function compile(el) {
+module.exports = function compile(el) {
     if (el.hasChildNodes()) {
         return compileNodeList(el.childNodes);
     }
@@ -11,12 +11,17 @@ module.exports.compile = function compile(el) {
 
 function compileNodeList(nodeList) {
     const links = []; // [{node, dirs}]
+    let dirs, terminalFlag;
     for (let i = 0; i < nodeList.length; i++) {
         node = nodeList[i];
-        const dirs = compileNode(node);
+        const nodeInfo = compileNode(node);
+        if (nodeInfo) {
+            dirs = nodeInfo.dirs;
+            terminalFlag = nodeInfo.terminalFlag;
+        }
         links.push({ node, dirs });
         // need to check terminal directive, if terminal, stop compiling sub tree
-        if (node.hasChildNodes()) {
+        if (node.hasChildNodes() && !terminalFlag) {
             compileNodeList(node.childNodes);
         }
     }
@@ -44,17 +49,32 @@ function compileElement(node) {
     let dirs = [];
     let nodeAttrs = Array.from(node.attributes);
     // check terminal directive here
-    let terminalDir = checkTerminalDirectives(nodeAttrs); //return v-if
+    let terminalDir = checkTerminalDirectives(nodeAttrs);
     if (!terminalDir) {
         dirs = collectDirectives(nodeAttrs);
-        return dirs;
+        return { dirs, terminalFlag: false };
     } else {
-        return [terminalDir];
+        return { dirs: terminalDir, terminalFlag: true };
     }
 }
 
 function checkTerminalDirectives(attrs) {
     const terminalDirectives = ['repeat', 'if', 'component'];
+    for (let i = 0; i < attrs.length; i++) {
+        const name = attrs[i].name;
+        if (
+            _.isDirective(name) &&
+            terminalDirectives.includes(name.substring(2))
+        ) {
+            return [
+                {
+                    name: name.substring(2),
+                    descriptors: dirParser.parse(attrs[i].value),
+                    def: directives[name.substring(2)],
+                },
+            ];
+        }
+    }
 }
 
 function collectDirectives(nodeAttrs) {

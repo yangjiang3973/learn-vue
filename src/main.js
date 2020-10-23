@@ -48,6 +48,7 @@ let vm = new Aue({
     el: '#app',
     data: {
         word: 'Hello World!',
+        flag: false,
     },
     methods: {
         changeWord: function () {

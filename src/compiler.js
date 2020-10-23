@@ -1,7 +1,7 @@
 const { Watcher } = require('./watcher');
 const { Dep } = require('./dep');
 const { Directive } = require('./directive');
-const { compile } = require('./compile/compile');
+const compile = require('./compile/compile');
 const _ = require('./utils');
 
 class Compiler {
@@ -13,7 +13,6 @@ class Compiler {
         //TODO:transclude
         //compile
         const links = compile(this.$el);
-        console.log('Compiler -> constructor -> links', links);
         // link
         links.forEach((link) => {
             const { node, dirs } = link;
