@@ -48,14 +48,14 @@ let vm = new Aue({
     el: '#app',
     data: {
         word: 'Hello World!',
-        flag: false,
+        flag: true,
     },
     methods: {
         changeWord: function () {
             this.word = 'fuck world';
         },
         changeFlag: function () {
-            this.flag = true;
+            this.flag = !this.flag;
         },
     },
 });

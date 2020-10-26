@@ -156,11 +156,11 @@
 // let b = new B('seven');
 // console.log(b.getName());
 
-function test() {
-    Array.prototype.push.call(arguments, 4);
-    console.log(arguments);
-}
-test(1, 2, 3);
+// function test() {
+//     Array.prototype.push.call(arguments, 4);
+//     console.log(arguments);
+// }
+// test(1, 2, 3);
 // Function.prototype.uncurrying = function () {
 //     let self = this;
 //     return function () {
@@ -175,3 +175,51 @@ test(1, 2, 3);
 //     push(arguments, 4); // currying, so add more params
 //     console.log('arguments', arguments);
 // })(1, 2, 3);
+
+// Singleton: 1
+// let Singleton = function (name) {
+//     this.name = name;
+//     this.instance = null;
+// };
+
+// Singleton.prototype.getName = function () {
+//     console.log(this.name);
+// };
+
+// Singleton.getInstance = function (name) {
+//     if (!this.instance) {
+//         this.instance = new Singleton(name);
+//     }
+//     return this.instance;
+// };
+
+// let a = Singleton.getInstance('aaa');
+// let b = Singleton.getInstance('bbb');
+
+// a.getName();
+// b.getName();
+
+// Singleton: 2
+let Singleton = function (name) {
+    this.name = name;
+};
+
+Singleton.prototype.getName = function () {
+    console.log(this.name);
+};
+
+Singleton.getInstance = (function () {
+    let instance = null;
+    return function (name) {
+        if (!instance) {
+            instance = new Singleton(name);
+        }
+        return instance;
+    };
+})();
+
+let a = Singleton.getInstance('aaa');
+let b = Singleton.getInstance('bbb');
+
+a.getName();
+b.getName();

@@ -114,3 +114,7 @@ so maybe can understand why vue uses this way.
 1. (DONE) finished the main logic structure and make `v-text` work
 
 2. TODO: add unit tests like vue for implemented directives and functions
+
+# 2020-10-26
+
+1. looks like `v-if` use `<!--v-if-start-->` and `<!--v-if-end-->` as anchor to locate v-if block(control append and remove)

@@ -4,31 +4,31 @@ const { Directive } = require('../directive');
 const _ = require('../utils');
 
 module.exports.bind = function () {
-    const start = document.createComment('v-if-start');
-    const end = document.createComment('v-if-end');
+    this.start = document.createComment('v-if-start');
+    this.end = document.createComment('v-if-end');
     // replace on dom tree
     this.elParent = this.el.parentNode;
-    this.elParent.removeChild(this.el);
-    this.elParent.appendChild(start);
-    this.elParent.appendChild(end);
+    this.elParent.insertBefore(this.start, this.el);
+    this.elParent.replaceChild(this.end, this.el);
 
     // compile sub tree
     this.template = document.createDocumentFragment();
-    this.template.appendChild(this.el.cloneNode(true));
-
+    // after append/insert, doc frag(this.template) will be cleared
+    // so need to keep the ref here
+    this.frag = this.el.cloneNode(true);
+    this.template.appendChild(this.frag);
     this.links = compile(this.template, directives);
-    console.log('module.exports.bind -> links', this.links);
 };
 
 module.exports.update = function (value) {
     if (value) {
-        this.elParent.appendChild(this.template);
+        // insert frag instead of template
+        this.elParent.insertBefore(this.frag, this.end);
         this.links.forEach((link) => {
             const { node, dirs } = link;
             if (!dirs) return;
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
-                // vm._bindDir(node, dir);
                 descriptors.forEach((desc) => {
                     this.vm._directives.push(
                         new Directive(name, node, this.vm, desc, def) //* `host` is not passed yet
@@ -36,5 +36,9 @@ module.exports.update = function (value) {
                 });
             });
         });
+    } else {
+        // should remove again, between v-if-start and v-if-end
+        const blockToRemove = this.start.nextSibling;
+        blockToRemove.parentNode.removeChild(blockToRemove);
     }
 };
