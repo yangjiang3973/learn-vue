@@ -20,7 +20,6 @@ class Compiler {
             if (!dirs) return;
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
-                // vm._bindDir(node, dir);
                 descriptors.forEach((desc) => {
                     vm._directives.push(
                         new Directive(name, node, vm, desc, def) //* `host` is not passed yet

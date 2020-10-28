@@ -5,3 +5,5 @@ module.exports.model = require('./model');
 module.exports.on = require('./on');
 
 module.exports.if = require('./if');
+
+module.exports.for = require('./for');

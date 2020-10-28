@@ -1,5 +1,6 @@
 const { Watcher } = require('./watcher');
 const { Dep } = require('./dep');
+const _ = require('./utils');
 
 class Directive {
     constructor(name, el, vm, descriptors, def) {
@@ -12,7 +13,7 @@ class Directive {
     }
 
     _bind(def) {
-        this.el.removeAttribute('v-' + this.name);
+        if (_.isElementNode(this.el)) this.el.removeAttribute('v-' + this.name);
         this.bind = def.bind;
         this.update = def.update; // TODO: use `_.extend like vue`
         this.bind();

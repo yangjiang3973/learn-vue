@@ -47,6 +47,8 @@ const { Aue } = require('./aue');
 let vm = new Aue({
     el: '#app',
     data: {
+        title: 'learn vue',
+        intro: 'version 0.11',
         word: 'Hello World!',
         flag: true,
     },

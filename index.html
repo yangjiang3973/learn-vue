@@ -10,12 +10,16 @@
     </head>
     <body>
         <div id="app">
+            <div>Header: {{intro}} -- {{title}} by Yang Jiang</div>
             <div v-if='flag'>
                 <p v-text="word"></p>
                 <input type="text" v-model="word">
                 <button v-on:click='changeWord'>click to change</button>
             </div>
             <button v-on:click='changeFlag'>click to hide</button>
+            <!-- <ul>
+                <li v-repeat='list'></li>
+            </ul> -->
         </div>
     </body>
 </html>

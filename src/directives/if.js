@@ -12,6 +12,7 @@ module.exports.bind = function () {
     this.elParent.replaceChild(this.end, this.el);
 
     // compile sub tree
+    // NOTE: is it necessary to use create fragment before compile?
     this.template = document.createDocumentFragment();
     // after append/insert, doc frag(this.template) will be cleared
     // so need to keep the ref here

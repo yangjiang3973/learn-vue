@@ -106,8 +106,9 @@ so maybe can understand why vue uses this way.
     3.1 v-text (DONE)
     3.2 v-model (DONE)
     3.3 on:click (DONE) NOTE: 0.11 syntax is differnt `v-on='click: '`, changed on 1.0. but I followed 1.0's syntax
-    3.4 v-if()
-    3.5 v-repeat
+    3.4 v-if(DONE)
+    3.5 v-repeat() NOTE: first, follow 0.11 implement basic `v-repeat`, then change it to `v-for`
+    3.6 {{ }} for v-text (DONE)
 
 # 2020-10-20
 
@@ -118,3 +119,7 @@ so maybe can understand why vue uses this way.
 # 2020-10-26
 
 1. looks like `v-if` use `<!--v-if-start-->` and `<!--v-if-end-->` as anchor to locate v-if block(control append and remove)
+
+# 2020-10-28
+
+1. need to learn RegExp in js because in vue, it use RegExp to parse text
