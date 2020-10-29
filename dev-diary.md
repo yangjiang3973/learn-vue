@@ -109,7 +109,8 @@ so maybe can understand why vue uses this way.
     3.4 v-if(DONE)
     3.5 v-repeat() NOTE: first, follow 0.11 implement basic `v-repeat`, then change it to `v-for`
     3.6 {{ }} for v-text (DONE)
-    3.7 v-show()
+    3.7 v-show(DONE)
+    3.8 v-bind() NOTE: 0.11 does not have v-bind, until 1.0 this directive is added
 
 # 2020-10-20
 
@@ -128,3 +129,9 @@ so maybe can understand why vue uses this way.
 # 2020-10-29
 
 1. 暂时`v-repeat`先不写？太复杂了。可以先干别的，然后到了 1.0 版本的时候直接写`v-for`
+
+2. 除很复杂的 directive，大部分 directive 进行了简单的实现。接下来换个主题：`filters`
+
+3. TODO: filters()
+
+4. TODO: AST 到底是什么？

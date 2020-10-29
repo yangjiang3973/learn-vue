@@ -43,7 +43,7 @@ function compileText(node, directives, links) {
             const dirs = [];
             dirs.push({
                 name: token.type,
-                descriptors: dirParser.parse(token.value), // {raw: 'word', expression: 'word'}
+                descriptors: dirParser.parse(token.value), // also add filters into descriptor
                 def: directives[token.type],
             });
             links.push({ node: textNode, dirs });

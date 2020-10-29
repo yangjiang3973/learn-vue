@@ -21,6 +21,7 @@ class Compiler {
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
                 descriptors.forEach((desc) => {
+                    // NOTE: why a dir has multiple descriptors?
                     vm._directives.push(
                         new Directive(name, node, vm, desc, def) //* `host` is not passed yet
                     );
