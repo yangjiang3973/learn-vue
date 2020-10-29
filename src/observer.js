@@ -39,7 +39,7 @@ class Observer {
                     }
                 }.bind(this), // need to bind this! otherwise this points to obj...
             });
-            if (typeof obj[key] === 'object' || Array.isArray(obj)) {
+            if (typeof obj[key] === 'object' || Array.isArray(obj[key])) {
                 this.observe(obj[key]);
             }
         });

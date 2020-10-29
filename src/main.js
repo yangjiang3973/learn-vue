@@ -51,6 +51,8 @@ let vm = new Aue({
         intro: 'version 0.11',
         word: 'Hello World!',
         flag: true,
+        // list: ['a', 'b', 'c', 'd'],
+        showEl: true,
     },
     methods: {
         changeWord: function () {
@@ -58,6 +60,10 @@ let vm = new Aue({
         },
         changeFlag: function () {
             this.flag = !this.flag;
+        },
+        changeShow: function () {
+            console.log(this.showEl);
+            this.showEl = !this.showEl;
         },
     },
 });

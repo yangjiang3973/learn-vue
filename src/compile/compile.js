@@ -6,7 +6,6 @@ const textParser = require('../parsers/text');
 module.exports = function compile(el, directives) {
     const links = []; // [{node, dirs}]
     if (el.hasChildNodes()) {
-        // return compileNodeList(el.childNodes, directives, links);
         compileNodeList(el.childNodes, directives, links);
     }
     return links;
@@ -16,35 +15,12 @@ function compileNodeList(nodeList, directives, links) {
     let terminalFlag;
     for (let i = 0; i < nodeList.length; i++) {
         node = nodeList[i];
-        // const nodeInfo = compileNode(node, directives, links);
         terminalFlag = compileNode(node, directives, links);
-        // if (nodeInfo) {
-        //     dirs = nodeInfo.dirs; // nodeInfo={dirs, terminalFlag}
-        //     terminalFlag = nodeInfo.terminalFlag;
-        // } else {
-        //     dirs = null;
-        //     terminalFlag = false;
-        // }
-        // links.push({ node, dirs });
-        // need to check terminal directive, if terminal, stop compiling sub tree
-        // if (node.hasChildNodes() && !terminalFlag) {
         if (node.hasChildNodes() && !terminalFlag) {
-            // links = links.concat(compileNodeList(node.childNodes, directives));
             compileNodeList(node.childNodes, directives, links);
         }
     }
     return links;
-    // [].slice.call(childNodes).forEach((node) => {
-    //     var text = node.textContent;
-    //     var reg = /\{\{(.*)\}\}/;
-    //     if (me.isElementNode(node)) me.compile(node);
-    //     else if (me.isTextNode(node) && reg.test(text))
-    //         me.compileText(node, RegExp.$1);
-
-    //     if (node.childNodes && node.childNodes.length) {
-    //         me.compileNodeList(node);
-    //     }
-    // });
 }
 
 function compileNode(node, directives, links) {
@@ -55,13 +31,9 @@ function compileNode(node, directives, links) {
 }
 
 function compileText(node, directives, links) {
-    // parse text string to check {{ }}
-    // if it has {{ }}, the type is v-text and value inside {{ }} is the variable
-    // for example, <div> {{ title1 }} --- {{ title2 }} </div>
     const tokens = textParser.parse(node.data); // [{type: 'text', value:'title'}, {type: null, value: 'intro'}, {type: 'text', value: 'intro'}]
     // also need to replace the old node
     if (!tokens) return true;
-    // console.log('compileText -> tokens', tokens);
     const frag = document.createDocumentFragment();
     tokens.forEach((token) => {
         const textNode = document.createTextNode('');
@@ -147,54 +119,3 @@ function collectDirectives(nodeAttrs, directives) {
     // TODO: sort dirs by priority, from low to heigh
     return dirs;
 }
-
-// function compileText(node, exp) {
-//     compileUtil.text(node, this.$vm, exp);
-// }
-
-// let compileUtil = {
-//     text: function (node, vm, exp) {
-//         this.bind(node, vm, exp, 'text');
-//     },
-//     model: function (node, vm, exp) {
-//         this.bind(node, vm, exp, 'model');
-
-//         // reverse binding
-//         node.addEventListener(
-//             'input',
-//             (e) => {
-//                 vm[exp] = e.target.value;
-//             },
-//             false
-//         );
-//     },
-//     bind: function (node, vm, exp, dir) {
-//         let updateFn = updater[dir + 'Updater'];
-//         // first time init view?
-//         // maybe move the following code to watcher's constructor
-//         // 在自身实例化时往属性订阅器(dep)里面添加自己
-//         const watcher = new Watcher(vm, exp, function (value, oldValue) {
-//             updateFn && updateFn(node, value, oldValue);
-//         });
-//         Dep.target = watcher;
-//         updateFn && updateFn(node, vm[exp]); // v-text='word', exp is word  // vm[exp] first time call getter to add sub
-//     },
-//     eventHandler: function (node, vm, exp, dir) {
-//         const eventType = dir.split(':')[1];
-//         const fn = vm[exp];
-
-//         if (eventType && fn) {
-//             node.addEventListener(eventType, fn.bind(vm), false);
-//         }
-//     },
-// };
-
-// let updater = {
-//     textUpdater: function (node, value) {
-//         // NOTE: node.textContent=value if value is not undefined
-//         node.textContent = typeof value === 'undefined' ? '' : value;
-//     },
-//     modelUpdater: function (node, value) {
-//         node.value = typeof value === 'undefined' ? '' : value;
-//     },
-// };

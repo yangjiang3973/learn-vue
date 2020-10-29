@@ -97,7 +97,7 @@ so when running A, B's functions will also run.
 
 1. Q: why use so many closures when compile to links?
 
-2. TODO: in compile, still use 3 stages but not use closures to create link for more directives and other features.
+2. (DONE) in compile, still use 3 stages but not use closures to create link for more directives and other features.
 
 so maybe can understand why vue uses this way.
 
@@ -109,6 +109,7 @@ so maybe can understand why vue uses this way.
     3.4 v-if(DONE)
     3.5 v-repeat() NOTE: first, follow 0.11 implement basic `v-repeat`, then change it to `v-for`
     3.6 {{ }} for v-text (DONE)
+    3.7 v-show()
 
 # 2020-10-20
 
@@ -123,3 +124,7 @@ so maybe can understand why vue uses this way.
 # 2020-10-28
 
 1. need to learn RegExp in js because in vue, it use RegExp to parse text
+
+# 2020-10-29
+
+1. 暂时`v-repeat`先不写？太复杂了。可以先干别的，然后到了 1.0 版本的时候直接写`v-for`

@@ -17,9 +17,11 @@
                 <button v-on:click='changeWord'>click to change</button>
             </div>
             <button v-on:click='changeFlag'>click to hide</button>
-            <!-- <ul>
-                <li v-repeat='list'></li>
-            </ul> -->
+            <div v-show='showEl'>
+                <p>v-repeat is too complicated, so implement it later</p>
+                <p>right now work on v-show</p>
+            </div>
+            <button v-on:click='changeShow'>hide show</button>
         </div>
     </body>
 </html>
