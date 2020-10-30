@@ -10,12 +10,23 @@
 // }
 module.exports.parse = function (str) {
     const dirs = [];
-    const filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g;
+    const filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g; // TODO: learn RegExp further
 
-    let expression = str;
-    let raw = str;
-    // TODO: parse filters and add to dir
-    const dir = { raw, expression };
+    // NOTE: now split by `|`, this is hacky
+
+    // split expression and filters
+    const tokens = str.split('|').map((i) => i.trim());
+    let expression;
+    let raw;
+    let filters = [];
+    expression = tokens.shift();
+    raw = expression;
+    if (tokens.length !== 0) {
+        tokens.forEach((token) => {
+            filters.push({ name: token, args: null });
+        });
+    }
+    const dir = { expression, raw, filters };
     dirs.push(dir);
-    return dirs; // dirs is actually an array of descriptor
+    return dirs;
 };

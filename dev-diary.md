@@ -132,6 +132,8 @@ so maybe can understand why vue uses this way.
 
 2. 除很复杂的 directive，大部分 directive 进行了简单的实现。接下来换个主题：`filters`
 
-3. TODO: filters()
+3. (DONE) filters: 2.0 版本移除了 filters。 我就写了几个简单的 filters：uppercase, lowercase, capitalize
+   (from 2.0: `总之，能在原生 js 中实现的东西，我们尽量避免引入一个新的符号去重复处理同样的问题`)
+   研究 2.0 版本的时候再仔细看看`迁移`相关的文档。
 
 4. TODO: AST 到底是什么？

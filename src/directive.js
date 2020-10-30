@@ -9,6 +9,7 @@ class Directive {
         this.vm = vm;
         this.raw = descriptors.raw;
         this.expression = descriptors.expression;
+        this.filters = descriptors.filters;
         this._bind(def);
     }
 
@@ -25,10 +26,13 @@ class Directive {
             this.vm,
             this._watcherExp,
             update, // callback
-            {} // later for filter and other features
+            {
+                filters: this.filters,
+            } // later for filter and other features
         );
         Dep.target = watcher; // NOTE: right now set here, maybe change later
-        this.update(this.vm[this.expression]);
+        // this.update(this.vm[this.expression]);
+        watcher.update(this.vm[this.expression]);
     }
 }
 

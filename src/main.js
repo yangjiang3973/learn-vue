@@ -48,7 +48,8 @@ let vm = new Aue({
     el: '#app',
     data: {
         title: 'learn vue',
-        intro: 'version 0.11',
+        // intro: 'version 0.11',
+        intro: 'AAAAA',
         word: 'Hello World!',
         flag: true,
         // list: ['a', 'b', 'c', 'd'],

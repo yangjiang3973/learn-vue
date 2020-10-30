@@ -1,3 +1,6 @@
+// NOTE: curious about details of require. If filters are not used, will it occupy memory space?
+const filtersList = require('./filters');
+
 let uid = 0;
 
 class Watcher {
@@ -5,19 +8,16 @@ class Watcher {
         this.cb = cb;
         this.vm = vm;
         this.exp = exp;
+        this.options = options;
     }
-    // addToDep(dep) {
-    //     dep.addSub(this);
-    // }
     update(newVal, val) {
+        // apply filters to new value first
+        const { filters } = this.options;
+        filters.forEach((filter) => {
+            newVal = filtersList[filter.name](newVal);
+        });
         this.cb(newVal, val);
     }
-
-    // get(key) {
-    //     Dep.target = this;
-    //     this.value = data[key]; // 这里会触发属性的getter，从而添加订阅者
-    //     Dep.target = null;
-    // }
 }
 
 module.exports.Watcher = Watcher;
