@@ -20,7 +20,9 @@ class Aue {
         this.$options = options || {};
         this._directives = []; // all directives
         this._data = options.data || {};
+        this._computed = options.computed;
         this._methods = options.methods;
+
         // data proxy
         Object.keys(this._data).forEach((key) => {
             // check reserved key word
@@ -29,6 +31,12 @@ class Aue {
             }
         });
 
+        // computed proxy
+        Object.keys(this._computed).forEach((key) => {
+            this._proxyComputed(key);
+        });
+
+        // methods proxy
         Object.keys(this._methods).forEach((key) => {
             this._proxyMethods(key);
         });
@@ -36,6 +44,18 @@ class Aue {
         new Observer(this._data); // observe
 
         this.$compile = new Compiler(options.el || document.body, this);
+    }
+
+    _proxyComputed(key) {
+        const userDef = this._computed[key];
+        if (typeof userDef === 'function') {
+            Object.defineProperty(this, key, {
+                enumerable: true,
+                configurable: true,
+                get: () => {},
+                set: () => {},
+            });
+        }
     }
 
     _proxyData(key) {

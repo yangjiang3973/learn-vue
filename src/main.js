@@ -54,6 +54,25 @@ let vm = new Aue({
         flag: true,
         // list: ['a', 'b', 'c', 'd'],
         showEl: true,
+        firstName: 'Yang',
+        lastName: 'Jiang',
+    },
+    computed: {
+        // fullName: {
+        //     // the getter should return the desired value
+        //     get: function () {
+        //         return this.firstName + ' ' + this.lastName;
+        //     },
+        //     // the setter is optional
+        //     set: function (newValue) {
+        //         var names = newValue.split(' ');
+        //         this.firstName = names[0];
+        //         this.lastName = names[names.length - 1];
+        //     },
+        // },
+        fullName: function () {
+            return this.firstName + ' ' + this.lastName;
+        },
     },
     methods: {
         changeWord: function () {

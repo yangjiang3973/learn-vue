@@ -137,3 +137,11 @@ so maybe can understand why vue uses this way.
    研究 2.0 版本的时候再仔细看看`迁移`相关的文档。
 
 4. TODO: AST 到底是什么？
+
+# 2020-10-30
+
+1. `Mustache Bindings` for attr is changed in v2.0? or 1.0?
+
+try in 2.0 first (2.0 does not have Mustach Bindings)
+
+2. (TODO) implement `computed`
