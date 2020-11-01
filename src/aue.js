@@ -52,7 +52,7 @@ class Aue {
             Object.defineProperty(this, key, {
                 enumerable: true,
                 configurable: true,
-                get: () => {},
+                get: userDef,
                 set: () => {},
             });
         }

@@ -48,8 +48,8 @@ let vm = new Aue({
     el: '#app',
     data: {
         title: 'learn vue',
-        // intro: 'version 0.11',
-        intro: 'AAAAA',
+        intro: 'Version 0.11',
+        // intro: 'AAAAA',
         word: 'Hello World!',
         flag: true,
         // list: ['a', 'b', 'c', 'd'],
@@ -82,12 +82,18 @@ let vm = new Aue({
             this.flag = !this.flag;
         },
         changeShow: function () {
-            console.log(this.showEl);
             this.showEl = !this.showEl;
+        },
+        changeFirstName: function () {
+            this.firstName = 'Dan';
+        },
+        changeLastName: function () {
+            this.lastName = 'Gao';
         },
     },
 });
 
 // setTimeout(() => {
-//     vm.word = 'fuck';
+//     vm.firstName = 'Dan';
+//     vm.lastName = 'Gao!';
 // }, 2000);

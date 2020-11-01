@@ -8,15 +8,19 @@ class Watcher {
         this.cb = cb;
         this.vm = vm;
         this.exp = exp;
+        // this.deps = []; // NOTE: use an array to store all deps now
         this.options = options;
     }
-    update(newVal, val) {
+    update() {
+        // generate new value(include all dependencies)
+        let newVal = this.vm[this.exp];
         // apply filters to new value first
         const { filters } = this.options;
         filters.forEach((filter) => {
             newVal = filtersList[filter.name](newVal);
         });
-        this.cb(newVal, val);
+        // this.cb(newVal, val);
+        this.cb(newVal);
     }
 }
 

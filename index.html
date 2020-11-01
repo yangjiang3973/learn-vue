@@ -12,7 +12,9 @@
         <div id="app">
             <div>{{ intro | lowercase}}</div>
             <div>Author: {{ fullName }}</div>
-            <!-- <div>Header: {{intro}} -- {{title}} by Yang Jiang</div>
+            <button v-on:click='changeFirstName'>changeFirstName</button> -->
+            <button v-on:click='changeLastName'>changeLastName</button> -->
+            <div>Header: {{intro}} -- {{title}} by Yang Jiang</div>
             <div v-if='flag'>
                 <p v-text="word"></p>
                 <input type="text" v-model="word">
@@ -23,7 +25,8 @@
                 <p>v-repeat is too complicated, so implement it later</p>
                 <p>right now work on v-show</p>
             </div>
-            <button v-on:click='changeShow'>hide show</button> -->
+            <button v-on:click='changeShow'>hide show</button>
+           
         </div>
     </body>
 </html>

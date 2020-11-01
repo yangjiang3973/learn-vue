@@ -32,7 +32,9 @@ class Directive {
         );
         Dep.target = watcher; // NOTE: right now set here, maybe change later
         // this.update(this.vm[this.expression]);
-        watcher.update(this.vm[this.expression]);
+        // watcher.update(this.vm[this.expression]);
+        watcher.update();
+        Dep.target = null;
     }
 }
 

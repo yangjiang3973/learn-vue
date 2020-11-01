@@ -14,16 +14,17 @@ class Dep {
     // }
     depend() {
         this.addSub(Dep.target);
-        this.target = null;
+        // Dep.target = null; // TODO: should not remove Dep.target right after adding a dep. This taget may have multiple deps
     }
 
     addSub(sub) {
         this.subs.push(sub);
     }
 
-    notify(newVal, val) {
+    notify() {
         this.subs.forEach((sub) => {
-            sub.update(newVal, val);
+            // sub.update(newVal, val);
+            sub.update();
         });
     }
 }

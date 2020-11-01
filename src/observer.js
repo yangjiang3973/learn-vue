@@ -26,7 +26,8 @@ class Observer {
                 configurable: true,
                 get: function () {
                     if (Dep.target) {
-                        dep.depend();
+                        // Dep.target.deps.push(dep); // watcher will have all its dependencies
+                        dep.depend(); // dep will have all subs(watchers)
                     }
                     return val;
                 },
@@ -35,7 +36,8 @@ class Observer {
                         if (typeof newVal === 'object') this.observe(newVal);
                         // this.$callback(newVal, val); // pass by value or ref?
                         val = newVal;
-                        dep.notify(newVal, val);
+                        // dep.notify(newVal, val);
+                        dep.notify();
                     }
                 }.bind(this), // need to bind this! otherwise this points to obj...
             });
