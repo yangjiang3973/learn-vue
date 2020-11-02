@@ -18,7 +18,7 @@ module.exports.bind = function () {
     // so need to keep the ref here
     this.frag = this.el.cloneNode(true);
     this.template.appendChild(this.frag);
-    this.links = compile(this.template, directives);
+    this.links = compile(this.template, this.vm);
 };
 
 module.exports.update = function (value) {

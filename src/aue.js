@@ -17,11 +17,15 @@ const _ = require('./utils');
 // });
 class Aue {
     constructor(options) {
-        this.$options = options || {};
+        // this.$options = options || {};
         this._directives = []; // all directives
         this._data = options.data || {};
         this._computed = options.computed;
         this._methods = options.methods;
+
+        // TODO: merge options into new this.options
+        // static options are custom
+        this.options = { ...options, ...Aue.options };
 
         // data proxy
         Object.keys(this._data).forEach((key) => {
@@ -44,6 +48,22 @@ class Aue {
         new Observer(this._data); // observe
 
         this.$compile = new Compiler(options.el || document.body, this);
+    }
+
+    static options = {
+        directives: require('./directives'),
+        filters: require('./filters'),
+        partials: {},
+        transitions: {},
+        components: {},
+    };
+    // add public APIs, like directives()
+    static directive(id, def) {
+        if (!def) {
+            return this.options['directives'][id]; // this.options is static
+        } else {
+            this.options['directives'][id] = def;
+        }
     }
 
     _proxyComputed(key) {

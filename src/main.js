@@ -44,6 +44,31 @@
 // console.log('arrTest3', arrTest3);
 
 const { Aue } = require('./aue');
+
+Aue.directive('demo', {
+    bind: function () {
+        this.el.style.color = '#fff';
+        this.el.style.backgroundColor = this.arg;
+    },
+    update: function (value) {
+        this.el.innerHTML =
+            'name - ' +
+            this.name +
+            '<br>' +
+            'raw - ' +
+            this.raw +
+            '<br>' +
+            'expression - ' +
+            this.expression +
+            '<br>' +
+            'argument - ' +
+            this.arg +
+            '<br>' +
+            'value - ' +
+            value;
+    },
+});
+
 let vm = new Aue({
     el: '#app',
     data: {

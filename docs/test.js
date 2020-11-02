@@ -200,26 +200,61 @@
 // b.getName();
 
 // Singleton: 2
-let Singleton = function (name) {
-    this.name = name;
-};
+// let Singleton = function (name) {
+//     this.name = name;
+// };
 
-Singleton.prototype.getName = function () {
-    console.log(this.name);
-};
+// Singleton.prototype.getName = function () {
+//     console.log(this.name);
+// };
 
-Singleton.getInstance = (function () {
-    let instance = null;
-    return function (name) {
-        if (!instance) {
-            instance = new Singleton(name);
-        }
-        return instance;
-    };
-})();
+// Singleton.getInstance = (function () {
+//     let instance = null;
+//     return function (name) {
+//         if (!instance) {
+//             instance = new Singleton(name);
+//         }
+//         return instance;
+//     };
+// })();
 
-let a = Singleton.getInstance('aaa');
-let b = Singleton.getInstance('bbb');
+// let a = Singleton.getInstance('aaa');
+// let b = Singleton.getInstance('bbb');
 
-a.getName();
-b.getName();
+// a.getName();
+// b.getName();
+
+// const { add } = require('./test2');
+
+// console.log(add(1, 2));
+
+// function Student(name) {
+//     this.name = name;
+//     this.hello = function () {
+//         console.log('Hello, ' + this.name + '!');
+//     };
+// }
+// Student.options = {
+//     directivs: 1,
+// };
+// console.log('Student', Student);
+// var xiaoming = new Student('小明');
+// // xiaoming.name; // '小明'
+// console.log('xiaoming.name', xiaoming.name);
+// xiaoming.hello(); // Hello, 小明!
+
+// console.log('xiaoming.options', xiaoming.options);
+
+class Student {
+    constructor(name) {
+        this.name = name;
+    }
+    static exams = [1, 2, 3];
+    static takeExam() {
+        console.log(this);
+        console.log("let's take exam!");
+    }
+}
+
+let me = new Student('yang');
+Student.takeExam();

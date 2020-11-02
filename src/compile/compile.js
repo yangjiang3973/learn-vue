@@ -3,34 +3,34 @@ const dirParser = require('../parsers/directive');
 const textParser = require('../parsers/text');
 
 /* return links: [{node, dirs}] */
-module.exports = function compile(el, directives) {
+module.exports = function compile(el, vm) {
     const links = []; // [{node, dirs}]
     if (el.hasChildNodes()) {
-        compileNodeList(el.childNodes, directives, links);
+        compileNodeList(el.childNodes, vm, links);
     }
     return links;
 };
 
-function compileNodeList(nodeList, directives, links) {
+function compileNodeList(nodeList, vm, links) {
     let terminalFlag;
     for (let i = 0; i < nodeList.length; i++) {
         node = nodeList[i];
-        terminalFlag = compileNode(node, directives, links);
+        terminalFlag = compileNode(node, vm, links);
         if (node.hasChildNodes() && !terminalFlag) {
-            compileNodeList(node.childNodes, directives, links);
+            compileNodeList(node.childNodes, vm, links);
         }
     }
     return links;
 }
 
-function compileNode(node, directives, links) {
-    if (_.isElementNode(node)) return compileElement(node, directives, links);
+function compileNode(node, vm, links) {
+    if (_.isElementNode(node)) return compileElement(node, vm, links);
     else if (_.isTextNode(node)) {
-        return compileText(node, directives, links);
+        return compileText(node, vm, links);
     } else return null;
 }
 
-function compileText(node, directives, links) {
+function compileText(node, vm, links) {
     const tokens = textParser.parse(node.data); // [{type: 'text', value:'title'}, {type: null, value: 'intro'}, {type: 'text', value: 'intro'}]
     // also need to replace the old node
     if (!tokens) return true;
@@ -44,7 +44,7 @@ function compileText(node, directives, links) {
             dirs.push({
                 name: token.type,
                 descriptors: dirParser.parse(token.value), // also add filters into descriptor
-                def: directives[token.type],
+                def: vm.options.directives[token.type],
             });
             links.push({ node: textNode, dirs });
         }
@@ -54,13 +54,13 @@ function compileText(node, directives, links) {
     return true;
 }
 
-function compileElement(node, directives, links) {
+function compileElement(node, vm, links) {
     let dirs = [];
     let nodeAttrs = Array.from(node.attributes);
     // check terminal directive here
-    let terminalDir = checkTerminalDirectives(nodeAttrs, directives);
+    let terminalDir = checkTerminalDirectives(nodeAttrs, vm);
     if (!terminalDir) {
-        dirs = collectDirectives(nodeAttrs, directives);
+        dirs = collectDirectives(nodeAttrs, vm);
         links.push({ node, dirs });
         return false;
     } else {
@@ -69,7 +69,7 @@ function compileElement(node, directives, links) {
     }
 }
 
-function checkTerminalDirectives(attrs, directives) {
+function checkTerminalDirectives(attrs, vm) {
     const terminalDirectives = ['repeat', 'if', 'component'];
     for (let i = 0; i < attrs.length; i++) {
         const name = attrs[i].name;
@@ -81,14 +81,14 @@ function checkTerminalDirectives(attrs, directives) {
                 {
                     name: name.substring(2),
                     descriptors: dirParser.parse(attrs[i].value),
-                    def: directives[name.substring(2)],
+                    def: vm.options.directives[name.substring(2)],
                 },
             ];
         }
     }
 }
 
-function collectDirectives(nodeAttrs, directives) {
+function collectDirectives(nodeAttrs, vm) {
     /* dirs=[{
         name(dirName),
         descriptor,
@@ -101,9 +101,9 @@ function collectDirectives(nodeAttrs, directives) {
             let dirName = attr.name.substring(2); // need to check event handler, such as v-on:click, vue 1.0 uses regExp
             let dirDef;
             if (_.isEventDirective(dirName)) {
-                dirDef = directives[dirName.substring(0, 2)];
+                dirDef = vm.options.directives[dirName.substring(0, 2)];
             } else {
-                dirDef = directives[dirName];
+                dirDef = vm.options.directives[dirName];
             }
 
             if (dirDef) {
