@@ -69,6 +69,10 @@ Aue.directive('demo', {
     },
 });
 
+Aue.filter('reverse', function (value) {
+    return value.split('').reverse().join('');
+});
+
 let vm = new Aue({
     el: '#app',
     data: {

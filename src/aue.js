@@ -66,6 +66,14 @@ class Aue {
         }
     }
 
+    static filter(id, def) {
+        if (!def) {
+            return this.options['filters'][id];
+        } else {
+            this.options['filters'][id] = def;
+        }
+    }
+
     _proxyComputed(key) {
         const userDef = this._computed[key];
         if (typeof userDef === 'function') {

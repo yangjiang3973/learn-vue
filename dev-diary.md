@@ -148,10 +148,14 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 
 # 2020-11-01
 
-1. (TODO) implement `Custom Directives`
+1. (DONE) implement `Custom Directives`(TODO: right without args, need to complement)
 
 # 2020-11-02
 
 1. `static` method or variable is not shared by instances..is it a feature that only js has?? what about java
 
     need to learn more ablout js's class and static
+
+2. (DONE) implement `Custom Filters`
+
+3.

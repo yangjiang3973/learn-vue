@@ -10,7 +10,7 @@
     </head>
     <body>
         <div id="app">
-            <div>{{ intro | lowercase}}</div>
+            <div>{{ intro | lowercase | reverse}}</div>
             <div>Author: {{ fullName }}</div>
             <button v-on:click='changeFirstName'>changeFirstName</button> -->
             <button v-on:click='changeLastName'>changeLastName</button> -->
