@@ -168,4 +168,8 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 
 4. (TODO) need to set priority(high priority will execute first, for example, `transition` has hight priority than `if`)
 
-5.
+# 2020-11-04
+
+1. (TODO) implement `component`
+
+    5.1 learn how to use component first
