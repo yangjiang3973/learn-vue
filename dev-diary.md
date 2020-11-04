@@ -158,4 +158,14 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 
 2. (DONE) implement `Custom Filters`
 
-3.
+3. (DONE) implement `Transitions` (Basic css transition with setTimeout, need to learn techniques about frame flush)
+
+    3.1 learn how to use transition first(DONE)
+
+    3.2 compare it with pure css way to achieve the same effect(DONE)
+
+    3.3 read the source code(DONE)
+
+4. (TODO) need to set priority(high priority will execute first, for example, `transition` has hight priority than `if`)
+
+5.

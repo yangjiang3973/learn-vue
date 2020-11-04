@@ -59,12 +59,11 @@ function compileElement(node, vm, links) {
     let nodeAttrs = Array.from(node.attributes);
     // check terminal directive here
     let terminalDir = checkTerminalDirectives(nodeAttrs, vm);
+    dirs = collectDirectives(nodeAttrs, vm);
+    links.push({ node, dirs });
     if (!terminalDir) {
-        dirs = collectDirectives(nodeAttrs, vm);
-        links.push({ node, dirs });
         return false;
     } else {
-        links.push({ node, dirs: terminalDir });
         return true;
     }
 }
@@ -77,16 +76,29 @@ function checkTerminalDirectives(attrs, vm) {
             _.isDirective(name) &&
             terminalDirectives.includes(name.substring(2))
         ) {
-            return [
-                {
-                    name: name.substring(2),
-                    descriptors: dirParser.parse(attrs[i].value),
-                    def: vm.options.directives[name.substring(2)],
-                },
-            ];
+            return true;
         }
     }
 }
+
+// function checkTerminalDirectives(attrs, vm) {
+//     const terminalDirectives = ['repeat', 'if', 'component'];
+//     for (let i = 0; i < attrs.length; i++) {
+//         const name = attrs[i].name;
+//         if (
+//             _.isDirective(name) &&
+//             terminalDirectives.includes(name.substring(2))
+//         ) {
+//             return [
+//                 {
+//                     name: name.substring(2),
+//                     descriptors: dirParser.parse(attrs[i].value),
+//                     def: vm.options.directives[name.substring(2)],
+//                 },
+//             ];
+//         }
+//     }
+// }
 
 function collectDirectives(nodeAttrs, vm) {
     /* dirs=[{

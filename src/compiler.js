@@ -17,6 +17,7 @@ class Compiler {
         links.forEach((link) => {
             const { node, dirs } = link;
             if (!dirs) return;
+            console.log(dirs);
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
                 descriptors.forEach((desc) => {

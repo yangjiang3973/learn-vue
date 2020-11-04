@@ -9,3 +9,5 @@ module.exports.if = require('./if');
 module.exports.repeat = require('./repeat');
 
 module.exports.show = require('./show');
+
+module.exports.transition = require('./transition');

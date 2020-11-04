@@ -1,5 +1,4 @@
 const compile = require('../compile/compile'); // BUG: circle require..
-const directives = require('./index');
 const { Directive } = require('../directive');
 const _ = require('../utils');
 
@@ -10,7 +9,6 @@ module.exports.bind = function () {
     this.elParent = this.el.parentNode;
     this.elParent.insertBefore(this.start, this.el);
     this.elParent.replaceChild(this.end, this.el);
-
     // compile sub tree
     // NOTE: is it necessary to use create fragment before compile?
     this.template = document.createDocumentFragment();
@@ -24,7 +22,14 @@ module.exports.bind = function () {
 module.exports.update = function (value) {
     if (value) {
         // insert frag instead of template
+        // apply transition
+        let transitionId = this.el.__v_trans;
+        this.frag.classList.add(transitionId + '-enter');
         this.elParent.insertBefore(this.frag, this.end);
+        setTimeout(() => {
+            this.frag.classList.remove(transitionId + '-enter');
+        });
+
         this.links.forEach((link) => {
             const { node, dirs } = link;
             if (!dirs) return;
@@ -40,6 +45,12 @@ module.exports.update = function (value) {
     } else {
         // should remove again, between v-if-start and v-if-end
         const blockToRemove = this.start.nextSibling;
-        blockToRemove.parentNode.removeChild(blockToRemove);
+        // apply transition
+        let transitionId = this.el.__v_trans;
+        blockToRemove.classList.add(transitionId + '-leave');
+        setTimeout(() => {
+            blockToRemove.classList.remove(transitionId + '-leave');
+            blockToRemove.parentNode.removeChild(blockToRemove);
+        }, 1001);
     }
 };
