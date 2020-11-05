@@ -1,6 +1,5 @@
-const { Watcher } = require('./watcher');
-const { Dep } = require('./dep');
 const { Directive } = require('./directive');
+const { transclude } = require('./compile/transclude');
 const compile = require('./compile/compile');
 const _ = require('./utils');
 
@@ -10,14 +9,14 @@ class Compiler {
         // this.$vm = vm;
         this.$el = _.isElementNode(el) ? el : document.querySelector(el);
         // this.vm = vm;
-        //TODO:transclude
+        // transclude: convert template string to dom and append to el
+        transclude(this.$el, vm.options.template);
         //compile
         const links = compile(this.$el, vm);
         // link
         links.forEach((link) => {
             const { node, dirs } = link;
             if (!dirs) return;
-            console.log(dirs);
             dirs.forEach((dir) => {
                 const { name, def, descriptors } = dir;
                 descriptors.forEach((desc) => {

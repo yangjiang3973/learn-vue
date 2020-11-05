@@ -20,8 +20,8 @@ class Aue {
         // this.$options = options || {};
         this._directives = []; // all directives
         this._data = options.data || {};
-        this._computed = options.computed;
-        this._methods = options.methods;
+        this._computed = options.computed || {};
+        this._methods = options.methods || {};
 
         // TODO: merge options into new this.options
         // static options are custom
