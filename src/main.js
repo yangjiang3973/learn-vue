@@ -29,7 +29,9 @@ Aue.filter('reverse', function (value) {
 });
 
 let MyComponent = Aue.extend({
-    template: 'A custom component!',
+    template: `
+                <p>A custom component!</p>
+                `,
 });
 
 Aue.component('my-component', MyComponent);
