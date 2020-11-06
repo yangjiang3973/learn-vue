@@ -23,7 +23,7 @@ class Aue {
         this._computed = options.computed || {};
         this._methods = options.methods || {};
 
-        // TODO: merge options into new this.options
+        // TODO: wrap in a init function? so sub class(component constructor can use)
         // static options are custom
         this.options = { ...options, ...Aue.options };
 
@@ -58,7 +58,32 @@ class Aue {
         components: {},
     };
 
-    static extend(extendOptions) {}
+    // options of component are diff from instance of vue
+    // most options(extendOptions) of component are passed in extend(to comp's constroctor), not when instantiate(options)
+    // but options of vue are passed when instantiate
+    static extend(extendOptions) {
+        Sub = function (options) {
+            this.options = { ...options, ...this.constructor.options };
+        };
+        // const Sub = new Function(
+        //     'options',
+        //     `this.options = { ...options, ...this.constructor.options };`
+        // );
+        Sub.prototype = Object.create(this.prototype);
+        Sub.prototype.constructor = Sub;
+        Sub.options = { ...extendOptions, ...Aue.options };
+        // TODO: add static method to Sub, like direcitve(), component(), filter()...
+        // TODO: set init config of Sub like Vue
+        return Sub;
+    }
+
+    static component(id, def) {
+        if (!def) {
+            return this.options['components'][id];
+        } else {
+            this.options['components'][id] = def;
+        }
+    }
 
     static directive(id, def) {
         if (!def) {

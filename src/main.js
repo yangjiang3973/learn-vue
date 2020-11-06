@@ -32,7 +32,7 @@ let MyComponent = Aue.extend({
     template: 'A custom component!',
 });
 
-Vue.component('my-component', MyComponent);
+Aue.component('my-component', MyComponent);
 
 let vm = new Aue({
     el: '#app',

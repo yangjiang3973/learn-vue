@@ -8,7 +8,7 @@ JavaScript 的原型链和 Java 的 Class 区别就在，它没有“Class”的
 只有函数（确切说是构造函数）才有 prototype，它的作用是，构造函数 new 对象的时候，告诉构造函数新创建的对象的原型是谁。
 
 每个 prototype 对象都有一个 constructor 属性，指向它的构造函数本身。
-每一个实例也有一个 constructor 属性，默认调用 prototype 对象的 constructor 属性。
+每一个实例也有一个 constructor 属性(???我怎么没发现，而是进图 prototype 的 constructor)，默认调用 prototype 对象的 constructor 属性。
 以上二者应该等价。
 
 ```js

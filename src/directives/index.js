@@ -11,3 +11,5 @@ module.exports.repeat = require('./repeat');
 module.exports.show = require('./show');
 
 module.exports.transition = require('./transition');
+
+module.exports.component = require('./component');

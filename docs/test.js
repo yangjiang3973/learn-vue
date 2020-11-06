@@ -245,16 +245,33 @@
 
 // console.log('xiaoming.options', xiaoming.options);
 
-class Student {
-    constructor(name) {
-        this.name = name;
-    }
-    static exams = [1, 2, 3];
-    static takeExam() {
-        console.log(this);
-        console.log("let's take exam!");
-    }
-}
+// class Student {
+//     constructor(name) {
+//         this.name = name;
+//     }
+//     static exams = [1, 2, 3];
+//     static takeExam() {
+//         console.log(this);
+//         console.log("let's take exam!");
+//     }
+// }
 
-let me = new Student('yang');
-Student.takeExam();
+// let me = new Student('yang');
+// Student.takeExam();
+
+function Student(options) {
+    console.log(this);
+    this.hello = function () {
+        console.log('hello');
+    };
+    this._init(options);
+}
+Student.prototype._init = function () {
+    console.log('this is init');
+};
+console.log('Student.prototype', Student.prototype);
+const s = new Student('aa');
+
+// 实例是通过构造函数创建的，实例的方法，就是构造它的原型对象方法
+
+// 那么一个构造函数，如果找不到方法，会去自己的原型对象里找？
