@@ -57,7 +57,9 @@ class Aue {
         transitions: {},
         components: {},
     };
-    // add public APIs, like directives()
+
+    static extend(extendOptions) {}
+
     static directive(id, def) {
         if (!def) {
             return this.options['directives'][id]; // this.options is static

@@ -173,5 +173,6 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 1. (TODO) implement `component`
 
     5.1 learn how to use component first(DONE)
+    5.2
 
-2. (TODO) implement template parser
+2. (DONE) implement template parser
