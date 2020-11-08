@@ -8,7 +8,6 @@ module.exports.update = function (value) {
     if (value) {
         this.attrToBind.display = '';
     } else {
-        console.log('a');
         this.attrToBind.display = 'none';
     }
 };

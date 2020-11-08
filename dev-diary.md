@@ -170,9 +170,23 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 
 # 2020-11-04
 
-1. (TODO) implement `component`
+1. (DONE) implement `component`
 
     5.1 learn how to use component first(DONE)
     5.2
 
 2. (DONE) implement template parser
+
+# 2020-11-06
+
+1. come back to `v-repeat`？ no, `v-repeat` syntax is so bad at v0.11
+
+2. the frame of code is done, then adding unit test to do TDD for improvement
+
+# 2020-11-08
+
+1. (TODO) Add unit test
+
+2. (TODO) Batch updates
+
+batcher keeps a queue which contains instances of watchers

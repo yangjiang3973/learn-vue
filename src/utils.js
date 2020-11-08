@@ -24,3 +24,7 @@ module.exports.isDirective = function isDirective(attr) {
 module.exports.isEventDirective = function isEventDirective(attr) {
     return attr.startsWith('on');
 };
+
+module.exports.inBrowser =
+    typeof window !== 'undefined' &&
+    toString.call(window) !== '[object Object]';
