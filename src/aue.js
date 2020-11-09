@@ -21,6 +21,7 @@ class Aue {
         this._data = options.data || {};
         this._computed = options.computed || {};
         this._methods = options.methods || {};
+        this._watcherList = [];
 
         // TODO: wrap in a init function? so sub class(component constructor can use)
         // static options are custom
@@ -44,7 +45,8 @@ class Aue {
             this._proxyMethods(key);
         });
 
-        new Observer(this._data); // observe
+        const ob = new Observer(this._data); // observe
+        ob.addVm(this); // for $add, after add new data on root level, need to proxy, vm is the target
 
         this.$compile = new Compiler(options.el || document.body, this);
     }
@@ -113,10 +115,6 @@ class Aue {
     }
 
     _proxyData(key) {
-        // need to store ref to self here
-        // because these getter/setters might
-        // be called by child instances!
-        // var self = this; // if no this line, what will happened?
         Object.defineProperty(this, key, {
             enumerable: true,
             configurable: true,
@@ -140,6 +138,18 @@ class Aue {
             },
         });
     }
+
+    // TODO: re-organize the public api
+    $add = function (key, val) {
+        this._data.$add(key, val);
+    };
+
+    _digest = function () {
+        this._watcherList.forEach((watcher) => {
+            watcher.update();
+        });
+        //TODO: also need to update children, need to keep an array of children of vms
+    };
 }
 
 module.exports.Aue = Aue;

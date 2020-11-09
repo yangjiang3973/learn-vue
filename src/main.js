@@ -88,9 +88,8 @@ let vm = new Aue({
         },
         addData: function () {
             // this.observeData.temp = true;
-            this.observeData.$add('temp', 'this is temp'); // this means each obj's key will inherit methods from vm?
-            this.observeData.$add('c', 'this is c');
-            console.log('this.data', this._data);
+            this.$add('temp', 'this is temp'); // this means each obj's key will inherit methods from vm?
+            this.$add('c', 'this is c');
         },
     },
 });

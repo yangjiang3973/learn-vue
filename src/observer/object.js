@@ -16,5 +16,8 @@ Object.prototype['$add'] = function (keyPath, val) {
     obj[keyPath] = val;
     this.__ob__.observe(obj);
     // TODO: check if this is added to root data level, if so, need proxy
-    this.__ob__.notify();
+    if (this.__ob__.vm) {
+        this.__ob__.vm._proxyData(keyPath);
+        this.__ob__.vm._digest();
+    } else this.__ob__.notify();
 };

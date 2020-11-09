@@ -10,6 +10,7 @@ class Watcher {
         this.exp = exp;
         this.deps = []; // NOTE: use an array to store all deps now， why need this(dep already has subs of watchers)
         this.options = options;
+        vm._watcherList.push(this);
     }
     update() {
         // generate new value(include all dependencies)

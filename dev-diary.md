@@ -202,14 +202,14 @@ batcher keeps a queue which contains instances of watchers
 # 2020-11-09
 
 1.  (TODO) implement `$add/$set/$delete`
-    1.1 `$add`(DONE)
+    1.1 `$add`(TODO)
 
         refactored observer module.
         now when implement `$add`, obj and its observer are in a mess
 
     1.2 `$set`
 
-    1.3 `$delete`
+    1.3 `$delete`(Next)
 
 2.  (TODO) refactor the path parser(use in watcher getter to re-organize key path)
 

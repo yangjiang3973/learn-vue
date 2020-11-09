@@ -79,6 +79,10 @@ class Observer {
             dep.notify();
         });
     }
+
+    addVm(vm) {
+        this.vm = vm;
+    }
 }
 
 module.exports.Observer = Observer;
