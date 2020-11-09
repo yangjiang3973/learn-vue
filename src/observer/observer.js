@@ -40,8 +40,10 @@ class Observer {
                 },
                 set: function (newVal) {
                     if (newVal !== val) {
-                        if (typeof newVal === 'object') this.observe(newVal);
-                        // this.$callback(newVal, val); // pass by value or ref?
+                        if (typeof newVal === 'object') {
+                            const childOb = new Observer(newVal);
+                            childOb.deps.push(dep);
+                        }
                         val = newVal;
                         // dep.notify(newVal, val);
                         dep.notify();
