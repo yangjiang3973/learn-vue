@@ -13,6 +13,7 @@ class Dep {
     //     Dep.target.addToDep(this);
     // }
     depend() {
+        // console.log(this.id);
         this.addSub(Dep.target);
         // Dep.target = null; // TODO: should not remove Dep.target right after adding a dep. This taget may have multiple deps
     }

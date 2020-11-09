@@ -1,5 +1,6 @@
-const { Dep } = require('./dep.js');
-const _ = require('./utils');
+const { Dep } = require('../dep.js');
+const _ = require('../utils');
+require('./object'); // just include and make functions run
 
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
@@ -8,6 +9,9 @@ class Observer {
         if (typeof obj !== 'object') {
             console.error('This parameter must be an object：' + obj);
         }
+        this.deps = [];
+        this.value = obj;
+        obj['__ob__'] = this;
         this.observe(obj);
     }
 
@@ -21,14 +25,17 @@ class Observer {
             if (_.isReserverd(key)) return; //* NOTE: why $ or _ maybe in data?
             let val = obj[key]; // save the old value
             let dep = new Dep();
-            Object.defineProperty(obj, key, {
+            // NOTE: always add key/val to this.value, because obj may be a $added data that need to add to original obj
+            // but first time this.value === obj
+            Object.defineProperty(this.value, key, {
                 enumerable: true,
                 configurable: true,
                 get: function () {
                     if (Dep.target) {
-                        // Dep.target.deps.push(dep); // watcher will have all its dependencies
+                        Dep.target.deps.push(dep); // watcher will have all its dependencies
                         dep.depend(); // dep will have all subs(watchers)
                     }
+                    // if (key === 'observeData') console.log(Dep.target);
                     return val;
                 },
                 set: function (newVal) {
@@ -42,7 +49,9 @@ class Observer {
                 }.bind(this), // need to bind this! otherwise this points to obj...
             });
             if (typeof obj[key] === 'object' || Array.isArray(obj[key])) {
-                this.observe(obj[key]);
+                // this.observe(obj[key]); // TODO: change to a instance and will call observe in constructor
+                const childOb = new Observer(obj[key]);
+                childOb.deps.push(dep);
             }
         });
     }
@@ -60,6 +69,13 @@ class Observer {
         }, this);
 
         Object.setPrototypeOf(obj, FakeProto);
+    }
+
+    notify() {
+        // console.log('Observer -> notify -> this.deps', this);
+        this.deps.forEach((dep) => {
+            dep.notify();
+        });
     }
 }
 

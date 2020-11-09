@@ -189,4 +189,26 @@ try in 2.0 first (2.0 does not have Mustach Bindings)
 
 2. (TODO) Batch updates
 
+`value changes are batched within an event loop. This means when a value changes multiple times within a single event loop, the callback will be fired only once with the latest value.`
+
 batcher keeps a queue which contains instances of watchers
+
+3. (DONE) review relationships between watcher and dep for `compouted`
+
+    while I am writing unit test of observer, I found I fotgot the details
+
+    `每个data的key对应一个dep，像一个computed fullName， 可能依赖俩dep（firstName， lastName），这俩的subs里有共同的watcher`
+
+# 2020-11-09
+
+1. (TODO) implement `$add/$set/$delete`
+   1.1 `$add`
+
+    refactored observer module.
+    now when implement \$add, obj and its observer are in a mess
+
+2. (TODO)
+
+    refactor the path parser(use in watcher getter to re-organize key path)
+
+    Parse a string path into an array of segments

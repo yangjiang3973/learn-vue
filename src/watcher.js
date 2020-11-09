@@ -8,12 +8,19 @@ class Watcher {
         this.cb = cb;
         this.vm = vm;
         this.exp = exp;
-        // this.deps = []; // NOTE: use an array to store all deps now
+        this.deps = []; // NOTE: use an array to store all deps now， why need this(dep already has subs of watchers)
         this.options = options;
     }
     update() {
         // generate new value(include all dependencies)
-        let newVal = this.vm[this.exp];
+        // TODO: refactor the keyPath(Maybe the test case is not strong)
+        // call parser
+        // NOTE: this is a temp solution, use getter please
+        let newVal;
+        if (this.exp.includes('.')) {
+            this.exp.split('.');
+            newVal = eval(`this.vm.` + this.exp);
+        } else newVal = this.vm[this.exp];
         // apply filters to new value first
         const { filters } = this.options;
         filters.forEach((filter) => {

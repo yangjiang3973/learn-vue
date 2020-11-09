@@ -48,6 +48,10 @@ let vm = new Aue({
         showEl: true,
         firstName: 'Yang',
         lastName: 'Jiang',
+        observeData: {
+            a: 1,
+            b: 2,
+        },
     },
     computed: {
         // fullName: {
@@ -81,6 +85,12 @@ let vm = new Aue({
         },
         changeLastName: function () {
             this.lastName = 'Gao';
+        },
+        addData: function () {
+            // this.observeData.temp = true;
+            this.observeData.$add('temp', 'this is temp'); // this means each obj's key will inherit methods from vm?
+            this.observeData.$add('c', 'this is c');
+            console.log('this.data', this._data);
         },
     },
 });

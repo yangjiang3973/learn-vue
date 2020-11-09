@@ -4,7 +4,6 @@ module.exports.isLiteral = true;
 
 module.exports.bind = function () {
     this.update(this.expression);
-    console.log('first');
 };
 
 module.exports.update = function (exp) {

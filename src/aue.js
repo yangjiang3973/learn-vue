@@ -1,6 +1,5 @@
 const { Compiler } = require('./compiler');
-const { Watcher } = require('./watcher');
-const { Observer } = require('./observer');
+const { Observer } = require('./observer/observer');
 const _ = require('./utils');
 
 // let vm = new MVVM({
