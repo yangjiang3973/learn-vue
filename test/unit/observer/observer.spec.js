@@ -133,4 +133,56 @@ describe('Observer', function () {
         expect(data.arr[2]).toBe(3);
         expect(dep.notify.calls.count()).toBe(2);
     });
+
+    it('array $remove', function () {
+        const arr = [{}, {}];
+        const data = { arr };
+        const obj1 = arr[0];
+        const obj2 = arr[1];
+        const ob = new Observer(data);
+        const dep = data.arr.__ob__.deps[0];
+        spyOn(dep, 'notify');
+        // remove by index
+        arr.$remove(0);
+        expect(arr.length).toBe(1);
+        expect(arr[0]).toBe(obj2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // remove by element, not in array
+        arr.$remove(obj1);
+        expect(arr.length).toBe(1);
+        expect(arr[0]).toBe(obj2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // remove by element, in array
+        arr.$remove(obj2);
+        expect(arr.length).toBe(0);
+        expect(dep.notify.calls.count()).toBe(2);
+    });
+
+    // Whether allow observer to alter data objects\'__proto__.
+    // I always set to true to modify proto, instead of adding methos to array instance
+    it('no proto', function () {
+        // config.proto = false;
+        // object
+        // var obj = { a: 1 };
+        // var ob = new Observer(obj);
+        // expect(obj.$add).toBeTruthy();
+        // expect(obj.$delete).toBeTruthy();
+        // var dep = new Dep();
+        // ob.deps.push(dep);
+        // spyOn(dep, 'notify');
+        // obj.$add('b', 2);
+        // expect(dep.notify).toHaveBeenCalled();
+        // // array
+        // var arr = [1, 2, 3];
+        // var ob2 = Observer.create(arr);
+        // expect(arr.$set).toBeTruthy();
+        // expect(arr.$remove).toBeTruthy();
+        // expect(arr.push).not.toBe([].push);
+        // var dep2 = new Dep();
+        // ob2.deps.push(dep2);
+        // spyOn(dep2, 'notify');
+        // arr.push(1);
+        // expect(dep2.notify).toHaveBeenCalled();
+        // config.proto = true;
+    });
 });

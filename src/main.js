@@ -103,7 +103,8 @@ let vm = new Aue({
             // this.simpleArr.push(100); //(DONE)
             // this.simpleArr.$set('0', 100); //(DONE)
             // this.simpleArr[0] = 100; // NOTE: this also works...(DONE)
-            this.simpleArr.$set(10, 100);
+            // this.simpleArr.$set(10, 100);
+            this.simpleArr.splice(1, 1);
         },
         changeNestedArr: function () {
             // nestedArr: [1, [2, 3, 4], 5],
