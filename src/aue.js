@@ -46,7 +46,7 @@ class Aue {
         });
 
         const ob = new Observer(this._data); // observe
-        ob.addVm(this); // for $add, after add new data on root level, need to proxy, vm is the target
+        ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
 
         this.$compile = new Compiler(options.el || document.body, this);
     }
@@ -127,6 +127,10 @@ class Aue {
         });
     }
 
+    _unproxyData(key) {
+        delete this[key];
+    }
+
     _proxyMethods(key) {
         Object.defineProperty(this, key, {
             enumerable: true,
@@ -142,6 +146,10 @@ class Aue {
     // TODO: re-organize the public api
     $add = function (key, val) {
         this._data.$add(key, val);
+    };
+
+    $delete = function (key) {
+        this._data.$delete(key);
     };
 
     _digest = function () {

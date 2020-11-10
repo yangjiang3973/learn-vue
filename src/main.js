@@ -91,6 +91,9 @@ let vm = new Aue({
             this.$add('temp', 'this is temp'); // this means each obj's key will inherit methods from vm?
             this.$add('c', 'this is c');
         },
+        deleteData: function () {
+            this.$delete('c');
+        },
     },
 });
 
