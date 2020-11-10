@@ -152,6 +152,10 @@ class Aue {
         this._data.$delete(key);
     };
 
+    $set = function (key) {
+        this._data.$set(key);
+    };
+
     _digest = function () {
         this._watcherList.forEach((watcher) => {
             watcher.update();

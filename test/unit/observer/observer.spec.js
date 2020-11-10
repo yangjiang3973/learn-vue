@@ -63,12 +63,29 @@ describe('Observer', function () {
         obj.$add('b', 2);
         expect(obj.b).toBe(2);
         expect(dep.notify.calls.count()).toBe(1);
-        // obj.$delete('a');
-        // expect(obj.hasOwnProperty('a')).toBe(false);
-        // expect(dep.notify.calls.count()).toBe(2);
-        // // should ignore adding an existing key
-        // obj.$add('b', 3);
-        // expect(obj.b).toBe(2);
-        // expect(dep.notify.calls.count()).toBe(2);
+        obj.$delete('a');
+        expect(obj.hasOwnProperty('a')).toBe(false);
+        expect(dep.notify.calls.count()).toBe(2); // accumulated
+        // should ignore adding an existing key
+        obj.$add('b', 3);
+        expect(obj.b).toBe(2);
+        expect(dep.notify.calls.count()).toBe(2);
+        // $set
+        obj.$set('b', 3);
+        expect(obj.b).toBe(3);
+        expect(dep.notify.calls.count()).toBe(2);
+        // set non-existing key
+        obj.$set('c', 1);
+        expect(obj.c).toBe(1);
+        expect(dep.notify.calls.count()).toBe(3);
+        // should ignore deleting non-existing key
+        obj.$delete('a');
+        expect(dep.notify.calls.count()).toBe(3);
+        // should work on non-observed objects
+        var obj2 = { a: 1 };
+        obj2.$delete('a');
+        expect(obj2.hasOwnProperty('a')).toBe(false);
     });
+
+    it('observing array mutations', function () {});
 });
