@@ -87,5 +87,24 @@ describe('Observer', function () {
         expect(obj2.hasOwnProperty('a')).toBe(false);
     });
 
-    it('observing array mutations', function () {});
+    it('observing array mutations', function () {
+        var arr = [];
+        var ob = new Observer(arr);
+        var dep = new Dep();
+        ob.deps.push(dep);
+        spyOn(dep, 'notify');
+        var objs = [{}, {}, {}];
+        arr.push(objs[0]);
+        arr.pop();
+        arr.unshift(objs[1]);
+        arr.shift();
+        arr.splice(0, 0, objs[2]);
+        arr.sort();
+        arr.reverse();
+        expect(dep.notify.calls.count()).toBe(7);
+        // inserted elements should be observed
+        // objs.forEach(function (obj) {
+        //     expect(obj.__ob__ instanceof Observer).toBe(true);
+        // });
+    });
 });

@@ -66,7 +66,7 @@ class Observer {
             FakeProto[method] = function (args) {
                 Array.prototype[method].call(this, args);
                 self.observe(this);
-                self.$callback(this, oldArr); // call callback
+                // self.$callback(this, oldArr); // call callback
             };
         }, this);
 
@@ -74,7 +74,6 @@ class Observer {
     }
 
     notify() {
-        // console.log('Observer -> notify -> this.deps', this);
         this.deps.forEach((dep) => {
             dep.notify();
         });

@@ -201,18 +201,21 @@ batcher keeps a queue which contains instances of watchers
 
 # 2020-11-09
 
-1.  (TODO) implement `$add/$set/$delete`
-    1.1 `$add`(TODO)
+1.  (DONE) implement `$add/$set/$delete`
+    1.1 `$add`(DONE)
 
-        refactored observer module.
-        now when implement `$add`, obj and its observer are in a mess
+    1.2 `$set`(DONE)
 
-    1.2 `$set`
+    1.3 `$delete`(DONE)
 
-    1.3 `$delete`(Next)
+    NOTE: although I implement these 3 api, but I still do not know where should I use them? what kind of cases!
 
 2.  (TODO) refactor the path parser(use in watcher getter to re-organize key path)
 
     Parse a string path into an array of segments(`a[b.c]` is different from `a.b.c`)
 
 3.  (TODO) how to debug in unit test with jasmine
+
+# 2020-11-10
+
+1. (TODO) refactor observer for `Array`
