@@ -219,3 +219,27 @@ batcher keeps a queue which contains instances of watchers
 # 2020-11-10
 
 1. (TODO) refactor observer for `Array`
+
+    1. (TODO)the first level is data, which is obj, I do not find it is necessary to check if the first level is array.
+
+        otherwise need to check type when create observer instance, like vue use `create()`
+
+        I was wrong, `new Observer(obj)` is not only use for `this._data`. When adding new data, may also need to observe.
+
+        so I need to fix the first level problem in `aue.js`, by createing a function like create() to check the parameter type
+
+2. BUG: `v-text='objArr[0]'` does not work. `v-text` has problem on array keypath
+
+    FIXED: still a temp solution, need to refactor to a official way to parse keypath
+
+3. Why are there another `$set` for array, why not use the existing one?
+
+    Because obj's \$set only change array element by index, so no notify action.
+
+    For array, it is better to sue fake method: `splice` to update element.
+
+    array's `$set` is to wrap `splice`
+
+    Q: what is the relationships between array proto and obj proto.
+
+    Array proto points to obj proto

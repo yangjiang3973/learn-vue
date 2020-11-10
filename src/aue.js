@@ -46,6 +46,9 @@ class Aue {
         });
 
         const ob = new Observer(this._data); // observe
+        // if(Array.isArray(this._data)) {
+        //     ob.overrideArrayProto()
+        // }
         ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
 
         this.$compile = new Compiler(options.el || document.body, this);

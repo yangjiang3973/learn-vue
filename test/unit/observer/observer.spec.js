@@ -88,23 +88,49 @@ describe('Observer', function () {
     });
 
     it('observing array mutations', function () {
-        var arr = [];
-        var ob = new Observer(arr);
-        var dep = new Dep();
-        ob.deps.push(dep);
+        // var arr = [];
+        // var ob = new Observer(arr);
+        // var dep = new Dep();
+        // ob.deps.push(dep);
+        // spyOn(dep, 'notify');
+        // TODO: I check arr that is not in the first level to observe, need to complete that case.
+        const data = { arr: [1, 2, 3] };
+        const ob = new Observer(data);
+        const dep = data.arr.__ob__.deps[0];
         spyOn(dep, 'notify');
+
         var objs = [{}, {}, {}];
-        arr.push(objs[0]);
-        arr.pop();
-        arr.unshift(objs[1]);
-        arr.shift();
-        arr.splice(0, 0, objs[2]);
-        arr.sort();
-        arr.reverse();
+        data.arr.push(objs[0]);
+        data.arr.pop();
+        data.arr.unshift(objs[1]);
+        data.arr.shift();
+        data.arr.splice(0, 0, objs[2]);
+        data.arr.sort();
+        data.arr.reverse();
         expect(dep.notify.calls.count()).toBe(7);
         // inserted elements should be observed
-        // objs.forEach(function (obj) {
-        //     expect(obj.__ob__ instanceof Observer).toBe(true);
-        // });
+        objs.forEach(function (obj) {
+            expect(obj.__ob__ instanceof Observer).toBe(true);
+        });
+    });
+
+    it('array $set', function () {
+        // var arr = [1];
+        // var ob = new Observer(arr);
+        // var dep = new Dep();
+        // ob.deps.push(dep);
+        // spyOn(dep, 'notify');
+        // TODO: I check arr that is not in the first level to observe, need to complete that case.
+        const data = { arr: [1] };
+        const ob = new Observer(data);
+        const dep = data.arr.__ob__.deps[0];
+        spyOn(dep, 'notify');
+        data.arr.$set(0, 2);
+        expect(data.arr[0]).toBe(2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // setting out of bound index
+        data.arr.$set(2, 3);
+        expect(data.arr[2]).toBe(3);
+        expect(dep.notify.calls.count()).toBe(2);
     });
 });

@@ -1,4 +1,6 @@
 const { Aue } = require('./aue');
+const { Observer } = require('./observer/observer');
+const { Dep } = require('./dep');
 
 Aue.directive('demo', {
     bind: function () {
@@ -52,6 +54,9 @@ let vm = new Aue({
             a: 1,
             b: 2,
         },
+        simpleArr: [1, 2, 3, 4, 5],
+        nestedArr: [1, [2, 3, 4], 5],
+        objArr: [{ a: 1 }, { b: 2 }, { c: 3 }],
     },
     computed: {
         // fullName: {
@@ -93,6 +98,23 @@ let vm = new Aue({
         },
         deleteData: function () {
             this.$delete('c');
+        },
+        changeSimpleArr: function () {
+            // this.simpleArr.push(100); //(DONE)
+            // this.simpleArr.$set('0', 100); //(DONE)
+            // this.simpleArr[0] = 100; // NOTE: this also works...(DONE)
+            this.simpleArr.$set(10, 100);
+        },
+        changeNestedArr: function () {
+            // nestedArr: [1, [2, 3, 4], 5],
+            // this.nestedArr.push(100); //(DONE)
+            // this.nestedArr[1].push(100); // NOTE: this also work(DONE)
+        },
+        changeObjArr: function () {
+            //objArr: [{ a: 1 }, { b: 2 }, { c: 3 }],
+            this.objArr[0].a = 100;
+            this.objArr.push(1);
+            console.log('this.objArr', this.objArr);
         },
     },
 });

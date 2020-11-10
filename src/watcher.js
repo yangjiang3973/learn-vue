@@ -21,6 +21,10 @@ class Watcher {
         if (this.exp.includes('.')) {
             this.exp.split('.');
             newVal = eval(`this.vm.` + this.exp);
+        } else if (this.exp.includes('[')) {
+            console.log('this.vm.' + this.exp);
+            newVal = eval('this.vm.' + this.exp);
+            console.log('Watcher -> update -> newVal', newVal);
         } else newVal = this.vm[this.exp];
         // apply filters to new value first
         const { filters } = this.options;
