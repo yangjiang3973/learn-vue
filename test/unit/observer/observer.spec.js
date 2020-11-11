@@ -38,8 +38,7 @@ describe('Observer', function () {
         let oldA = obj.a;
         obj.a = { b: 4 };
         expect(watcher.update.calls.count()).toBe(2);
-        // TODO: ignore line 42 now, need to understand `vue/src/observer/index.js` line 189
-        // expect(oldA.__ob__.deps.length).toBe(0);
+        expect(oldA.__ob__.deps.length).toBe(0);
         expect(obj.a.__ob__.deps.length).toBe(1);
 
         // recollect dep
@@ -87,13 +86,30 @@ describe('Observer', function () {
         expect(obj2.hasOwnProperty('a')).toBe(false);
     });
 
-    it('observing array mutations', function () {
-        // var arr = [];
-        // var ob = new Observer(arr);
-        // var dep = new Dep();
-        // ob.deps.push(dep);
-        // spyOn(dep, 'notify');
-        // TODO: I check arr that is not in the first level to observe, need to complete that case.
+    it('observing root level array mutations', function () {
+        // observe array at the first level
+        const arr = [];
+        const ob = new Observer(arr, 1);
+        const dep = new Dep();
+        ob.deps.push(dep);
+        spyOn(dep, 'notify');
+        var objs = [{}, {}, {}];
+        arr.push(objs[0]);
+        arr.pop();
+        arr.unshift(objs[1]);
+        arr.shift();
+        arr.splice(0, 0, objs[2]);
+        arr.sort();
+        arr.reverse();
+        expect(dep.notify.calls.count()).toBe(7);
+        // inserted elements should be observed
+        objs.forEach(function (obj) {
+            expect(obj.__ob__ instanceof Observer).toBe(true);
+        });
+    });
+
+    it('observing child level array mutations', function () {
+        // observe array at the child level
         const data = { arr: [1, 2, 3] };
         const ob = new Observer(data);
         const dep = data.arr.__ob__.deps[0];
@@ -114,13 +130,24 @@ describe('Observer', function () {
         });
     });
 
-    it('array $set', function () {
-        // var arr = [1];
-        // var ob = new Observer(arr);
-        // var dep = new Dep();
-        // ob.deps.push(dep);
-        // spyOn(dep, 'notify');
-        // TODO: I check arr that is not in the first level to observe, need to complete that case.
+    it('root level array $set', function () {
+        // observe array at the first level
+        const arr = [1];
+        const ob = new Observer(arr, 1);
+        const dep = new Dep();
+        ob.deps.push(dep);
+        spyOn(dep, 'notify');
+        arr.$set(0, 2);
+        expect(arr[0]).toBe(2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // setting out of bound index
+        arr.$set(2, 3);
+        expect(arr[2]).toBe(3);
+        expect(dep.notify.calls.count()).toBe(2);
+    });
+
+    it('child level array $set', function () {
+        // observe array at the child level
         const data = { arr: [1] };
         const ob = new Observer(data);
         const dep = data.arr.__ob__.deps[0];
@@ -134,7 +161,33 @@ describe('Observer', function () {
         expect(dep.notify.calls.count()).toBe(2);
     });
 
-    it('array $remove', function () {
+    it('root level array $remove', function () {
+        // observe array at the first level
+        var arr = [{}, {}];
+        var obj1 = arr[0];
+        var obj2 = arr[1];
+        var ob = new Observer(arr, 1);
+        var dep = new Dep();
+        ob.deps.push(dep);
+        spyOn(dep, 'notify');
+        // remove by index
+        arr.$remove(0);
+        expect(arr.length).toBe(1);
+        expect(arr[0]).toBe(obj2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // remove by identity, not in array
+        arr.$remove(obj1);
+        expect(arr.length).toBe(1);
+        expect(arr[0]).toBe(obj2);
+        expect(dep.notify.calls.count()).toBe(1);
+        // remove by identity, in array
+        arr.$remove(obj2);
+        expect(arr.length).toBe(0);
+        expect(dep.notify.calls.count()).toBe(2);
+    });
+
+    it('child level array $remove', function () {
+        // observe array at the child level
         const arr = [{}, {}];
         const data = { arr };
         const obj1 = arr[0];

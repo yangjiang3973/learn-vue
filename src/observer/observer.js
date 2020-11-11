@@ -1,25 +1,28 @@
-const { Dep } = require('../dep.js');
 const _ = require('../utils');
+const { Dep } = require('../dep');
 require('./object'); // just include and make functions run
 require('./array');
+
+const ArrayType = 1;
+const ObjectType = 2;
 
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
 class Observer {
-    constructor(obj) {
+    constructor(obj, type) {
         if (typeof obj !== 'object') {
             console.error('This parameter must be an object：' + obj);
         }
         this.deps = [];
         this.value = obj;
         obj['__ob__'] = this;
+        if (type === ArrayType) {
+            this.overrideArrayProto(obj, this.deps);
+        }
         this.observe(obj);
     }
 
     observe(obj) {
-        // if (Array.isArray(obj)) {
-        //     this.overrideArrayProto(obj);
-        // }
         const self = this;
         Object.keys(obj).forEach((key) => {
             // skip $ or _
@@ -40,9 +43,20 @@ class Observer {
                 },
                 set: function (newVal) {
                     if (newVal !== val) {
-                        // TODO: what if it is an array
+                        // remove dep from the old val
+                        if (val && val.__ob__) {
+                            val.__ob__.deps.splice(
+                                val.__ob__.deps.indexOf(dep),
+                                1
+                            );
+                        }
                         if (typeof newVal === 'object') {
-                            const childOb = new Observer(newVal);
+                            let childOb;
+                            if (Array.isArray(newVal)) {
+                                childOb = new Observer(newVal, ArrayType);
+                            } else {
+                                childOb = new Observer(newVal);
+                            }
                             childOb.deps.push(dep);
                         }
                         val = newVal;
@@ -53,16 +67,16 @@ class Observer {
             // include obj and array
             if (typeof obj[key] === 'object') {
                 // if this is array, fake proto first?
-                if (Array.isArray(obj[key])) {
-                    self.overrideArrayProto(obj[key], dep);
-                }
                 const childOb = new Observer(obj[key]);
                 childOb.deps.push(dep);
+                if (Array.isArray(obj[key])) {
+                    self.overrideArrayProto(obj[key], childOb.deps);
+                }
             }
         });
     }
 
-    overrideArrayProto(obj, dep) {
+    overrideArrayProto(obj, deps) {
         const oldArr = obj.slice(0);
         const FakeProto = Object.create(Array.prototype);
         OAM.forEach((method) => {
@@ -82,11 +96,15 @@ class Observer {
                 }
                 if (inserted) {
                     inserted.forEach((arg) => {
-                        if (typeof arg === 'object') new Observer(arg);
-                        // NOTE: will this result in missing deps?
+                        if (typeof arg === 'object') {
+                            new Observer(arg);
+                            // NOTE: will this result in missing deps? yes
+                        }
                     });
                 }
-                dep.notify();
+                deps.forEach((dep) => {
+                    dep.notify();
+                });
                 return result;
             };
         }, this);
