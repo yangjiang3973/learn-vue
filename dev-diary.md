@@ -250,8 +250,18 @@ batcher keeps a queue which contains instances of watchers
 
 4. observer for Array is almost done, except No.1 todo request. I also added unit tests for observer
 
-5. todo tomorrow: data.spec.js
-
 # 2020-11-11
 
-1.
+1. (TODO) implement `nextTick()`
+
+    1. need to understand what `nextTick()` does. It is in `util/env.js`
+
+        MutationObserver
+
+    2. need to understand browser's event loop and task + microtask
+
+        eventloop and rAF
+
+        UI render(Async) and dom operations(Sync)
+
+    3.
