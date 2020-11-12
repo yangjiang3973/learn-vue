@@ -265,3 +265,5 @@ batcher keeps a queue which contains instances of watchers
         UI render(Async) and dom operations(Sync)
 
     3.
+
+2. (TODO) refactor `watcher`

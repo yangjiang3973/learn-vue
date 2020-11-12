@@ -28,3 +28,18 @@ module.exports.isEventDirective = function isEventDirective(attr) {
 module.exports.inBrowser =
     typeof window !== 'undefined' &&
     toString.call(window) !== '[object Object]';
+
+module.exports.nextTick = function (cb) {
+    function handler() {
+        pending = false;
+        cb();
+    }
+    // make a mutation observer
+    const DOMObserver = new MutationObserver(handler);
+    // make a node to trigger dom observer
+    let tempText = 1;
+    const tempNode = document.createTextNode(tempText);
+    DOMObserver.observe(tempNode, { characterData: true });
+    // trigger the node change and maek the handler run as microtask
+    tempNode.data = tempText = (tempText + 1) % 2;
+};

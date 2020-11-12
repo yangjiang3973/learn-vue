@@ -35,7 +35,9 @@ class Directive {
             Dep.target = watcher; // NOTE: right now set here, maybe change later
             // this.update(this.vm[this.expression]);
             // watcher.update(this.vm[this.expression]);
-            watcher.update();
+            // watcher.update();
+            // TODO: temp solution
+            watcher.initUpdate();
             Dep.target = null;
         }
     }
