@@ -252,18 +252,32 @@ batcher keeps a queue which contains instances of watchers
 
 # 2020-11-11
 
-1. (TODO) implement `nextTick()`
+1.  (TODO) implement `nextTick()`
 
-    1. need to understand what `nextTick()` does. It is in `util/env.js`
+    1.1 need to understand what `nextTick()` does. It is in `util/env.js`
 
-        MutationObserver
+        `MutationObserver` is to make update run in async way. Maybe also use `Promise`
 
-    2. need to understand browser's event loop and task + microtask
+    1.2 need to understand browser's event loop and task + microtask
 
         eventloop and rAF
 
         UI render(Async) and dom operations(Sync)
 
-    3.
+    1.3 Unit test
+
+By the way, check how much time saved by `batcher update`:
 
 2. (TODO) refactor `watcher`
+
+    2.1 make a getter function to get value based on expression
+
+3. (TODO) implement `config`
+
+4. (TODO) implement `$watch`, because in batcher.js, there is `userQueue`
+
+    if users use `$watch` to watch data, this kind of watchers will put into `userQueue`,
+
+    because the callback may trigger other watchers.
+
+tmr: 2.1 first, then 4, then 1 , finally 4

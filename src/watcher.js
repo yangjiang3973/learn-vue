@@ -14,6 +14,9 @@ class Watcher {
         this.options = options;
         this.id = ++uid; // uid for batching
         vm._watcherList.push(this);
+
+        //TODO: make a getter function to get value based on exp
+        // and call it to register on observer's get
     }
     initUpdate() {
         // generate new value(include all dependencies)
@@ -48,7 +51,6 @@ class Watcher {
     }
 
     run() {
-        console.log('watcher update here');
         let newVal;
         if (this.exp.includes('.')) {
             this.exp.split('.');

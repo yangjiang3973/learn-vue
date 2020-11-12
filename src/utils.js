@@ -31,7 +31,6 @@ module.exports.inBrowser =
 
 module.exports.nextTick = function (cb) {
     function handler() {
-        pending = false;
         cb();
     }
     // make a mutation observer
@@ -40,6 +39,6 @@ module.exports.nextTick = function (cb) {
     let tempText = 1;
     const tempNode = document.createTextNode(tempText);
     DOMObserver.observe(tempNode, { characterData: true });
-    // trigger the node change and maek the handler run as microtask
+    // trigger the node change and the handler will run as microtask
     tempNode.data = tempText = (tempText + 1) % 2;
 };

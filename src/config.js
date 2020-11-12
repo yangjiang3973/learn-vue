@@ -2,5 +2,5 @@
 
 module.exports = {
     // Whether to use async updates.
-    async: true,
+    async: false,
 };

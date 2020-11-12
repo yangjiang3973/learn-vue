@@ -16,3 +16,23 @@ Vue 在两个地方用到了上述 nextTick：
 
 Vue.nextTick 和 Vue.prototype.\$nextTick 都是直接使用了这个 nextTick
 在 batcher 中，也就是 watcher 观测到数据变化后执行的是 nextTick(flushBatcherQueue)，flushBatcherQueue 则负责执行完成所有的 dom 更新操作。
+
+# misc
+
+```js
+function batchUpdate() {
+    let t = new Date();
+    for (let i = 0; i < 1e6; i++) {
+        if (i % 2 === 0) this.intro = '';
+        else this.intro = 'updated intro';
+    }
+    console.log(new Date() - t + 'ms');
+    console.log('done');
+}
+```
+
+Vue: 同步更新（`async=false`）情况下需要 2000ms，batch 合并 watcher 然后异步更新仅仅需要 700ms
+
+对于我的 Aue，从 750ms 到了 239ms
+
+确实缩小了大概 70%左右的时间吧

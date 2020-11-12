@@ -118,11 +118,13 @@ let vm = new Aue({
             console.log('this.objArr', this.objArr);
         },
         batchUpdate: function () {
-            for (let i = 0; i < 1e3; i++) {
+            let t = new Date();
+            for (let i = 0; i < 1e6; i++) {
                 if (i % 2 === 0) this.intro = '';
                 else this.intro = 'updated intro';
             }
-            console.log('done');
+            console.log(new Date() - t + 'ms');
+            // console.log('done');
         },
     },
 });

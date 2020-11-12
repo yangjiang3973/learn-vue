@@ -8,12 +8,16 @@ let has = {};
 let waiting = false;
 let flushing = false;
 
-function flush() {
-    flushing = true;
-    // run the queue
+function run() {
     for (let i = 0; i < queue.length; i++) {
         queue[i].run();
     }
+}
+
+function flush() {
+    flushing = true;
+    // run the queue
+    run();
     // reset
     queue = [];
     has = {};
@@ -22,9 +26,10 @@ function flush() {
 }
 
 module.exports.push = function (watcher) {
-    // duplicate, ignore
     // NOTE: cannot use if(has[id]), because the first value may be 0
-    if (has[watcher.id] !== undefined) return;
+    // NOTE: when flushing is true, allow duplicate..I still do not understand
+    // maybe only in 0.11? 1.0 is different?
+    if (has[watcher.id] !== undefined && flushing === false) return;
     // TODO: why need to mark queue.length?
     // blog says it's to prevent updating cycle
     queue.push(watcher);

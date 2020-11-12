@@ -3,18 +3,6 @@ const { Dep } = require('./dep');
 const { Observer } = require('./observer/observer');
 const _ = require('./utils');
 
-// let vm = new MVVM({
-//     el: '#app',
-//     data: {
-//         word: 'Hello World!',
-//         msg: 'greeting',
-//     },
-//     method: {
-//         changeWord() {
-//             this.word = 'fuck world!';
-//         },
-//     },
-// });
 class Aue {
     constructor(options) {
         // this.$options = options || {};
@@ -144,19 +132,6 @@ class Aue {
         });
     }
 
-    // TODO: re-organize the public api
-    $add = function (key, val) {
-        this._data.$add(key, val);
-    };
-
-    $delete = function (key) {
-        this._data.$delete(key);
-    };
-
-    $set = function (key) {
-        this._data.$set(key);
-    };
-
     _digest = function () {
         this._watcherList.forEach((watcher) => {
             watcher.update();
@@ -164,5 +139,8 @@ class Aue {
         //TODO: also need to update children, need to keep an array of children of vms
     };
 }
+
+// merge methods to Aue
+Object.assign(Aue.prototype, require('./api/data'));
 
 module.exports.Aue = Aue;
