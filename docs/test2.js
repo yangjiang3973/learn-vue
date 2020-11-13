@@ -1,9 +1,15 @@
-module.exports.add = function (a, b) {
-    return a + b;
-};
+// module.exports.add = function (a, b) {
+//     return a + b;
+// };
 
-function Log(msg) {
-    console.log(msg);
+// function Log(msg) {
+//     console.log(msg);
+// }
+
+// Log('test2.js run');
+
+class Student {
+    constructor(name) {
+        this.name = name;
+    }
 }
-
-Log('test2.js run');

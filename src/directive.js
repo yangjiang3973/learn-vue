@@ -32,13 +32,13 @@ class Directive {
                     filters: this.filters,
                 } // later for filter and other features
             );
-            Dep.target = watcher; // NOTE: right now set here, maybe change later
-            // this.update(this.vm[this.expression]);
+            // Dep.target = watcher; // NOTE: right now set here, maybe change later
+            this.update(watcher.value);
             // watcher.update(this.vm[this.expression]);
             // watcher.update();
             // TODO: temp solution
-            watcher.initUpdate();
-            Dep.target = null;
+            // watcher.initUpdate();
+            // Dep.target = null;
         }
     }
 }

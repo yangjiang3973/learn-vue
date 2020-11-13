@@ -11,6 +11,7 @@ class Aue {
         this._computed = options.computed || {};
         this._methods = options.methods || {};
         this._watcherList = [];
+        this._userWatchers = {}; // user watchers as a hash
 
         // TODO: wrap in a init function? so sub class(component constructor can use)
         // static options are custom

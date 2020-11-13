@@ -270,7 +270,7 @@ By the way, check how much time saved by `batcher update`:
 
 2. (TODO) refactor `watcher`
 
-    2.1 make a getter function to get value based on expression
+    2.1 make a getter function to get value based on expression(DONE)
 
 3. (TODO) implement `config`
 
@@ -280,4 +280,6 @@ By the way, check how much time saved by `batcher update`:
 
     because the callback may trigger other watchers.
 
-tmr: 2.1 first, then 4, then 1 , finally 4
+# 2020-11-13
+
+1.
