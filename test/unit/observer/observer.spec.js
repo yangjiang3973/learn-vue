@@ -23,7 +23,7 @@ describe('Observer', function () {
             deps: [],
             addDep: function (dep) {
                 this.deps.push(dep);
-                dep.addSub(this);
+                // dep.addSub(this);  // my watcher now does not handle things about dep
             },
             update: jasmine.createSpy(),
         };

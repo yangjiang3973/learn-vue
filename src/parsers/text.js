@@ -6,8 +6,6 @@ module.exports.parse = function (text) {
     const tokens = [];
     // let temp1 = tagRE.exec(text);
     // let temp2 = tagRE.exec(text);
-    // console.log('module.exports.parse -> temp1', temp1);
-    // console.log('module.exports.parse -> temp2', temp2);
 
     let match;
     let cursor = 0;

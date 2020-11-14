@@ -1,12 +1,11 @@
 const batcher = require('../../src/batcher');
 const { nextTick } = require('../../src/utils');
+const _ = require('../../src/utils');
 
 describe('Batcher', function () {
     let spy;
     beforeEach(function () {
         spy = jasmine.createSpy("spy on watcher's run()");
-        // TODO: implement this warn
-        // spyOn(_, 'warn')
     });
     it('push', function (done) {
         batcher.push({
@@ -34,16 +33,18 @@ describe('Batcher', function () {
         });
     });
 
+    //* NOTE: why allow duplicate when flushing?
+    //* this is from vue 1.0
     it('allow diplicate when flushing', function (done) {
-        batcher.push({
+        var job = {
             id: 1,
+            run: spy,
+        };
+        batcher.push(job);
+        batcher.push({
+            id: 2,
             run: function () {
-                spy();
-                // update another watcher, when will happen？
-                batcher.push({
-                    id: 1,
-                    run: spy,
-                });
+                batcher.push(job);
             },
         });
         nextTick(function () {
@@ -52,7 +53,7 @@ describe('Batcher', function () {
         });
     });
 
-    it('calls user watchers after directive updates', function (done) {
+    it('calls user watchers(with another directive update) after first directive updates', function (done) {
         var vals = [];
         function run() {
             vals.push(this.id);
@@ -74,9 +75,28 @@ describe('Batcher', function () {
             run: run,
         });
         nextTick(function () {
-            // expect(vals[0]).toBe(1);
-            // expect(vals[1]).toBe(2);
-            // expect(vals[2]).toBe(3);
+            expect(vals[0]).toBe(1);
+            expect(vals[1]).toBe(2);
+            expect(vals[2]).toBe(3);
+            done();
+        });
+    });
+
+    it('warn against infinite update loops', function (done) {
+        spyOn(_, 'warn');
+        var count = 0;
+        // update itself in run to mock a update cycle
+        var watcher = {
+            id: 1,
+            run: function () {
+                count++;
+                batcher.push(watcher);
+            },
+        };
+        batcher.push(watcher);
+        nextTick(function () {
+            expect(count).not.toBe(0);
+            expect(_.warn).toHaveBeenCalled();
             done();
         });
     });

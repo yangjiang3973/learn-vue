@@ -36,7 +36,7 @@ class Observer {
                 configurable: true,
                 get: function () {
                     if (Dep.target) {
-                        Dep.target.deps.push(dep);
+                        Dep.target.addDep(dep);
                         dep.depend();
                     }
                     return val;

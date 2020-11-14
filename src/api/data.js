@@ -23,7 +23,9 @@ module.exports.$watch = function (exp, cb, options) {
     if (watcher) {
         watcher.addCb(wrappedCb);
     } else {
-        watcher = new Watcher(vm, exp, wrappedCb, {});
+        watcher = new Watcher(vm, exp, wrappedCb, {
+            user: true,
+        });
         vm._userWatchers[key] = watcher;
     }
     if (options.immediate) {
@@ -35,5 +37,7 @@ module.exports.$watch = function (exp, cb, options) {
             vm._userWatchers[key] = null;
         }
     };
+    //NOTE: what if you unwatch, then want to watch again? The watcher maybe teardown, but still in _userWatchers
+    // so you removed sub from you dep, but you do not add back
     return unwatch;
 };

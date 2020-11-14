@@ -268,13 +268,13 @@ batcher keeps a queue which contains instances of watchers
 
 By the way, check how much time saved by `batcher update`:
 
-2. (TODO) refactor `watcher`
+2. (DONE) refactor `watcher`
 
     2.1 make a getter function to get value based on expression(DONE)
 
 3. (TODO) implement `config`
 
-4. (TODO) implement `$watch`, because in batcher.js, there is `userQueue`
+4. (TODO) implement `$watch`, because in batcher.js, there is `userQueue` (DONE)
 
     if users use `$watch` to watch data, this kind of watchers will put into `userQueue`,
 
@@ -282,4 +282,6 @@ By the way, check how much time saved by `batcher update`:
 
 # 2020-11-13
 
-1.
+1. (TODO) make a better `warn()` in util.js
+
+2. (DONE) finished the basic batcher.js

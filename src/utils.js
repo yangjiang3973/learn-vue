@@ -29,6 +29,10 @@ module.exports.inBrowser =
     typeof window !== 'undefined' &&
     toString.call(window) !== '[object Object]';
 
+module.exports.warn = function (msg) {
+    console.warn('[Aue warn]: ' + msg);
+};
+
 module.exports.nextTick = function (cb) {
     function handler() {
         cb();
