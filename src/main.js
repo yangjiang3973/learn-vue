@@ -30,6 +30,8 @@ Aue.filter('reverse', function (value) {
     return value.split('').reverse().join('');
 });
 
+// Aue.config.async = false;
+
 let MyComponent = Aue.extend({
     template: `
                 <p>A custom component!</p>
@@ -78,6 +80,7 @@ let vm = new Aue({
     methods: {
         changeWord: function () {
             this.word = 'fuck world';
+            // console.log(Aue.config);
         },
         changeFlag: function () {
             this.flag = !this.flag;

@@ -92,6 +92,8 @@ class Aue {
         }
     }
 
+    static config = require('./config');
+
     _proxyComputed(key) {
         const userDef = this._computed[key];
         if (typeof userDef === 'function') {
@@ -144,4 +146,5 @@ class Aue {
 // merge methods to Aue
 Object.assign(Aue.prototype, require('./api/data'));
 
+console.log(Aue.config);
 module.exports.Aue = Aue;

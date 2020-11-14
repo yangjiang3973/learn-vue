@@ -272,7 +272,7 @@ By the way, check how much time saved by `batcher update`:
 
     2.1 make a getter function to get value based on expression(DONE)
 
-3. (TODO) implement `config`
+3. (DONE) implement `config`(basic setup)
 
 4. (TODO) implement `$watch`, because in batcher.js, there is `userQueue` (DONE)
 
