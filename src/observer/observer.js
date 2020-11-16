@@ -12,6 +12,7 @@ class Observer {
     constructor(obj, type) {
         if (typeof obj !== 'object') {
             console.error('This parameter must be an object：' + obj);
+            return;
         }
         this.deps = [];
         this.value = obj;
@@ -25,24 +26,38 @@ class Observer {
     observe(obj) {
         const self = this;
         Object.keys(obj).forEach((key) => {
-            // skip $ or _
-            if (_.isReserverd(key)) return; //* NOTE: why $ or _ maybe in data?
-            let val = obj[key]; // save the old value
+            if (_.isReserverd(key)) return;
+
+            // check if obj already has pre-defined getter/setter, need to keep
+            let setter, getter;
+            const property = Object.getOwnPropertyDescriptor(obj, key);
+            if (property) {
+                if (property.configurable === false) return;
+                getter = property.get;
+                setter = property.set;
+            }
+
+            let val = obj[key]; // cannot obj[key] in getter, otherwise circle calling
             let dep = new Dep();
             // NOTE: always add key/val to this.value, because obj may be a $added data that need to add to original obj
             // but first time this.value === obj
             Object.defineProperty(this.value, key, {
                 enumerable: true,
                 configurable: true,
-                get: function () {
+                get: function definedGet() {
                     if (Dep.target) {
-                        Dep.target.addDep(dep);
                         dep.depend();
                     }
-                    return val;
+                    return getter ? getter.call(obj) : val;
                 },
                 set: function (newVal) {
+                    val = getter ? getter.call(obj) : val;
                     if (newVal !== val) {
+                        if (setter) {
+                            setter.call(obj, newVal);
+                        } else {
+                            val = newVal;
+                        }
                         // remove dep from the old val
                         if (val && val.__ob__) {
                             val.__ob__.deps.splice(
@@ -59,7 +74,6 @@ class Observer {
                             }
                             childOb.deps.push(dep);
                         }
-                        val = newVal;
                         dep.notify();
                     }
                 },
@@ -69,6 +83,7 @@ class Observer {
                 // if this is array, fake proto first?
                 const childOb = new Observer(obj[key]);
                 childOb.deps.push(dep);
+                // dep.depend();
                 if (Array.isArray(obj[key])) {
                     self.overrideArrayProto(obj[key], childOb.deps);
                 }

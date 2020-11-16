@@ -1,6 +1,7 @@
 // seems not necessary to make batcher as a class
 // maybe change later
 const _ = require('./utils');
+const config = require('../src/config');
 
 let queue = [];
 let userQueue = [];
@@ -8,15 +9,20 @@ let has = {};
 // TODO: why need waiting and flushing as flags
 let waiting = false;
 let flushing = false;
+let circular = {};
 
 function runQueue(queue) {
     for (let i = 0; i < queue.length; i++) {
         const watcher = queue[i];
         has[watcher.id] = null;
         watcher.run();
-        if (has[watcher.id] !== null) {
-            _.warn(`You may have an infinite update loop for watcher`);
-            break;
+        // NOTE: why only check circle in dev mode
+        if (process.env.NODE_ENV !== 'production' && has[watcher.id] !== null) {
+            circular[watcher.id] = (circular[watcher.id] || 0) + 1;
+            if (circular[watcher.id] > config._maxUpdateCount) {
+                _.warn(`You may have an infinite update loop for watcher`);
+                break;
+            }
         }
     }
     queue.length = 0;
@@ -35,6 +41,7 @@ function flush() {
     has = {};
     waiting = false;
     flushing = false;
+    circular = {};
 }
 
 module.exports.push = function (watcher) {

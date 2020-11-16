@@ -280,8 +280,48 @@ By the way, check how much time saved by `batcher update`:
 
     because the callback may trigger other watchers.
 
-# 2020-11-13
+# 2020-11-13 (milestone)
 
 1. (TODO) make a better `warn()` in util.js
 
 2. (DONE) finished the basic batcher.js
+
+3. NOTE: this is like a milestone, about 1000 line finished the core features of vue 0.11
+
+4. TODO: move to Vue 1.0, check changes in core files first(watcher.js, observer.js ans so on)
+
+    do not just read, but also follow unit test!
+
+5. for parser, find a quick way to copy and use it directly for now. Maybe do research on it later.
+
+# 2020-11-15
+
+1.  (DONE) setup dev server for vue 1.0
+
+2.  (TODO) go through unit test of vue1.0 for finished module to update code
+
+    2.1 batcher(DONE)
+
+    2.2 observer module
+
+        2.2.1 observer.js
+
+            (TODO) first level problem: in unit test, like array observe related, need to solve first level dep(add an observe method to check type before new Observer)
+            (TODO) need to change `this.deps` in Observer. I think only need one dep(not array)
+            (TODO) watcher's deps changed in Vue1.0, `obj.a.b;` will create `obj.a + a + a.b` 3 deps
+            because in this version's getter,
+
+            ```js
+            if (childOb) {
+            console.log(3);
+            childOb.dep.depend();
+            }
+            ```
+
+            NOTE: it will add intermedia path to watcher.deps. I do not know why adding this
+
+            (TODO) update`$add/$set/$remove`. Vue1.0 moved them to util
+
+        2.2.2 dep.js
+
+3.  (TODO) config unit test better like vue1.0, setup `index.js` in unit test for global util function and variable

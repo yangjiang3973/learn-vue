@@ -58,6 +58,7 @@ class Watcher {
     // TODO: need to refactor later
     addDep(dep) {
         this.deps[dep.id] = dep;
+        dep.addSub(this);
     }
 
     addCb(cb) {

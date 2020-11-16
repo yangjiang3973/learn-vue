@@ -1,4 +1,5 @@
 const batcher = require('../../src/batcher');
+const config = require('../../src/config');
 const { nextTick } = require('../../src/utils');
 const _ = require('../../src/utils');
 
@@ -7,7 +8,7 @@ describe('Batcher', function () {
     beforeEach(function () {
         spy = jasmine.createSpy("spy on watcher's run()");
     });
-    it('push', function (done) {
+    it('pushWatcher', function (done) {
         batcher.push({
             run: spy,
         });
@@ -96,7 +97,31 @@ describe('Batcher', function () {
         batcher.push(watcher);
         nextTick(function () {
             expect(count).not.toBe(0);
+            expect(count).toBe(config._maxUpdateCount + 1);
             expect(_.warn).toHaveBeenCalled();
+            // expect('infinite update loop').toHaveBeenWarned();
+            done();
+        });
+    });
+
+    it('should call newly pushed watcher after current watcher is done', function (done) {
+        var callOrder = [];
+        batcher.push({
+            id: 1,
+            user: true,
+            run: function () {
+                callOrder.push(1);
+                batcher.push({
+                    id: 2,
+                    run: function () {
+                        callOrder.push(3);
+                    },
+                });
+                callOrder.push(2);
+            },
+        });
+        nextTick(function () {
+            expect(callOrder.join()).toBe('1,2,3');
             done();
         });
     });
