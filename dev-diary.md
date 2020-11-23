@@ -306,14 +306,15 @@ By the way, check how much time saved by `batcher update`:
 
         2.2.1 observer.js
 
-            (TODO) first level problem: in unit test, like array observe related, need to solve first level dep(add an observe method to check type before new Observer)
-            (TODO) need to change `this.deps` in Observer. I think only need one dep(not array)
+            (DONE) first level problem: in unit test, like array observe related, need to solve first level dep(add an observe method to check type before new Observer)
+                I think it is better to go through vue's observer logic first and draw a workflow
+
+            (DONE) need to change `this.deps` in Observer. I think only need one dep(not array)
             (TODO) watcher's deps changed in Vue1.0, `obj.a.b;` will create `obj.a + a + a.b` 3 deps
-            because in this version's getter,
+            because in this version's getter
 
             ```js
             if (childOb) {
-            console.log(3);
             childOb.dep.depend();
             }
             ```
@@ -325,3 +326,11 @@ By the way, check how much time saved by `batcher update`:
         2.2.2 dep.js
 
 3.  (TODO) config unit test better like vue1.0, setup `index.js` in unit test for global util function and variable
+
+# 2020-11-23
+
+1. read code of vue1.0's observer and understand its logic
+
+then refactor my own observer
+
+2.

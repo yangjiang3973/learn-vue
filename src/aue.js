@@ -5,13 +5,15 @@ const _ = require('./utils');
 
 class Aue {
     constructor(options) {
-        // this.$options = options || {};
+        options = options || {};
         this._directives = []; // all directives
         this._data = options.data || {};
         this._computed = options.computed || {};
         this._methods = options.methods || {};
         this._watcherList = [];
         this._userWatchers = {}; // user watchers as a hash
+        // a flag to avoid this being observed
+        this._isVue = true;
 
         // TODO: wrap in a init function? so sub class(component constructor can use)
         // static options are custom
@@ -146,5 +148,4 @@ class Aue {
 // merge methods to Aue
 Object.assign(Aue.prototype, require('./api/data'));
 
-console.log(Aue.config);
 module.exports.Aue = Aue;

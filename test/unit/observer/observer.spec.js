@@ -1,26 +1,26 @@
-const { Observer } = require('../../../src/observer/observer');
+const { Observer, observeData } = require('../../../src/observer/observer');
 const { Dep } = require('../../../src/dep');
+const { Aue } = require('../../../src/aue');
 
 describe('Observer', function () {
-    // TODO: make an entry function to create observer by checking val type and existance of ob(it is called observe in Vue1.0)
-    // it('create on non-observables', function () {
-    //     // skip primitive value
-    //     var ob = observe(1)
-    //     expect(ob).toBeUndefined()
-    //     // avoid vue instance
-    //     ob = observe(new Vue())
-    //     expect(ob).toBeUndefined()
-    //     // avoid frozen objects
-    //     ob = observe(Object.freeze({}))
-    //     expect(ob).toBeUndefined()
-    //   })
+    it('create on non-observables', function () {
+        // skip primitive value
+        var ob = observeData(1);
+        expect(ob).toBeUndefined();
+        // avoid vue instance
+        ob = observeData(new Aue());
+        expect(ob).toBeUndefined();
+        // avoid frozen objects
+        ob = observeData(Object.freeze({}));
+        expect(ob).toBeUndefined();
+    });
 
     it('create an object', function () {
         const obj = {
             a: {},
             b: {},
         };
-        const obInstance = new Observer(obj);
+        const obInstance = observeData(obj);
         expect(obInstance instanceof Observer).toBe(true);
         expect(obInstance.value).toBe(obj);
         expect(obj.__ob__).toBe(obInstance);
@@ -30,9 +30,8 @@ describe('Observer', function () {
         expect(obj.b.__ob__ instanceof Observer).toBe(true);
 
         // should return existing ob on already observed objects
-        // TODO: make an entry function
-        // var ob2 = observe(obj);
-        // expect(ob2).toBe(ob);
+        var ob2 = observeData(obj);
+        expect(ob2).toBe(obInstance);
     });
 
     it('create on null', function () {
@@ -40,7 +39,7 @@ describe('Observer', function () {
         var obj = Object.create(null);
         obj.a = {};
         obj.b = {};
-        var ob = new Observer(obj);
+        var ob = observeData(obj);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(obj);
         expect(obj.__ob__).toBe(ob);
@@ -48,12 +47,10 @@ describe('Observer', function () {
         expect(obj.a.__ob__ instanceof Observer).toBe(true);
         expect(obj.b.__ob__ instanceof Observer).toBe(true);
         // should return existing ob on already observed objects
-        // TODO: make an entry function
-        // var ob2 = observe(obj)
-        // expect(ob2).toBe(ob)
+        var ob2 = observeData(obj);
+        expect(ob2).toBe(ob);
     });
 
-    // TODO: user may define get/set property, should not override?
     it('create on already observed object(defined getter and setter)', function () {
         // on object
         var obj = {};
@@ -71,7 +68,7 @@ describe('Observer', function () {
             },
         });
 
-        var ob = new Observer(obj);
+        var ob = observeData(obj);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(obj);
         expect(obj.__ob__).toBe(ob);
@@ -84,9 +81,8 @@ describe('Observer', function () {
         expect(getCount).toBe(2);
 
         // should return existing ob on already observed objects
-        // TODO: entry for observer
-        // var ob2 = observe(obj);
-        // expect(ob2).toBe(ob);
+        var ob2 = observeData(obj);
+        expect(ob2).toBe(ob);
 
         // // should call underlying setter
         obj.a = 10;
@@ -104,7 +100,7 @@ describe('Observer', function () {
             },
         });
 
-        var ob = new Observer(obj);
+        var ob = observeData(obj);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(obj);
         expect(obj.__ob__).toBe(ob);
@@ -113,9 +109,8 @@ describe('Observer', function () {
         expect(obj.a).toBe(123);
 
         // should return existing ob on already observed objects
-        // TODO:
-        // var ob2 = observe(obj);
-        // expect(ob2).toBe(ob);
+        var ob2 = observeData(obj);
+        expect(ob2).toBe(ob);
 
         // since there is no setter, you shouldn't be able to write to it
         // PhantomJS throws when a property with no setter is set
@@ -139,7 +134,7 @@ describe('Observer', function () {
             },
         });
 
-        var ob = new Observer(obj);
+        var ob = observeData(obj);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(obj);
         expect(obj.__ob__).toBe(ob);
@@ -148,9 +143,8 @@ describe('Observer', function () {
         expect(obj.a).toBe(undefined);
 
         // should return existing ob on already observed objects
-        // TODO:
-        // var ob2 = new Observer(obj);
-        // expect(ob2).toBe(ob);
+        var ob2 = observeData(obj);
+        expect(ob2).toBe(ob);
 
         // writes should call the set function
         obj.a = 100;
@@ -166,16 +160,16 @@ describe('Observer', function () {
             val: 10,
         });
 
-        var ob = new Observer(obj);
+        var ob = observeData(obj);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(obj);
         expect(obj.__ob__).toBe(ob);
     });
 
-    it('create on array', function () {
+    it('create on array of objs', function () {
         // on object
         var arr = [{}, {}];
-        var ob = new Observer(arr);
+        var ob = observeData(arr);
         expect(ob instanceof Observer).toBe(true);
         expect(ob.value).toBe(arr);
         expect(arr.__ob__).toBe(ob);
@@ -190,13 +184,13 @@ describe('Observer', function () {
                 b: 2,
             },
         };
-        const obInstance = new Observer(obj);
+        const obInstance = observeData(obj);
         // mock a watcher
         const watcher = {
             deps: [],
             addDep: function (dep) {
                 this.deps.push(dep);
-                dep.addSub(this); // TODO: my watcher now does not handle things about dep, move this operation to watcher's addDep
+                dep.addSub(this);
             },
             update: jasmine.createSpy(),
         };
@@ -213,7 +207,7 @@ describe('Observer', function () {
         let oldA = obj.a;
         obj.a = { b: 4 };
         expect(watcher.update.calls.count()).toBe(2);
-        // TODO: should I remove oldA's __ob__ directly, after change this.deps tp this.dep
+        // TODO: I should remove oldA's __ob__ directly, after change this.deps to this.dep
         // expect(oldA.__ob__.deps.length).toBe(0);
         // expect(obj.a.__ob__.deps.length).toBe(1);
 
@@ -222,6 +216,8 @@ describe('Observer', function () {
         Dep.target = watcher;
         let temp2 = obj.a.b;
         Dep.target = null;
+        //TODO: ignore for now
+        // expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a + a.b
         expect(watcher.deps.length).toBe(2);
         // set on the swapped object
         obj.a.b = 5;
@@ -242,7 +238,7 @@ describe('Observer', function () {
             },
         });
 
-        new Observer(obj);
+        observeData(obj);
         // mock a watcher!
         var watcher = {
             deps: [],
@@ -263,47 +259,43 @@ describe('Observer', function () {
     });
 
     // (TODO)
-    it('observing $add/$set/$delete', function () {
-        const obj = { a: 1 };
-        const ob = new Observer(obj);
-        var dep = new Dep();
-        ob.deps.push(dep);
-        spyOn(dep, 'notify');
-        obj.$add('b', 2);
-        expect(obj.b).toBe(2);
-        expect(dep.notify.calls.count()).toBe(1);
-        obj.$delete('a');
-        expect(obj.hasOwnProperty('a')).toBe(false);
-        expect(dep.notify.calls.count()).toBe(2); // accumulated
-        // should ignore adding an existing key
-        obj.$add('b', 3);
-        expect(obj.b).toBe(2);
-        expect(dep.notify.calls.count()).toBe(2);
-        // $set
-        obj.$set('b', 3);
-        expect(obj.b).toBe(3);
-        expect(dep.notify.calls.count()).toBe(2);
-        // set non-existing key
-        obj.$set('c', 1);
-        expect(obj.c).toBe(1);
-        expect(dep.notify.calls.count()).toBe(3);
-        // should ignore deleting non-existing key
-        obj.$delete('a');
-        expect(dep.notify.calls.count()).toBe(3);
-        // should work on non-observed objects
-        var obj2 = { a: 1 };
-        obj2.$delete('a');
-        expect(obj2.hasOwnProperty('a')).toBe(false);
-    });
+    // it('observing $add/$set/$delete', function () {
+    //     const obj = { a: 1 };
+    //     const ob = new Observer(obj);
+    //     var dep = new Dep();
+    //     ob.deps.push(dep);
+    //     spyOn(dep, 'notify');
+    //     obj.$add('b', 2);
+    //     expect(obj.b).toBe(2);
+    //     expect(dep.notify.calls.count()).toBe(1);
+    //     obj.$delete('a');
+    //     expect(obj.hasOwnProperty('a')).toBe(false);
+    //     expect(dep.notify.calls.count()).toBe(2); // accumulated
+    //     // should ignore adding an existing key
+    //     obj.$add('b', 3);
+    //     expect(obj.b).toBe(2);
+    //     expect(dep.notify.calls.count()).toBe(2);
+    //     // $set
+    //     obj.$set('b', 3);
+    //     expect(obj.b).toBe(3);
+    //     expect(dep.notify.calls.count()).toBe(2);
+    //     // set non-existing key
+    //     obj.$set('c', 1);
+    //     expect(obj.c).toBe(1);
+    //     expect(dep.notify.calls.count()).toBe(3);
+    //     // should ignore deleting non-existing key
+    //     obj.$delete('a');
+    //     expect(dep.notify.calls.count()).toBe(3);
+    //     // should work on non-observed objects
+    //     var obj2 = { a: 1 };
+    //     obj2.$delete('a');
+    //     expect(obj2.hasOwnProperty('a')).toBe(false);
+    // });
 
     it('observing root level array mutations', function () {
-        // observe array at the first level
-        // TODO: still first level observer problem
-        // should add dep to the first level automatically
         const arr = [];
-        const ob = new Observer(arr, 1);
-        const dep = new Dep();
-        ob.deps.push(dep);
+        const ob = observeData(arr);
+        let dep = ob.dep;
         spyOn(dep, 'notify');
         var objs = [{}, {}, {}];
         arr.push(objs[0]);
@@ -323,8 +315,8 @@ describe('Observer', function () {
     it('observing child level array mutations', function () {
         // observe array at the child level
         const data = { arr: [1, 2, 3] };
-        const ob = new Observer(data);
-        const dep = data.arr.__ob__.deps[0];
+        const ob = observeData(data);
+        const dep = data.arr.__ob__.dep;
         spyOn(dep, 'notify');
 
         var objs = [{}, {}, {}];
@@ -345,11 +337,8 @@ describe('Observer', function () {
     it('root level array $set', function () {
         // observe array at the first level
         const arr = [1];
-        const ob = new Observer(arr, 1);
-        // TODO: still first level observer problem
-        // should add dep to the first level automatically
-        const dep = new Dep();
-        ob.deps.push(dep);
+        const ob = observeData(arr, 1);
+        let dep = ob.dep;
         spyOn(dep, 'notify');
         arr.$set(0, 2);
         expect(arr[0]).toBe(2);
@@ -363,8 +352,8 @@ describe('Observer', function () {
     it('child level array $set', function () {
         // observe array at the child level
         const data = { arr: [1] };
-        const ob = new Observer(data);
-        const dep = data.arr.__ob__.deps[0];
+        const ob = observeData(data);
+        const dep = data.arr.__ob__.dep;
         spyOn(dep, 'notify');
         data.arr.$set(0, 2);
         expect(data.arr[0]).toBe(2);
@@ -380,9 +369,8 @@ describe('Observer', function () {
         var arr = [{}, {}];
         var obj1 = arr[0];
         var obj2 = arr[1];
-        var ob = new Observer(arr, 1);
-        var dep = new Dep();
-        ob.deps.push(dep);
+        var ob = observeData(arr, 1);
+        var dep = ob.dep;
         spyOn(dep, 'notify');
         // remove by index
         arr.$remove(0);
@@ -406,8 +394,8 @@ describe('Observer', function () {
         const data = { arr };
         const obj1 = arr[0];
         const obj2 = arr[1];
-        const ob = new Observer(data);
-        const dep = data.arr.__ob__.deps[0];
+        const ob = observeData(data);
+        const dep = data.arr.__ob__.dep;
         spyOn(dep, 'notify');
         // remove by index
         arr.$remove(0);

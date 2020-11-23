@@ -8,17 +8,30 @@ const ObjectType = 2;
 
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
+module.exports.observeData = function (data) {
+    if (!data || typeof data !== 'object') return;
+
+    if (data.__ob__ && data.__ob__ instanceof Observer) {
+        return data.__ob__;
+    } else if (_.isArray(data)) {
+        return new Observer(data, ArrayType);
+    } else if (
+        _.isPlainObject(data) &&
+        Object.isExtensible(data) &&
+        !data._isVue
+    ) {
+        return new Observer(data);
+    }
+};
+
 class Observer {
     constructor(obj, type) {
-        if (typeof obj !== 'object') {
-            console.error('This parameter must be an object：' + obj);
-            return;
-        }
-        this.deps = [];
+        this.dep = new Dep(); // TODO: mabe init as null
+        // this.deps = [];
         this.value = obj;
         obj['__ob__'] = this;
         if (type === ArrayType) {
-            this.overrideArrayProto(obj, this.deps);
+            this.overrideArrayProto(obj, this.dep);
         }
         this.observe(obj);
     }
@@ -60,10 +73,11 @@ class Observer {
                         }
                         // remove dep from the old val
                         if (val && val.__ob__) {
-                            val.__ob__.deps.splice(
-                                val.__ob__.deps.indexOf(dep),
-                                1
-                            );
+                            // val.__ob__.deps.splice(
+                            //     val.__ob__.deps.indexOf(dep),
+                            //     1
+                            // );
+                            val.__ob__.dep = null;
                         }
                         if (typeof newVal === 'object') {
                             let childOb;
@@ -72,7 +86,7 @@ class Observer {
                             } else {
                                 childOb = new Observer(newVal);
                             }
-                            childOb.deps.push(dep);
+                            childOb.dep = dep;
                         }
                         dep.notify();
                     }
@@ -82,16 +96,15 @@ class Observer {
             if (typeof obj[key] === 'object') {
                 // if this is array, fake proto first?
                 const childOb = new Observer(obj[key]);
-                childOb.deps.push(dep);
-                // dep.depend();
+                childOb.dep = dep;
                 if (Array.isArray(obj[key])) {
-                    self.overrideArrayProto(obj[key], childOb.deps);
+                    self.overrideArrayProto(obj[key], childOb.dep);
                 }
             }
         });
     }
 
-    overrideArrayProto(obj, deps) {
+    overrideArrayProto(obj, dep) {
         const oldArr = obj.slice(0);
         const FakeProto = Object.create(Array.prototype);
         OAM.forEach((method) => {
@@ -117,9 +130,7 @@ class Observer {
                         }
                     });
                 }
-                deps.forEach((dep) => {
-                    dep.notify();
-                });
+                dep.notify();
                 return result;
             };
         }, this);
@@ -127,11 +138,11 @@ class Observer {
         Object.setPrototypeOf(obj, FakeProto);
     }
 
-    notify() {
-        this.deps.forEach((dep) => {
-            dep.notify();
-        });
-    }
+    // notify() {
+    //     this.deps.forEach((dep) => {
+    //         dep.notify();
+    //     });
+    // }
 
     addVm(vm) {
         this.vm = vm;

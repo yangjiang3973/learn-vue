@@ -1,9 +1,14 @@
-/**
- * Check is a string starts with $ or _
- *
- * @param {String} str
- * @return {Boolean}
- */
+module.exports.set = function (key, val) {};
+
+var toString = Object.prototype.toString;
+var OBJECT_STRING = '[object Object]';
+module.exports.isPlainObject = function (obj) {
+    return toString.call(obj) === OBJECT_STRING;
+};
+
+module.exports.isArray = function (obj) {
+    return Array.isArray(obj);
+};
 
 module.exports.isReserverd = function (str) {
     return str.startsWith('$') || str.startsWith('_');
