@@ -27,7 +27,6 @@ module.exports.observeData = function (data) {
 class Observer {
     constructor(obj, type) {
         this.dep = new Dep(); // TODO: mabe init as null
-        // this.deps = [];
         this.value = obj;
         obj['__ob__'] = this;
         if (type === ArrayType) {
@@ -37,71 +36,68 @@ class Observer {
     }
 
     observe(obj) {
-        const self = this;
         Object.keys(obj).forEach((key) => {
             if (_.isReserverd(key)) return;
-
-            // check if obj already has pre-defined getter/setter, need to keep
-            let setter, getter;
-            const property = Object.getOwnPropertyDescriptor(obj, key);
-            if (property) {
-                if (property.configurable === false) return;
-                getter = property.get;
-                setter = property.set;
-            }
-
-            let val = obj[key]; // cannot obj[key] in getter, otherwise circle calling
-            let dep = new Dep();
-            // NOTE: always add key/val to this.value, because obj may be a $added data that need to add to original obj
-            // but first time this.value === obj
-            Object.defineProperty(this.value, key, {
-                enumerable: true,
-                configurable: true,
-                get: function definedGet() {
-                    if (Dep.target) {
-                        dep.depend();
-                    }
-                    return getter ? getter.call(obj) : val;
-                },
-                set: function (newVal) {
-                    val = getter ? getter.call(obj) : val;
-                    if (newVal !== val) {
-                        if (setter) {
-                            setter.call(obj, newVal);
-                        } else {
-                            val = newVal;
-                        }
-                        // remove dep from the old val
-                        if (val && val.__ob__) {
-                            // val.__ob__.deps.splice(
-                            //     val.__ob__.deps.indexOf(dep),
-                            //     1
-                            // );
-                            val.__ob__.dep = null;
-                        }
-                        if (typeof newVal === 'object') {
-                            let childOb;
-                            if (Array.isArray(newVal)) {
-                                childOb = new Observer(newVal, ArrayType);
-                            } else {
-                                childOb = new Observer(newVal);
-                            }
-                            childOb.dep = dep;
-                        }
-                        dep.notify();
-                    }
-                },
-            });
-            // include obj and array
-            if (typeof obj[key] === 'object') {
-                // if this is array, fake proto first?
-                const childOb = new Observer(obj[key]);
-                childOb.dep = dep;
-                if (Array.isArray(obj[key])) {
-                    self.overrideArrayProto(obj[key], childOb.dep);
-                }
-            }
+            this.defineReactive(obj, key, obj[key]);
         });
+    }
+
+    defineReactive(obj, key, val) {
+        // check if obj already has pre-defined getter/setter, need to keep
+        let setter, getter;
+        const property = Object.getOwnPropertyDescriptor(obj, key);
+        if (property) {
+            if (property.configurable === false) return;
+            getter = property.get;
+            setter = property.set;
+        }
+
+        let dep = new Dep();
+        // NOTE: always add key/val to this.value, because obj may be a $added data that need to add to original obj
+        // but first time this.value === obj
+        Object.defineProperty(this.value, key, {
+            enumerable: true,
+            configurable: true,
+            get: function definedGet() {
+                if (Dep.target) {
+                    dep.depend();
+                }
+                return getter ? getter.call(obj) : val;
+            },
+            set: function (newVal) {
+                val = getter ? getter.call(obj) : val;
+                if (newVal !== val) {
+                    if (setter) {
+                        setter.call(obj, newVal);
+                    } else {
+                        val = newVal;
+                    }
+                    // remove dep from the old val
+                    if (val && val.__ob__) {
+                        val.__ob__.dep = null;
+                    }
+                    if (typeof newVal === 'object') {
+                        let childOb;
+                        if (Array.isArray(newVal)) {
+                            childOb = new Observer(newVal, ArrayType);
+                        } else {
+                            childOb = new Observer(newVal);
+                        }
+                        childOb.dep = dep;
+                    }
+                    dep.notify();
+                }
+            },
+        });
+        // include obj and array
+        if (typeof obj[key] === 'object') {
+            // if this is array, fake proto first?
+            const childOb = new Observer(obj[key]);
+            childOb.dep = dep;
+            if (Array.isArray(obj[key])) {
+                this.overrideArrayProto(obj[key], childOb.dep);
+            }
+        }
     }
 
     overrideArrayProto(obj, dep) {

@@ -310,6 +310,7 @@ By the way, check how much time saved by `batcher update`:
                 I think it is better to go through vue's observer logic first and draw a workflow
 
             (DONE) need to change `this.deps` in Observer. I think only need one dep(not array)
+
             (TODO) watcher's deps changed in Vue1.0, `obj.a.b;` will create `obj.a + a + a.b` 3 deps
             because in this version's getter
 
@@ -321,9 +322,9 @@ By the way, check how much time saved by `batcher update`:
 
             NOTE: it will add intermedia path to watcher.deps. I do not know why adding this
 
-            (TODO) update`$add/$set/$remove`. Vue1.0 moved them to util
+            (DONE) update`$add/$set/$remove` to `_.set` or `_.delete`. Vue1.0 moved them to util
 
-        2.2.2 dep.js
+        2.2.2 dep.js(DONE)
 
 3.  (TODO) config unit test better like vue1.0, setup `index.js` in unit test for global util function and variable
 
@@ -333,4 +334,4 @@ By the way, check how much time saved by `batcher update`:
 
 then refactor my own observer
 
-2.
+2. change `set` and `delete`(DONE)

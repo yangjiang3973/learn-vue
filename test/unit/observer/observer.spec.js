@@ -1,6 +1,7 @@
 const { Observer, observeData } = require('../../../src/observer/observer');
 const { Dep } = require('../../../src/dep');
 const { Aue } = require('../../../src/aue');
+const _ = require('../../../src/utils');
 
 describe('Observer', function () {
     it('create on non-observables', function () {
@@ -259,38 +260,43 @@ describe('Observer', function () {
     });
 
     // (TODO)
-    // it('observing $add/$set/$delete', function () {
-    //     const obj = { a: 1 };
-    //     const ob = new Observer(obj);
-    //     var dep = new Dep();
-    //     ob.deps.push(dep);
-    //     spyOn(dep, 'notify');
-    //     obj.$add('b', 2);
-    //     expect(obj.b).toBe(2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     obj.$delete('a');
-    //     expect(obj.hasOwnProperty('a')).toBe(false);
-    //     expect(dep.notify.calls.count()).toBe(2); // accumulated
-    //     // should ignore adding an existing key
-    //     obj.$add('b', 3);
-    //     expect(obj.b).toBe(2);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    //     // $set
-    //     obj.$set('b', 3);
-    //     expect(obj.b).toBe(3);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    //     // set non-existing key
-    //     obj.$set('c', 1);
-    //     expect(obj.c).toBe(1);
-    //     expect(dep.notify.calls.count()).toBe(3);
-    //     // should ignore deleting non-existing key
-    //     obj.$delete('a');
-    //     expect(dep.notify.calls.count()).toBe(3);
-    //     // should work on non-observed objects
-    //     var obj2 = { a: 1 };
-    //     obj2.$delete('a');
-    //     expect(obj2.hasOwnProperty('a')).toBe(false);
-    // });
+    it('observing set/delete', function () {
+        const obj = { a: 1 };
+        const ob = observeData(obj);
+        var dep = ob.dep;
+        spyOn(dep, 'notify');
+        _.set(obj, 'b', 2);
+        expect(obj.b).toBe(2);
+        expect(dep.notify.calls.count()).toBe(1);
+
+        _.delete(obj, 'a');
+        expect(obj.hasOwnProperty('a')).toBe(false);
+        expect(dep.notify.calls.count()).toBe(2);
+        // should ignore adding an existing key
+        _.set(obj, 'b', 3);
+        expect(obj.b).toBe(3);
+        expect(dep.notify.calls.count()).toBe(2);
+        // set non-existing key
+        _.set(obj, 'c', 1);
+        expect(obj.c).toBe(1);
+        expect(dep.notify.calls.count()).toBe(3);
+        // should ignore deleting non-existing key
+        _.delete(obj, 'a');
+        expect(dep.notify.calls.count()).toBe(3);
+        // should work on non-observed objects
+        var obj2 = { a: 1 };
+        _.delete(obj2, 'a');
+        expect(obj2.hasOwnProperty('a')).toBe(false);
+        // should work on Object.create(null)
+        var obj3 = Object.create(null);
+        obj3.a = 1;
+        var ob3 = observeData(obj3);
+        var dep3 = ob3.dep;
+        spyOn(dep3, 'notify');
+        _.set(obj3, 'b', 2);
+        expect(obj3.b).toBe(2);
+        expect(dep3.notify.calls.count()).toBe(1);
+    });
 
     it('observing root level array mutations', function () {
         const arr = [];

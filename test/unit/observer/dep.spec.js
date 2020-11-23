@@ -13,10 +13,13 @@ describe('Dep', function () {
         expect(d.subs.indexOf(sub)).toBe(0);
     });
 
-    // TODO:
-    // it('removeSub', function(){
-
-    // })
+    it('removeSub', function () {
+        var sub = {};
+        d.addSub(sub);
+        d.removeSub(sub);
+        expect(d.subs.length).toBe(0);
+        expect(d.subs.indexOf(sub)).toBe(-1);
+    });
 
     it('notify', function () {
         const sub = {

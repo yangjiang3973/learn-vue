@@ -1,4 +1,51 @@
-module.exports.set = function (key, val) {};
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn(obj, key) {
+    return hasOwnProperty.call(obj, key);
+}
+module.exports.hasOwn = hasOwn;
+
+// TODO: why move set/delete here?
+// where these 2 func be used?
+module.exports.set = function (obj, key, val) {
+    if (hasOwn(obj, key)) {
+        obj[key] = val;
+        return;
+    }
+    if (obj._isVue) {
+        set(obj._data, key, val);
+        return;
+    }
+    const ob = obj.__ob__;
+    if (!ob) {
+        obj[key] = val;
+        return;
+    }
+    ob.defineReactive(obj, key, val); // add new key/val pair to obj
+    if (ob.vm) {
+        ob.vm._proxyData(key);
+        ob.vm._digest();
+    } else ob.dep.notify();
+    return val;
+};
+
+module.exports.delete = function (obj, key) {
+    if (!hasOwn(obj, key)) return;
+
+    delete obj[key];
+    const ob = obj.__ob__;
+    if (!ob) {
+        // obj===vm
+        if (obj._isVue) {
+            delete obj._data[key];
+            obj._digest();
+        }
+        return;
+    }
+    if (ob.vm) {
+        ob.vm._unproxyData(key);
+        ob.vm._digest();
+    } else ob.dep.notify();
+};
 
 var toString = Object.prototype.toString;
 var OBJECT_STRING = '[object Object]';
