@@ -44,21 +44,24 @@ let vm = new Aue({
     el: '#app',
     data: {
         title: 'learn vue',
-        // intro: 'Version 0.11',
-        // // intro: 'AAAAA',
-        // word: 'Hello World!',
-        // flag: true,
-        // // list: ['a', 'b', 'c', 'd'],
-        // showEl: true,
-        // firstName: 'Yang',
-        // lastName: 'Jiang',
-        // observeData: {
-        //     a: 1,
-        //     b: 2,
-        // },
-        // simpleArr: [1, 2, 3, 4, 5],
-        // nestedArr: [1, [2, 3, 4], 5],
-        // objArr: [{ a: 1 }, { b: 2 }, { c: 3 }],
+        b: {
+            c: 2,
+            d: 4,
+        },
+        intro: 'Version 0.11',
+        word: 'Hello World!',
+        flag: true,
+        list: ['a', 'b', 'c', 'd'],
+        showEl: true,
+        firstName: 'Yang',
+        lastName: 'Jiang',
+        observeData: {
+            a: 1,
+            b: 2,
+        },
+        simpleArr: [1, 2, 3, 4, 5],
+        nestedArr: [1, [2, 3, 4], 5],
+        objArr: [{ a: 1 }, { b: 2 }, { c: 3 }],
     },
     computed: {
         // fullName: {
@@ -128,6 +131,9 @@ let vm = new Aue({
             }
             console.log(new Date() - t + 'ms');
             // console.log('done');
+        },
+        watchValue: function () {
+            this.b.c = 3;
         },
     },
 });

@@ -31,3 +31,17 @@
 
 // const property = Object.getOwnPropertyDescriptor(obj, 'a');
 // console.log('property', property);
+
+function Watcher() {
+    this.value = this.get();
+}
+
+Watcher.prototype.get = function () {
+    console.log('get!');
+};
+
+const watcher = new Watcher();
+
+watcher.value;
+watcher.value;
+watcher.value;

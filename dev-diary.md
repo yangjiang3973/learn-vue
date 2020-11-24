@@ -335,3 +335,7 @@ By the way, check how much time saved by `batcher update`:
 then refactor my own observer
 
 2. change `set` and `delete`(DONE)
+
+3. TODO: unit tests for watcher
+
+    3.1 find a hack way to borrow parser code from vue and use it in watcher directly(skip over parser for now)

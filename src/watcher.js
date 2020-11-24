@@ -11,13 +11,13 @@ class Watcher {
         this.vm = vm;
         this.exp = exp;
         this.cbs = [cb];
-        this.options = options;
+        this.options = options || {};
         this.id = ++uid; // uid for batching
         //* NOTE: why need this active flag
         // this.active = true
         this.deps = {}; // NOTE: Vue use `Object.create(null);`, I don't know why??
         vm._watcherList.push(this);
-        this.user = !!options.user;
+        this.user = !!this.options.user;
         this.value = this.getValue();
     }
 
@@ -29,12 +29,16 @@ class Watcher {
             newVal = eval(`this.vm.` + this.exp);
         } else if (this.exp.includes('[')) {
             newVal = eval('this.vm.' + this.exp);
-        } else newVal = this.vm[this.exp];
+        } else {
+            newVal = this.vm[this.exp];
+        }
         // apply filters to new value first
         const { filters } = this.options;
-        filters.forEach((filter) => {
-            newVal = filtersList[filter.name](newVal);
-        });
+        if (filters) {
+            filters.forEach((filter) => {
+                newVal = filtersList[filter.name](newVal);
+            });
+        }
         Dep.target = null;
         return newVal;
     }
@@ -50,9 +54,14 @@ class Watcher {
 
     run() {
         let newVal = this.getValue();
-        this.cbs.forEach((cb) => {
-            cb(newVal, this.value);
-        });
+        if (this.value !== newVal) {
+            // keep oldVal and update this.value
+            let oldVal = this.value;
+            this.value = newVal;
+            this.cbs.forEach((cb) => {
+                cb(newVal, oldVal);
+            });
+        }
     }
 
     // TODO: need to refactor later
