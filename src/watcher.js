@@ -7,13 +7,20 @@ const { parseExpression } = require('../src/parsers/expression');
 
 let uid = 0;
 
+let once = new Set();
 function deepTouch(val) {
     if (typeof val === 'object') {
         let childVal;
         Object.keys(val).forEach((key) => {
             if (key === '__ob__') return;
             childVal = val[key];
+            console.log('deepTouch -> childVal', childVal);
             if (typeof childVal === 'object') {
+                if (once.has(childVal.__ob__.dep.id)) {
+                    return;
+                } else {
+                    once.add(childVal.__ob__.dep.id);
+                }
                 deepTouch(childVal);
             }
         });

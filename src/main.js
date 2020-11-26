@@ -135,6 +135,9 @@ let vm = new Aue({
             // console.log('done');
         },
         watchValue: function () {
+            // make a circle
+            this.b.z = this.b;
+
             this.$watch(
                 'b',
                 () => {

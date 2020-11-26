@@ -286,4 +286,21 @@ describe('watcher', function () {
             });
         });
     });
+
+    it('deep watch with circular references', function (done) {
+        new Watcher(vm, 'b', spy, {
+            deep: true,
+        });
+        _.set(vm.b, '_', vm.b);
+        nextTick(function () {
+            expect(spy).toHaveBeenCalledWith(vm.b, vm.b);
+            expect(spy.calls.count()).toBe(1);
+            vm.b._.c = 1;
+            nextTick(function () {
+                expect(spy).toHaveBeenCalledWith(vm.b, vm.b);
+                expect(spy.calls.count()).toBe(2);
+                done();
+            });
+        });
+    });
 });
