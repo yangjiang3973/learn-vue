@@ -41,8 +41,12 @@ class Watcher {
         vm._watcherList.push(this);
         this.user = !!this.options.user;
 
-        const res = parseExpression(exp, this.twoWay);
-        this.getter = res.get;
+        if (typeof exp === 'function') {
+            this.getter = exp;
+        } else {
+            const res = parseExpression(exp, this.twoWay);
+            this.getter = res.get;
+        }
 
         this.value = this.getValue();
     }
@@ -132,9 +136,14 @@ class Watcher {
         if (i > -1) {
             this.vm._watcherList.splice(i, 1);
         }
-        this.deps.forEach((dep) => {
-            dep.removeSub(this);
+
+        Object.keys(this.deps).forEach((key) => {
+            this.deps[key].removeSub(this);
         });
+        // this.deps.forEach((dep) => {
+        //     dep.removeSub(this);
+        // });
+        this.vm = this.cb = null;
     }
 }
 

@@ -351,6 +351,18 @@ then refactor my own observer
     watcher of b will also update
     )
 
+    3.5 lazy watcher??
+
+    3.6 watcher's active flag??
+
 # 2020-11-26
 
-1.
+1. need to learn what lazy watcher is and where it is used? 0.11 does not have lazy watcher
+
+    lazy watcher is used in `computed` feature.
+
+    It is different from normal watchers
+
+    when upgrade computed, then touch deeply with lazy watcher(TODO)
+
+2.

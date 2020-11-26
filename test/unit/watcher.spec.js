@@ -2,6 +2,7 @@ const { Watcher } = require('../../src/watcher');
 const { Aue } = require('../../src/aue');
 const { nextTick } = require('../../src/utils');
 const _ = require('../../src/utils');
+const config = require('../../src/config');
 
 describe('watcher', function () {
     let vm, spy;
@@ -303,4 +304,100 @@ describe('watcher', function () {
             });
         });
     });
+
+    it('fire change for prop addition/deletion in non-deep mode', function (done) {
+        new Watcher(vm, 'b', spy);
+        _.set(vm.b, 'e', 123);
+        nextTick(function () {
+            expect(spy).toHaveBeenCalledWith(vm.b, vm.b);
+            expect(spy.calls.count()).toBe(1);
+            _.delete(vm.b, 'e');
+            nextTick(function () {
+                expect(spy.calls.count()).toBe(2);
+                done();
+            });
+        });
+    });
+
+    it('watch function', function (done) {
+        var watcher = new Watcher(
+            vm,
+            function () {
+                return this.a + this.b.d;
+            },
+            spy
+        );
+        expect(watcher.value).toBe(5);
+        vm.a = 2;
+        nextTick(function () {
+            expect(spy).toHaveBeenCalledWith(6, 5);
+            vm.b = { d: 2 };
+            nextTick(function () {
+                expect(spy).toHaveBeenCalledWith(4, 6);
+                done();
+            });
+        });
+    });
+
+    // TODO: this kind of watchers is for computed, implement later
+    // it("lazy mode", function (done) {
+    //     var watcher = new Watcher(
+    //       vm,
+    //       function () {
+    //         return this.a + this.b.d;
+    //       },
+    //       null,
+    //       { lazy: true }
+    //     );
+    //     expect(watcher.lazy).toBe(true);
+    //     expect(watcher.value).toBeUndefined();
+    //     expect(watcher.dirty).toBe(true);
+    //     watcher.evaluate();
+    //     expect(watcher.value).toBe(5);
+    //     expect(watcher.dirty).toBe(false);
+    //     vm.a = 2;
+    //     nextTick(function () {
+    //       expect(watcher.value).toBe(5);
+    //       expect(watcher.dirty).toBe(true);
+    //       watcher.evaluate();
+    //       expect(watcher.value).toBe(6);
+    //       expect(watcher.dirty).toBe(false);
+    //       done();
+    //     });
+    //   });
+
+    it('teardown', function (done) {
+        var watcher = new Watcher(vm, 'b.c', spy);
+        watcher.teardown();
+        vm.b.c = 3;
+        nextTick(function () {
+            // expect(watcher.active).toBe(false);  //TODO: what is active flag for?
+            expect(watcher.vm).toBe(null);
+            expect(watcher.cb).toBe(null);
+            expect(spy).not.toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it('synchronous updates', function () {
+        config.async = false;
+        new Watcher(vm, 'a', spy);
+        vm.a = 2;
+        vm.a = 3;
+        expect(spy.calls.count()).toBe(2);
+        expect(spy).toHaveBeenCalledWith(2, 1);
+        expect(spy).toHaveBeenCalledWith(3, 2);
+        config.async = true;
+    });
+
+    // it('warn getter errors', function () {
+    //     new Watcher(vm, 'd.e + c', spy);
+    //     expect('Error when evaluating expression').toHaveBeenWarned();
+    // });
+
+    //   it("warn setter errors", function () {
+    //     var watcher = new Watcher(vm, "a + b", spy);
+    //     watcher.set(123);
+    //     expect("Error when evaluating setter").toHaveBeenWarned();
+    //   });
 });
