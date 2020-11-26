@@ -12,7 +12,7 @@ module.exports.set = function (obj, key, val) {
         return;
     }
     if (obj._isVue) {
-        set(obj._data, key, val);
+        this.set(obj._data, key, val);
         return;
     }
     const ob = obj.__ob__;

@@ -1,6 +1,5 @@
 const { Compiler } = require('./compiler');
-const { Dep } = require('./dep');
-const { Observer } = require('./observer/observer');
+const { Observer, observeData } = require('./observer/observer');
 const _ = require('./utils');
 
 class Aue {
@@ -37,7 +36,8 @@ class Aue {
             this._proxyMethods(key);
         });
 
-        const ob = new Observer(this._data); // observe
+        // const ob = new Observer(this._data); // observe
+        const ob = observeData(this._data);
         ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
 
         this.$compile = new Compiler(options.el || document.body, this);
@@ -147,5 +147,33 @@ class Aue {
 
 // merge methods to Aue
 Object.assign(Aue.prototype, require('./api/data'));
+
+Object.defineProperty(Aue.prototype, '$data', {
+    get() {
+        return this._data;
+    },
+    set(newData) {
+        if (newData !== this._data) {
+            // unproxy the old one and init the new one
+            Object.keys(this._data).forEach((key) => {
+                this._unproxyData(key);
+            });
+
+            Object.keys(newData).forEach((key) => {
+                // check reserved key word
+                if (!_.isReserverd(key)) {
+                    this._proxyData(key);
+                }
+            });
+            this._data.__ob__.removeVm(this);
+            this._data = newData;
+
+            const ob = observeData(this._data); // observe
+            ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
+
+            this._digest();
+        }
+    },
+});
 
 module.exports.Aue = Aue;

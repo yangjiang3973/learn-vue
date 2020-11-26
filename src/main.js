@@ -44,10 +44,12 @@ let vm = new Aue({
     el: '#app',
     data: {
         title: 'learn vue',
+        a: 10,
         b: {
             c: 2,
             d: 4,
         },
+        c: 'c',
         intro: 'Version 0.11',
         word: 'Hello World!',
         flag: true,
@@ -133,7 +135,16 @@ let vm = new Aue({
             // console.log('done');
         },
         watchValue: function () {
-            this.b.c = 3;
+            this.$watch(
+                'b',
+                () => {
+                    console.log('hahahah');
+                },
+                { deep: true }
+            );
+        },
+        changeVal: function () {
+            this.b.c = { d: 4 };
         },
     },
 });

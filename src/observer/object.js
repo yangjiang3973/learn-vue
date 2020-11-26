@@ -19,7 +19,7 @@ Object.prototype['$add'] = function (keyPath, val) {
     }
     const obj = {};
     obj[keyPath] = val;
-    this.__ob__.observe(obj);
+    this.__ob__.defineReactive(this.__ob__.value, keyPath, val);
     // TODO: check if this is added to root data level, if so, need proxy and update
     if (this.__ob__.vm) {
         this.__ob__.vm._proxyData(keyPath);

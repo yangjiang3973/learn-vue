@@ -25,7 +25,9 @@ module.exports.$watch = function (exp, cb, options) {
     } else {
         watcher = new Watcher(vm, exp, wrappedCb, {
             user: true,
+            deep: options.deep,
         });
+
         vm._userWatchers[key] = watcher;
     }
     if (options.immediate) {

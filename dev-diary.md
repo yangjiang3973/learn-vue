@@ -339,3 +339,18 @@ then refactor my own observer
 3. TODO: unit tests for watcher
 
     3.1 find a hack way to borrow parser code from vue and use it in watcher directly(skip over parser for now)
+
+    3.2 refactor $set and $remove, not just `_.set`
+
+    3.3 implement `$data` (I used a brutal way) (DONE)
+
+    3.4 implement `deep` feature in Watcher and `$watch`(DONE)
+    (deep means also watch child data.
+    for example, if a watcher is watcher a.b
+    if you change a.b.c = 1,
+    watcher of b will also update
+    )
+
+# 2020-11-26
+
+1.

@@ -143,6 +143,10 @@ class Observer {
     addVm(vm) {
         this.vm = vm;
     }
+
+    removeVm(vm) {
+        if (this.vm === vm) this.vm = null;
+    }
 }
 
 module.exports.Observer = Observer;

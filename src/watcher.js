@@ -3,8 +3,22 @@ const batcher = require('./batcher');
 const config = require('./config');
 // NOTE: curious about details of require. If filters are not used, will it occupy memory space?
 const filtersList = require('./filters');
+const { parseExpression } = require('../src/parsers/expression');
 
 let uid = 0;
+
+function deepTouch(val) {
+    if (typeof val === 'object') {
+        let childVal;
+        Object.keys(val).forEach((key) => {
+            if (key === '__ob__') return;
+            childVal = val[key];
+            if (typeof childVal === 'object') {
+                deepTouch(childVal);
+            }
+        });
+    }
+}
 
 class Watcher {
     constructor(vm, exp, cb, options) {
@@ -12,26 +26,44 @@ class Watcher {
         this.exp = exp;
         this.cbs = [cb];
         this.options = options || {};
+        this.deep = this.options.deep; // really need to make a copy from this.options?
         this.id = ++uid; // uid for batching
         //* NOTE: why need this active flag
         // this.active = true
         this.deps = {}; // NOTE: Vue use `Object.create(null);`, I don't know why??
         vm._watcherList.push(this);
         this.user = !!this.options.user;
+
+        const res = parseExpression(exp, this.twoWay);
+        this.getter = res.get;
+
         this.value = this.getValue();
     }
 
     getValue() {
         Dep.target = this; // NOTE: right now set here, maybe change later
         let newVal;
-        if (this.exp.includes('.')) {
-            this.exp.split('.');
-            newVal = eval(`this.vm.` + this.exp);
-        } else if (this.exp.includes('[')) {
-            newVal = eval('this.vm.' + this.exp);
-        } else {
-            newVal = this.vm[this.exp];
+        // if (this.exp.includes('.')) {
+        //     this.exp.split('.');
+        //     newVal = eval(`this.vm.` + this.exp);
+        // } else if (this.exp.includes('[')) {
+        //     newVal = eval('this.vm.' + this.exp);
+        // } else {
+        //     newVal = this.vm[this.exp];
+        // }
+        const scope = this.scope || this.vm;
+
+        try {
+            newVal = this.getter.call(scope, scope); // need try...catch for uncaught error: {{ z.x.y }} and z is undefined
+        } catch (error) {
+            console.error(`invalid expression: ${this.exp}`); // TODO: make a warn function to display error mesg
         }
+
+        // touch child data to let this watcher subscribe deeply
+        if (this.deep) {
+            deepTouch(newVal);
+        }
+
         // apply filters to new value first
         const { filters } = this.options;
         if (filters) {
@@ -54,7 +86,9 @@ class Watcher {
 
     run() {
         let newVal = this.getValue();
-        if (this.value !== newVal) {
+
+        // val maybe a obj and change child property will not change its ref
+        if (this.value !== newVal || typeof this.value === 'object') {
             // keep oldVal and update this.value
             let oldVal = this.value;
             this.value = newVal;
@@ -71,7 +105,7 @@ class Watcher {
     }
 
     addCb(cb) {
-        this.cbs.add(cb);
+        this.cbs.push(cb);
     }
 
     removeCb(cb) {
