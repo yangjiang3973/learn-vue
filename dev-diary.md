@@ -365,4 +365,26 @@ then refactor my own observer
 
     when upgrade computed, then touch deeply with lazy watcher(TODO)
 
-2.
+2. add `watch` as options in Vue instance
+
+3. upgrade `filters` and unit test
+
+4. data api's like $watch, $set and so on
+
+5. `v-for`
+
+compile stage is coupled with a lot of directives, like v-for....
+
+should I continue to v2.0 with virtual dom and refactor compile stage?
+
+or continue with more features in v1.0?
+
+start with 2.0 (IN PROGRESS)
+
+6. setup typescript and learn syntax
+
+7. read articles about virtual dom and diff
+
+# 2020-11-27
+
+1. typescript

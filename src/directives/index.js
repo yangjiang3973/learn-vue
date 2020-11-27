@@ -6,7 +6,7 @@ module.exports.on = require('./on');
 
 module.exports.if = require('./if');
 
-module.exports.repeat = require('./repeat');
+module.exports.for = require('./for');
 
 module.exports.show = require('./show');
 
