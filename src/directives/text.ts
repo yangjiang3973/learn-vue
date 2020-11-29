@@ -6,6 +6,6 @@ module.exports.bind = function () {
         : (this.attrToBind = 'data');
 };
 
-module.exports.update = function (value) {
+module.exports.update = function (value: string) {
     this.el[this.attrToBind] = value;
 };

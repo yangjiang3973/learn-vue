@@ -10,6 +10,9 @@ module.exports = {
         filename: 'mini-vue.js',
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // for vscode debugger to map source files
     },
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+    },
     module: {
         rules: [
             {
@@ -22,6 +25,11 @@ module.exports = {
                     },
                 },
             },
+            // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
+            { test: /\.tsx?$/, loader: 'ts-loader' },
+
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            { test: /\.js$/, loader: 'source-map-loader' },
         ],
     },
     plugins: [
