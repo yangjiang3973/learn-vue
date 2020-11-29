@@ -388,3 +388,9 @@ start with 2.0 (IN PROGRESS)
 # 2020-11-27
 
 1. typescript
+
+# 2020-11-29
+
+1. set up typescript in my project
+
+2. flow(已经快凉了的既视感)
