@@ -391,6 +391,37 @@ start with 2.0 (IN PROGRESS)
 
 # 2020-11-29
 
-1. set up typescript in my project
+1. set up typescript in my project(DONE)
 
 2. flow(已经快凉了的既视感, 先集中 ts)
+
+# 2020-11-30
+
+1. to make vue 2.0 able to run and use debugger.
+
+    1.1 webpack
+    1.2 flow problem
+
+    maybe start another project to learn how to config these
+
+# 2020-12-01
+
+1. 2 main problems: (DONE)
+
+    1. webpack root dir. Vue 2.0 use absolute path and set root as src(DONE)
+
+        `resolve.modules` 而不是`resolve.roots`.....
+
+        而且有 vue 有 alias.js，用 webpack 的 resolve.alias
+
+    2. flow. I do not want to change the code, just want to webpack accept flow syntax(DONE)
+
+so I start a empty project to learn. then apply to Vue 2.0's repo
+
+2. (DONE) read the article again and write down the questions(http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/)
+
+# 2020-12-02
+
+1. Some notes about 2.0
+
+    split compiler and runtime. From npm, it is just runtime because consumers will likely pre-compile the templates with a build tool.
