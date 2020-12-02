@@ -425,3 +425,11 @@ so I start a empty project to learn. then apply to Vue 2.0's repo
 1. Some notes about 2.0
 
     split compiler and runtime. From npm, it is just runtime because consumers will likely pre-compile the templates with a build tool.
+
+2. rendering process: parse template -> render(with `_h` as createElement) -> vdom
+
+if I write jsx in vue, and use babel plugin mabey to transpile(convert code to createElement), so I do not need to work with template parser.
+
+instead, I can focus on render function and vdom
+
+TODO: learn how to write JSX in vue and setup with transpile tool
