@@ -78,3 +78,5 @@ let vm = new Vue({
     },
 });
 ```
+
+# read the code by myself

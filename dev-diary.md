@@ -433,3 +433,13 @@ if I write jsx in vue, and use babel plugin mabey to transpile(convert code to c
 instead, I can focus on render function and vdom
 
 TODO: learn how to write JSX in vue and setup with transpile tool
+
+# 2020-12-07
+
+1. (DONE) config jsx and use webpack to make it run in real vue 2.0.0
+
+2. (DONE)introduce the similar settings to my `learn-vue` repo, and start working on virtual dom
+
+3. (IN PROGRESS) createElement function(also called `h`) to create vdom tree
+
+4. (IN PROGRESS) render real dom tree from virtual dom

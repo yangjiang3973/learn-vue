@@ -1,5 +1,6 @@
 const { Compiler } = require('./compiler');
 const { Observer, observeData } = require('./observer/observer');
+const { createElement } = require('./vdom/create-element');
 const _ = require('./utils');
 
 class Aue {
@@ -13,7 +14,8 @@ class Aue {
         this._userWatchers = {}; // user watchers as a hash
         // a flag to avoid this being observed
         this._isVue = true;
-
+        this.$el = _.query(options.el);
+        this.$createElement = createElement.bind(this);
         // TODO: wrap in a init function? so sub class(component constructor can use)
         // static options are custom
         this.options = { ...options, ...Aue.options };
@@ -40,7 +42,9 @@ class Aue {
         const ob = observeData(this._data);
         ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
 
-        this.$compile = new Compiler(options.el || document.body, this);
+        // NOTE: no compiler for static template, just switch to virtual dom
+        // this.$compile = new Compiler(options.el || document.body, this);
+        this._mount(this.$el);
     }
 
     static options = {
@@ -145,8 +149,11 @@ class Aue {
     };
 }
 
-// merge methods to Aue
+/* merge methods to Aue's prototype */
 Object.assign(Aue.prototype, require('./api/data'));
+Object.assign(Aue.prototype, require('./instance/lifecycle'));
+Object.assign(Aue.prototype, require('./instance/render'));
+Aue.prototype.__patch__ = require('./vdom/patch');
 
 Object.defineProperty(Aue.prototype, '$data', {
     get() {
