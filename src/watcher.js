@@ -67,6 +67,7 @@ class Watcher {
         try {
             newVal = this.getter.call(scope, scope); // need try...catch for uncaught error: {{ z.x.y }} and z is undefined
         } catch (error) {
+            console.error(error);
             console.error(`invalid expression: ${this.exp}`); // TODO: make a warn function to display error mesg
         }
 
