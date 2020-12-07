@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
-    entry: './src/main.js',
+    entry: './src/jsx-demo.js',
+    // entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'mini-vue.js',
@@ -20,9 +21,9 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                    },
+                    // options: {
+                    //     presets: ['@babel/preset-env'],
+                    // },
                 },
             },
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.

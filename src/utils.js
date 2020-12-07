@@ -85,6 +85,19 @@ module.exports.warn = function (msg) {
     console.warn('[Aue warn]: ' + msg);
 };
 
+module.exports.query = function (el) {
+    if (typeof el === 'string') {
+        const selector = el;
+        el = document.querySelector(el);
+        if (!el) {
+            process.env.NODE_ENV !== 'production' &&
+                warn('Cannot find element: ' + selector);
+            return document.createElement('div');
+        }
+    }
+    return el;
+};
+
 module.exports.nextTick = function (cb) {
     function handler() {
         cb();
