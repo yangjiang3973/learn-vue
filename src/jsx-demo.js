@@ -7,12 +7,18 @@ let vm = new Aue({
     },
     render: function render(h) {
         return (
-            <div id="1">
-                <div>fuck</div>
-                bitch
-                <span>Hello</span>
-                <span>world!</span>
-                <div>dawdwadw</div>
+            // <div id="1">
+            //     <span>Hello</span>
+            //     <div>{this.msg}</div>
+            //     <input type="text" vModel={this.msg} placeholder={this.msg} />
+            // </div>
+            <div
+                id="demo"
+                style={{ color: 'red', fontSize: '140px' }}
+                class={{ foo: true, bar: false }}
+            >
+                <span>hello</span>
+                <input type="checkbox" checked custom="1" class="class-a" />
             </div>
         );
     },
