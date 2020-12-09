@@ -440,6 +440,10 @@ TODO: learn how to write JSX in vue and setup with transpile tool
 
 2. (DONE)introduce the similar settings to my `learn-vue` repo, and start working on virtual dom
 
-3. (IN PROGRESS) createElement function(also called `h`) to create vdom tree
+3. (DONE) createElement function(also called `h`) to create vdom tree
 
-4. (IN PROGRESS) render real dom tree from virtual dom
+4. (DONE) render real dom tree from virtual dom
+
+# 2020-12-09
+
+1.

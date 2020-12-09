@@ -14,6 +14,7 @@ function createElm(vnode, nested) {
     } else if (vnode.isComment) {
         vnode.elm = document.createComment(vnode.text);
     } else {
+        console.log('createElm -> vnode.text', vnode.text);
         vnode.elm = document.createTextNode(vnode.text);
     }
     return vnode.elm;
