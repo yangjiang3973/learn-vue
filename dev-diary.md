@@ -481,4 +481,4 @@ function render(vnode, container) {
 
 `对于 SVG 标签，更加严谨的方式是使用 document.createElementNS 函数`
 
-4.
+4. map event from jsx to vnode then to real dom

@@ -24,12 +24,21 @@ function createElm(vnode, nested, isSVG) {
                         }
                         break;
                     case 'class':
-                        for (let k in vnode.data.class) {
-                            if (vnode.data.class[k]) {
-                                vnode.elm.classList.add(k);
+                        if (typeof vnode.data.class === 'string')
+                            vnode.elm.classList.add(vnode.data.class);
+                        else if (typeof vnode.data.class === 'object') {
+                            for (let k in vnode.data.class) {
+                                if (vnode.data.class[k]) {
+                                    vnode.elm.classList.add(k);
+                                }
                             }
                         }
+                    case 'on':
+                        for (let k in vnode.data.on) {
+                            vnode.elm.addEventListener(k, vnode.data.on[k]);
+                        }
                     default:
+                        vnode.elm.setAttribute(key, vnode.data[key]);
                         break;
                 }
             }
