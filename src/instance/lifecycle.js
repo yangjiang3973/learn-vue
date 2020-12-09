@@ -4,7 +4,9 @@ module.exports._mount = function (el) {
     if (!this.options.render) {
         console.error('need render function!');
     }
-    //* should call hook: beforeMount
+    //* here should call hook: beforeMount
+
+    // why make a watcher here?
     this._watcher = new Watcher(
         this,
         // pass a fn to watcher. this._render() will run first, then this._update().  this._render() is from file render.js

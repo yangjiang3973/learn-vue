@@ -19,6 +19,9 @@ module.exports.createElement = function (tag, data, children) {
                 }
             }
         }
+        if (tag === 'svg') {
+            return new VNode(tag, data, children, undefined, undefined, true);
+        }
         return new VNode(tag, data, children);
     }
 };
