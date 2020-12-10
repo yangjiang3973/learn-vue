@@ -11,7 +11,6 @@ function createElm(vnode, nested, isSVG) {
             ? document.createElementNS('http://www.w3.org/2000/svg', vnode.tag)
             : document.createElement(vnode.tag);
         if (vnode.data) {
-            console.log('createElm -> vnode.data', vnode.data);
             for (let key in vnode.data) {
                 switch (key) {
                     case 'attrs':

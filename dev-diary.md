@@ -477,8 +477,20 @@ function render(vnode, container) {
 }
 ```
 
-3. (DONE)temp solution for svg and svg children like `<circle/>`
+3. (DONE) temp solution for svg and svg children like `<circle/>`
 
 `对于 SVG 标签，更加严谨的方式是使用 document.createElementNS 函数`
 
-4. map event from jsx to vnode then to real dom
+4. (DONE) map event from jsx to vnode then to real dom
+
+5. ignore `Fragment` and `portal` for now.
+
+6. start working on basic component
+
+    6.1 old object style component in vue 2.0(DONE)
+    6.2 class style(DONE)
+    6.3 functional style(need to initialize with vue.component)
+
+# 2020-12-10
+
+1. (DONE)how to differ from class component and functional component: `tag.prototype && tag.prototype.render`
