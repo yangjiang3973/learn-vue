@@ -11,7 +11,6 @@ function createElm(vnode, nested, isSVG) {
             ? document.createElementNS('http://www.w3.org/2000/svg', vnode.tag)
             : document.createElement(vnode.tag);
         if (vnode.data) {
-            console.log('createElm -> vnode.data', vnode.data);
             for (let key in vnode.data) {
                 switch (key) {
                     case 'attrs':
@@ -64,20 +63,22 @@ function createChildren(vnode, children, isSVG) {
 }
 
 module.exports = function patch(oldVnode, vnode, hydrating, removeOnly) {
-    // either not server-rendered, or hydration failed.
-    // create an empty vnode and replace it
-    oldVnode = emptyNodeAt(oldVnode);
+    if (oldVnode.nodeType) {
+        // create an empty vnode and replace it
+        oldVnode = emptyNodeAt(oldVnode);
 
-    oldElm = oldVnode.elm;
-    parent = oldElm.parentNode;
+        oldElm = oldVnode.elm;
+        parent = oldElm.parentNode;
 
-    // use vnode to generate real dom element
-    createElm(vnode);
+        // use vnode to generate real dom element
+        createElm(vnode);
 
-    if (parent !== null) {
-        parent.insertBefore(vnode.elm, oldElm.nextSibling);
-        parent.removeChild(oldElm);
-        // removeVnodes(parent, [oldVnode], 0, 0);
+        if (parent !== null) {
+            parent.insertBefore(vnode.elm, oldElm.nextSibling);
+            parent.removeChild(oldElm);
+            // removeVnodes(parent, [oldVnode], 0, 0);
+        }
     }
+
     return vnode.elm;
 };

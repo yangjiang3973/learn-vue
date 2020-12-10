@@ -1,6 +1,6 @@
 const { VNode } = require('./vnode');
 
-module.exports.createElement = function (tag, data, children) {
+function createElement(tag, data, children) {
     if (data && (Array.isArray(data) || typeof data !== 'object')) {
         children = data;
         data = undefined;
@@ -23,9 +23,22 @@ module.exports.createElement = function (tag, data, children) {
             return new VNode(tag, data, children, undefined, undefined, true);
         }
         return new VNode(tag, data, children);
+    } else if (typeof tag === 'function') {
+        //need to check prototype's render function to differ from class and function
+        if (tag.prototype && tag.prototype.render) {
+            const instance = new tag();
+            const compVnode = instance.render.call(instance, createElement);
+            return compVnode;
+        } else {
+            return tag.call(null, createElement);
+        }
+    } else if (typeof tag === 'object') {
+        const compVnode = tag.render.call(null, createElement);
+        return compVnode;
     }
-};
+}
 
+module.exports.createElement = createElement;
 //<div id="1">
 //    <span>Hello</span>
 //    <span>world!</span>
