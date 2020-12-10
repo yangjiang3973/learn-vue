@@ -19,7 +19,7 @@ let vm = new Aue({
             <div>
                 <MyButton></MyButton>
                 <ClassComp></ClassComp>
-                <FuncComp></FuncComp>
+                {/* <FuncComp></FuncComp> */}
             </div>
         );
     },

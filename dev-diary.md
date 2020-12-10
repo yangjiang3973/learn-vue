@@ -494,3 +494,14 @@ function render(vnode, container) {
 # 2020-12-10
 
 1. (DONE)how to differ from class component and functional component: `tag.prototype && tag.prototype.render`
+
+2. `Vue.component('name', {options})`, what is this and any shortcut?
+   (shortcut means no need to explicitly call Vue.component to declare a component,
+   instead, when create vnode, should detect if it is a component and init it.
+   )
+
+3. (IN PROGRESS) When to trigger patch when data updates
+
+need to read code of watcher and new workflow that removed directive class
+
+4. (IN PROGRESS) patch(i.e update the dom tree)
