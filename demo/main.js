@@ -8,20 +8,35 @@ let vm = new Aue({
     el: '#app',
     data: {
         msg: 'hello',
+        show: true,
     },
     methods: {
         testClick: function testClick() {
-            console.log('aaaaa');
+            this.msg = 'fuck';
+        },
+        showSwitch() {
+            this.show = !this.show;
         },
     },
     render: function render(h) {
-        return (
-            <div>
-                <MyButton></MyButton>
-                <ClassComp></ClassComp>
-                {/* <FuncComp></FuncComp> */}
-            </div>
-        );
+        if (this.show) {
+            return (
+                <div
+                    onClick={this.showSwitch}
+                    style={{
+                        width: '100px',
+                        height: '100px',
+                        backgroundColor: 'red',
+                    }}
+                    id="test"
+                >
+                    <span>hellp</span>
+                </div>
+            );
+        } else {
+            // return <div onClick={this.showSwitch}>fuck</div>;
+            return <div>fuck</div>;
+        }
     },
 });
 

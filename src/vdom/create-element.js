@@ -10,19 +10,39 @@ function createElement(tag, data, children) {
         if (Array.isArray(children)) {
             for (let i = 0; i < children.length; i++) {
                 if (typeof children[i] === 'string') {
+                    // text node
                     children[i] = new VNode(
                         undefined,
                         undefined,
                         undefined,
-                        children[i]
+                        children[i],
+                        undefined,
+                        false,
+                        this
                     );
                 }
             }
         }
         if (tag === 'svg') {
-            return new VNode(tag, data, children, undefined, undefined, true);
+            return new VNode(
+                tag,
+                data,
+                children,
+                undefined,
+                undefined,
+                true,
+                this
+            );
         }
-        return new VNode(tag, data, children);
+        return new VNode(
+            tag,
+            data,
+            children,
+            undefined,
+            undefined,
+            false,
+            this
+        );
     } else if (typeof tag === 'function') {
         //need to check prototype's render function to differ from class and function
         if (tag.prototype && tag.prototype.render) {
@@ -39,6 +59,7 @@ function createElement(tag, data, children) {
 }
 
 module.exports.createElement = createElement;
+
 //<div id="1">
 //    <span>Hello</span>
 //    <span>world!</span>

@@ -19,5 +19,12 @@ module.exports._mount = function (el) {
 };
 
 module.exports._update = function (vnode) {
-    this.$el = this.__patch__(this.$el, vnode);
+    const preVnode = this._vnode;
+
+    if (!preVnode) {
+        this.$el = this.__patch__(this.$el, vnode);
+    } else {
+        this.$el = this.__patch__(preVnode, vnode);
+    }
+    this._vnode = vnode;
 };

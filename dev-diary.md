@@ -500,8 +500,39 @@ function render(vnode, container) {
    instead, when create vnode, should detect if it is a component and init it.
    )
 
-3. (IN PROGRESS) When to trigger patch when data updates
+3. (DONE) When to trigger patch when data updates
 
-need to read code of watcher and new workflow that removed directive class
+need to read code of watcher and new workflow that removed directive class.
 
-4. (IN PROGRESS) patch(i.e update the dom tree)
+not too many new changes:
+
+    1. use a global watcher in `_mount`:
+
+        ```js
+        this._watcher = new Watcher(
+            this,
+            // pass a fn to watcher. this._render() will run first, then this._update().  this._render() is from file render.js
+            // _render() will return a vnode
+            () => {
+                this._update(this._render());
+            },
+            () => {}
+        );
+        ```
+    2. when run the arrow fn in watcher, will create dependency
+
+    3. when data change, observer will notify and run watcher's update, which will lead to update the vnode and patch
+
+2. (IN PROGRESS) patch(i.e update the dom tree)
+
+# 2020-12-11
+
+1. patching policy:
+
+    1. compare dom element with component
+    2. (DONE) compare dom element A with dom element B(update data)
+    3. (DONE) do the above on children node recursively
+
+# 2020-12-12
+
+1.
