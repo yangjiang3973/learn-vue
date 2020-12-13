@@ -537,4 +537,10 @@ not too many new changes:
 
 1. patch text node(the old and the new ones are both text)
 
-2. update component driven by state change
+2. (DONE)update component driven by state change
+
+# 2020-12-13
+
+1. (DONE) implement props for component
+
+2. (TODO) should systematiclly implement compoent feature

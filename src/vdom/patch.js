@@ -79,13 +79,13 @@ function addNewData(elm, oldVnode, newVnode) {
         switch (groupName) {
             case 'attrs':
                 for (let k in newData.attrs) {
-                    if (!oldData || !oldData.attrs || !oldData.attrs[k])
-                        elm.setAttribute(k, newData.attrs[k]);
+                    // if (!oldData || !oldData.attrs || !oldData.attrs[k])
+                    elm.setAttribute(k, newData.attrs[k]);
                 }
             case 'style':
                 for (let k in newData.style) {
-                    if (!oldData || !oldData.style || !oldData.style[k])
-                        elm.style[k] = newData.style[k];
+                    // if (!oldData || !oldData.style || !oldData.style[k])
+                    elm.style[k] = newData.style[k];
                 }
                 break;
             case 'class':
@@ -107,9 +107,9 @@ function addNewData(elm, oldVnode, newVnode) {
                 }
                 break;
             default:
-                if (!oldData || !oldData.groupName) {
-                    elm.setAttribute(key, vnode.data[key]);
-                }
+                // if (!oldData || !oldData.groupName)
+                elm.setAttribute(key, vnode.data[key]);
+
                 break;
         }
     }
@@ -141,19 +141,30 @@ function patchChildren(oldChildren, newChildren, elm) {
             elm.appendChild(c.elm);
         });
     } else {
-        // temp solution
+        // check the shorter children list
         console.log(7);
-        oldChildren.forEach((c) => {
-            elm.removeChild(c.elm);
-        });
-        newChildren.forEach((c) => {
-            createElm(c);
-            elm.appendChild(c.elm);
-        });
+
+        const overlap =
+            oldChildren.length > newChildren.length
+                ? newChildren.length
+                : oldChildren.length;
+
+        for (let i = 0; i < overlap; i++) {
+            console.log(8);
+            patch(oldChildren[i], newChildren[i]);
+        }
+
+        // oldChildren.forEach((c) => {
+        //     elm.removeChild(c.elm);
+        // });
+        // newChildren.forEach((c) => {
+        //     createElm(c);
+        //     elm.appendChild(c.elm);
+        // });
     }
 }
 
-module.exports = function patch(oldVnode, newVnode) {
+function patch(oldVnode, newVnode) {
     let oldElm, parent, elm;
 
     if (oldVnode.nodeType) {
@@ -178,10 +189,11 @@ module.exports = function patch(oldVnode, newVnode) {
             createElm(newVnode);
         } else {
             console.log('3');
-            // oldElm = oldVnode.elm;
-            // parent = oldElm.parentNode;
             elm = newVnode.elm = oldVnode.elm;
-            patchData(elm, oldVnode, newVnode);
+            if (oldVnode.tag === undefined) {
+                console.log('3.1');
+                elm.data = newVnode.text;
+            } else patchData(elm, oldVnode, newVnode);
         }
     }
 
@@ -192,4 +204,6 @@ module.exports = function patch(oldVnode, newVnode) {
     }
 
     return newVnode.elm;
-};
+}
+
+module.exports = patch;

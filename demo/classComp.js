@@ -10,7 +10,7 @@ class ClassComp {
         observeData(this.data);
     }
     changeLocal() {
-        this.data.localState = 'new local';
+        this.data.localState = this.props.msg;
     }
     render(h) {
         return (
