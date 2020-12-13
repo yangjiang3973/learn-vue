@@ -154,6 +154,19 @@ function patchChildren(oldChildren, newChildren, elm) {
             patch(oldChildren[i], newChildren[i]);
         }
 
+        // more new nodes, add them!
+        if (newChildren.length > oldChildren.length) {
+            console.log(9);
+            for (let i = overlap; i < newChildren.length; i++) {
+                createElm(newChildren[i]);
+                elm.appendChild(newChildren[i].elm);
+            }
+        } else if (newChildren.length < oldChildren.length) {
+            for (let i = overlap; i < oldChildren.length; i++) {
+                elm.removeChild(oldChildren[i].elm);
+            }
+        }
+
         // oldChildren.forEach((c) => {
         //     elm.removeChild(c.elm);
         // });

@@ -33,6 +33,8 @@ let vm = new Aue({
                     <span id="4">a</span>
                     <span id="5">b</span>
                     <span id="6">c</span>
+                    <span id="7">d</span>
+                    <span id="8">e</span>
                 </div>
             );
     },
