@@ -7,23 +7,27 @@ const FuncComp = require('./funcComp');
 let vm = new Aue({
     el: '#app',
     data: {
-        msg: 'hello',
+        // msg: 'hello',
+        // show: true,
     },
     methods: {
         testClick: function testClick() {
-            console.log('aaaaa');
+            this.msg = 'fuck';
+        },
+        showSwitch() {
+            this.show = !this.show;
         },
     },
     render: function render(h) {
         return (
             <div>
-                <MyButton></MyButton>
                 <ClassComp></ClassComp>
-                {/* <FuncComp></FuncComp> */}
             </div>
         );
     },
 });
+
+//* NOTE: return <ClassComp></ClassComp> seems have a bug
 
 //<div
 //     id="demo"

@@ -4,7 +4,7 @@ module.exports._render = function () {
     try {
         console.log(render);
         vnode = render.call(this, this.$createElement);
-        console.log('vnode', vnode);
+        console.log('created vnode', vnode);
     } catch (e) {
         console.error(e);
     }

@@ -143,16 +143,16 @@ describe('watcher', function () {
         });
     });
 
-    it('$delete', function (done) {
-        var watcher = new Watcher(vm, 'b.c', spy);
-        expect(watcher.value).toBe(2);
-        vm.$delete('b');
-        nextTick(function () {
-            expect(watcher.value).toBeUndefined();
-            expect(spy).toHaveBeenCalledWith(undefined, 2);
-            done();
-        });
-    });
+    // it('$delete', function (done) {
+    //     var watcher = new Watcher(vm, 'b.c', spy);
+    //     expect(watcher.value).toBe(2);
+    //     vm.$delete('b');
+    //     nextTick(function () {
+    //         expect(watcher.value).toBeUndefined();
+    //         expect(spy).toHaveBeenCalledWith(undefined, 2);
+    //         done();
+    //     });
+    // });
 
     it('swapping $data', function (done) {
         // existing path

@@ -35,4 +35,19 @@ class Dep {
     }
 }
 
+// The current target watcher being evaluated.
+// This is globally unique because only one watcher
+// can be evaluated at a time.
+const targetStack = [];
+
+module.exports.pushTarget = function pushTarget(target) {
+    targetStack.push(target);
+    Dep.target = target;
+};
+
+module.exports.popTarget = function popTarget() {
+    targetStack.pop();
+    Dep.target = targetStack[targetStack.length - 1];
+};
+
 module.exports.Dep = Dep;

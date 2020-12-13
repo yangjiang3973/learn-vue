@@ -11,36 +11,7 @@ function createElm(vnode, nested, isSVG) {
             ? document.createElementNS('http://www.w3.org/2000/svg', vnode.tag)
             : document.createElement(vnode.tag);
         if (vnode.data) {
-            for (let key in vnode.data) {
-                switch (key) {
-                    case 'attrs':
-                        for (let k in vnode.data.attrs) {
-                            vnode.elm.setAttribute(k, vnode.data.attrs[k]);
-                        }
-                    case 'style':
-                        for (let k in vnode.data.style) {
-                            vnode.elm.style[k] = vnode.data.style[k];
-                        }
-                        break;
-                    case 'class':
-                        if (typeof vnode.data.class === 'string')
-                            vnode.elm.classList.add(vnode.data.class);
-                        else if (typeof vnode.data.class === 'object') {
-                            for (let k in vnode.data.class) {
-                                if (vnode.data.class[k]) {
-                                    vnode.elm.classList.add(k);
-                                }
-                            }
-                        }
-                    case 'on':
-                        for (let k in vnode.data.on) {
-                            vnode.elm.addEventListener(k, vnode.data.on[k]);
-                        }
-                    default:
-                        vnode.elm.setAttribute(key, vnode.data[key]);
-                        break;
-                }
-            }
+            addNewData(vnode.elm, null, vnode);
         }
         // it seems this is a scope for css
         // setScope(vnode);
@@ -62,8 +33,131 @@ function createChildren(vnode, children, isSVG) {
     }
 }
 
-module.exports = function patch(oldVnode, vnode, hydrating, removeOnly) {
+function removeMissingData(elm, oldVnode, newVnode) {
+    const oldData = oldVnode && oldVnode.data;
+    const newData = newVnode && newVnode.data;
+
+    for (let groupName in oldData) {
+        switch (groupName) {
+            case 'attrs':
+                for (let k in oldData.attrs) {
+                    if (!newData || !newData.attrs || !newData.attrs[k]) {
+                        elm.removeAttribute(k);
+                    }
+                }
+                break;
+            case 'style':
+                for (let k in oldData.style) {
+                    if (!newData || !newData.style || !newData.style[k]) {
+                        elm.style[k] = '';
+                    }
+                }
+                break;
+            case 'class':
+                if (!newData || !newData.class) elm.className = '';
+                break;
+            case 'on':
+                for (let k in oldData.on) {
+                    elm.removeEventListener(k, oldData.on[k]);
+                }
+                break;
+            default:
+                if (!newData || !newData.groupName) {
+                    elm.removeAttribute(groupName);
+                }
+                break;
+        }
+    }
+}
+
+function addNewData(elm, oldVnode, newVnode) {
+    const oldData = oldVnode && oldVnode.data;
+    const newData = newVnode && newVnode.data;
+
+    // add to the elm if it is not in old data
+    for (let groupName in newData) {
+        switch (groupName) {
+            case 'attrs':
+                for (let k in newData.attrs) {
+                    if (!oldData || !oldData.attrs || !oldData.attrs[k])
+                        elm.setAttribute(k, newData.attrs[k]);
+                }
+            case 'style':
+                for (let k in newData.style) {
+                    if (!oldData || !oldData.style || !oldData.style[k])
+                        elm.style[k] = newData.style[k];
+                }
+                break;
+            case 'class':
+                if (typeof newData.class === 'string') {
+                    elm.className = newData.class;
+                } else if (newData.class === 'object') {
+                    elm.className = '';
+                    for (let k in newData.class) {
+                        if (newData.class[k]) elm.classList.add(k);
+                    }
+                }
+                break;
+            case 'on':
+                for (let k in newData.on) {
+                    elm.addEventListener(
+                        k,
+                        newData.on[k].bind(newVnode.context)
+                    );
+                }
+                break;
+            default:
+                if (!oldData || !oldData.groupName) {
+                    elm.setAttribute(key, vnode.data[key]);
+                }
+                break;
+        }
+    }
+}
+
+function patchData(elm, oldVnode, newVnode) {
+    removeMissingData(elm, oldVnode, newVnode);
+    addNewData(elm, oldVnode, newVnode);
+
+    // recursively patch children nodes
+    if (oldVnode.children || newVnode.children) {
+        console.log(4);
+        patchChildren(oldVnode.children, newVnode.children, elm);
+    }
+}
+
+function patchChildren(oldChildren, newChildren, elm) {
+    if (oldChildren && !newChildren) {
+        // remove
+        console.log(5);
+        oldChildren.forEach((c) => {
+            elm.removeChild(c.elm);
+        });
+    } else if (!oldChildren && newChildren) {
+        // add
+        console.log(6);
+        newChildren.forEach((c) => {
+            createElm(c);
+            elm.appendChild(c.elm);
+        });
+    } else {
+        // temp solution
+        console.log(7);
+        oldChildren.forEach((c) => {
+            elm.removeChild(c.elm);
+        });
+        newChildren.forEach((c) => {
+            createElm(c);
+            elm.appendChild(c.elm);
+        });
+    }
+}
+
+module.exports = function patch(oldVnode, newVnode) {
+    let oldElm, parent, elm;
+
     if (oldVnode.nodeType) {
+        console.log('1');
         // create an empty vnode and replace it
         oldVnode = emptyNodeAt(oldVnode);
 
@@ -71,14 +165,31 @@ module.exports = function patch(oldVnode, vnode, hydrating, removeOnly) {
         parent = oldElm.parentNode;
 
         // use vnode to generate real dom element
-        createElm(vnode);
+        createElm(newVnode);
+    } else {
+        if (oldVnode.tag !== newVnode.tag) {
+            // different node type, no need to compare, just replace directly
+            // replaceVnode(oldVnode, vnode);
 
-        if (parent !== null) {
-            parent.insertBefore(vnode.elm, oldElm.nextSibling);
-            parent.removeChild(oldElm);
-            // removeVnodes(parent, [oldVnode], 0, 0);
+            console.log('2');
+            oldElm = oldVnode.elm;
+            parent = oldElm.parentNode;
+
+            createElm(newVnode);
+        } else {
+            console.log('3');
+            // oldElm = oldVnode.elm;
+            // parent = oldElm.parentNode;
+            elm = newVnode.elm = oldVnode.elm;
+            patchData(elm, oldVnode, newVnode);
         }
     }
 
-    return vnode.elm;
+    if (parent != null) {
+        parent.insertBefore(newVnode.elm, oldElm.nextSibling);
+        parent.removeChild(oldElm);
+        // removeVnodes(parent, [oldVnode], 0, 0);
+    }
+
+    return newVnode.elm;
 };
