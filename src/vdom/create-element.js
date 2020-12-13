@@ -1,4 +1,5 @@
 const { VNode } = require('./vnode');
+const { Watcher } = require('../watcher');
 
 function createElement(tag, data, children) {
     if (data && (Array.isArray(data) || typeof data !== 'object')) {
@@ -47,8 +48,29 @@ function createElement(tag, data, children) {
         //need to check prototype's render function to differ from class and function
         if (tag.prototype && tag.prototype.render) {
             const instance = new tag();
-            const compVnode = instance.render.call(instance, createElement);
-            return compVnode;
+
+            instance._update = function (vnode) {
+                console.log('createElement -> vnode', vnode);
+                const preVnode = this.$vnode;
+                if (preVnode) {
+                    console.log('rere');
+                    this.__patch__(preVnode, vnode);
+                }
+                this.$vnode = vnode;
+            };
+
+            new Watcher(
+                instance,
+                // pass a fn to watcher. this._render() will run first, then this._update().  this._render() is from file render.js
+                // _render() will return a vnode
+                () => {
+                    instance._update(
+                        instance.render(createElement.bind(instance))
+                    );
+                },
+                () => {}
+            );
+            return instance.$vnode;
         } else {
             return tag.call(null, createElement);
         }
@@ -59,30 +81,3 @@ function createElement(tag, data, children) {
 }
 
 module.exports.createElement = createElement;
-
-//<div id="1">
-//    <span>Hello</span>
-//    <span>world!</span>
-//</div>
-
-// render(h) {
-//     return h("div", {
-//       "attrs": {
-//         "id": "1"
-//       }
-//     }, [h("span", ["Hello"]), h("span", ["world!"])]);
-// }
-
-//<div id="1">
-//    fuck
-//    <span>Hello</span>
-//    <span>world!</span>
-//</div>
-
-// render(h) {
-//     return h("div", {
-//       "attrs": {
-//         "id": "1"
-//       }
-//     }, ["fuck", h("span", ["Hello"]), h("span", ["world!"])]);
-// }

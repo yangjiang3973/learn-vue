@@ -53,6 +53,14 @@ class Observer {
         }
 
         let dep = new Dep();
+        if (typeof obj[key] === 'object') {
+            // if this is array, fake proto first?
+            const childOb = new Observer(obj[key]);
+            childOb.dep = dep;
+            if (Array.isArray(obj[key])) {
+                this.overrideArrayProto(obj[key], childOb.dep);
+            }
+        }
         // NOTE: always add key/val to this.value, because obj may be a $added data that need to add to original obj
         // but first time this.value === obj
         Object.defineProperty(this.value, key, {
@@ -90,14 +98,7 @@ class Observer {
             },
         });
         // include obj and array
-        if (typeof obj[key] === 'object') {
-            // if this is array, fake proto first?
-            const childOb = new Observer(obj[key]);
-            childOb.dep = dep;
-            if (Array.isArray(obj[key])) {
-                this.overrideArrayProto(obj[key], childOb.dep);
-            }
-        }
+        //* NOTE: here is the problem!!, access getter! but now the target is wrong
     }
 
     overrideArrayProto(obj, dep) {

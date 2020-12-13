@@ -1,4 +1,4 @@
-module.exports.text = require('./text');
+// module.exports.text = require('./text');
 
 module.exports.model = require('./model');
 

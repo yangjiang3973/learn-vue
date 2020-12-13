@@ -44,6 +44,7 @@ class Aue {
 
         // NOTE: no compiler for static template, just switch to virtual dom
         // this.$compile = new Compiler(options.el || document.body, this);
+
         this._mount(this.$el);
     }
 

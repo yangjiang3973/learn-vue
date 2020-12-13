@@ -535,4 +535,6 @@ not too many new changes:
 
 # 2020-12-12
 
-1.
+1. patch text node(the old and the new ones are both text)
+
+2. update component driven by state change

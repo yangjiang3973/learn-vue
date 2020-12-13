@@ -1,4 +1,4 @@
-const { Dep } = require('./dep');
+const { Dep, pushTarget, popTarget } = require('./dep');
 const batcher = require('./batcher');
 const config = require('./config');
 // NOTE: curious about details of require. If filters are not used, will it occupy memory space?
@@ -52,16 +52,9 @@ class Watcher {
     }
 
     getValue() {
-        Dep.target = this; // NOTE: right now set here, maybe change later
+        // Dep.target = this; // NOTE: right now set here, maybe change later
+        pushTarget(this);
         let newVal;
-        // if (this.exp.includes('.')) {
-        //     this.exp.split('.');
-        //     newVal = eval(`this.vm.` + this.exp);
-        // } else if (this.exp.includes('[')) {
-        //     newVal = eval('this.vm.' + this.exp);
-        // } else {
-        //     newVal = this.vm[this.exp];
-        // }
         const scope = this.scope || this.vm;
 
         try {
@@ -83,7 +76,8 @@ class Watcher {
                 newVal = filtersList[filter.name](newVal);
             });
         }
-        Dep.target = null;
+        popTarget();
+        // Dep.target = null;
         return newVal;
     }
 
