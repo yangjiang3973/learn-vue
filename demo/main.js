@@ -30,11 +30,10 @@ let vm = new Aue({
         else
             return (
                 <div onClick={this.showSwitch}>
-                    <span id="4">a</span>
-                    <span id="5">b</span>
-                    <span id="6">c</span>
-                    <span id="7">d</span>
-                    <span id="8">e</span>
+                    <span id="4">D</span>
+                    <span id="2">B</span>
+                    <span id="5">E</span>
+                    <span id="3">C</span>
                 </div>
             );
     },

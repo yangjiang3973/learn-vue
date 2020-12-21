@@ -543,4 +543,10 @@ not too many new changes:
 
 1. (DONE) implement props for component
 
-2. (TODO) should systematiclly implement compoent feature
+2. (TODO) should systematiclly implement component feature
+
+3. (IN PROGRESS) diff algo
+
+# 2020-12-21
+
+1.

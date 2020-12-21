@@ -8,6 +8,7 @@ class VNode {
         this.ns = ns; // ns = namespace, for svg
 
         this.context = context;
+        this.key = data && data.key;
     }
 }
 
