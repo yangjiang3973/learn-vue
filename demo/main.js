@@ -7,8 +7,8 @@ const FuncComp = require('./funcComp');
 let vm = new Aue({
     el: '#app',
     data: {
-        // msg: 'hello',
-        // show: true,
+        msg: 'hello',
+        show: true,
     },
     methods: {
         testClick: function testClick() {
@@ -19,15 +19,25 @@ let vm = new Aue({
         },
     },
     render: function render(h) {
-        return (
-            <div>
-                <ClassComp></ClassComp>
-            </div>
-        );
+        if (this.show)
+            return (
+                <div onClick={this.showSwitch}>
+                    <span id="1">A</span>
+                    <span id="2">B</span>
+                    <span id="3">C</span>
+                </div>
+            );
+        else
+            return (
+                <div onClick={this.showSwitch}>
+                    <span id="4">D</span>
+                    <span id="2">B</span>
+                    <span id="5">E</span>
+                    <span id="3">C</span>
+                </div>
+            );
     },
 });
-
-//* NOTE: return <ClassComp></ClassComp> seems have a bug
 
 //<div
 //     id="demo"

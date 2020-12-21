@@ -48,12 +48,11 @@ function createElement(tag, data, children) {
         //need to check prototype's render function to differ from class and function
         if (tag.prototype && tag.prototype.render) {
             const instance = new tag();
+            instance.props = data.props;
 
             instance._update = function (vnode) {
-                console.log('createElement -> vnode', vnode);
                 const preVnode = this.$vnode;
                 if (preVnode) {
-                    console.log('rere');
                     this.__patch__(preVnode, vnode);
                 }
                 this.$vnode = vnode;
@@ -70,6 +69,8 @@ function createElement(tag, data, children) {
                 },
                 () => {}
             );
+            //* theoretically should call mounted hook here, and maybe need to change mount code
+            instance._mounted = true;
             return instance.$vnode;
         } else {
             return tag.call(null, createElement);

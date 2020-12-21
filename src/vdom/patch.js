@@ -79,13 +79,13 @@ function addNewData(elm, oldVnode, newVnode) {
         switch (groupName) {
             case 'attrs':
                 for (let k in newData.attrs) {
-                    if (!oldData || !oldData.attrs || !oldData.attrs[k])
-                        elm.setAttribute(k, newData.attrs[k]);
+                    // if (!oldData || !oldData.attrs || !oldData.attrs[k])
+                    elm.setAttribute(k, newData.attrs[k]);
                 }
             case 'style':
                 for (let k in newData.style) {
-                    if (!oldData || !oldData.style || !oldData.style[k])
-                        elm.style[k] = newData.style[k];
+                    // if (!oldData || !oldData.style || !oldData.style[k])
+                    elm.style[k] = newData.style[k];
                 }
                 break;
             case 'class':
@@ -107,9 +107,9 @@ function addNewData(elm, oldVnode, newVnode) {
                 }
                 break;
             default:
-                if (!oldData || !oldData.groupName) {
-                    elm.setAttribute(key, vnode.data[key]);
-                }
+                // if (!oldData || !oldData.groupName)
+                elm.setAttribute(groupName, newData[groupName]);
+
                 break;
         }
     }
@@ -141,19 +141,90 @@ function patchChildren(oldChildren, newChildren, elm) {
             elm.appendChild(c.elm);
         });
     } else {
-        // temp solution
         console.log(7);
-        oldChildren.forEach((c) => {
-            elm.removeChild(c.elm);
-        });
-        newChildren.forEach((c) => {
-            createElm(c);
-            elm.appendChild(c.elm);
-        });
+        let maxIndex = 0;
+        for (let i = 0; i < newChildren.length; i++) {
+            let j = 0;
+            let flag = false;
+            for (j; j < oldChildren.length; j++) {
+                if (
+                    newChildren[i].key !== undefined &&
+                    newChildren[i].key === oldChildren[j].key
+                ) {
+                    flag = true;
+                    patch(oldChildren[j], newChildren[i]);
+                    if (j < maxIndex) {
+                        const refElm = newChildren[i - 1].elm.nextSibling;
+                        console.log('move', oldChildren[j].key);
+                        elm.insertBefore(oldChildren[j].elm, refElm);
+                        break;
+                    } else {
+                        maxIndex = j;
+                    }
+                }
+            }
+            if (flag === false) {
+                console.log('new element');
+                const refElm =
+                    i < 1
+                        ? oldChildren[0].elm
+                        : newChildren[i - 1].elm.nextSibling;
+                createElm(newChildren[i]);
+                elm.insertBefore(newChildren[i].elm, refElm);
+            }
+        }
+
+        for (let i = 0; i < oldChildren.length; i++) {
+            let flag = false;
+            for (let j = 0; j < newChildren.length; j++) {
+                if (
+                    newChildren[i].key !== undefined &&
+                    newChildren[j].key === oldChildren[i].key
+                ) {
+                    flag = true;
+                }
+            }
+            if (flag === false) {
+                console.log('remove');
+                elm.removeChild(oldChildren[i].elm);
+            }
+        }
+
+        // check the shorter children list
+        // const overlap =
+        //     oldChildren.length > newChildren.length
+        //         ? newChildren.length
+        //         : oldChildren.length;
+
+        // for (let i = 0; i < overlap; i++) {
+        //     console.log(8);
+        //     patch(oldChildren[i], newChildren[i]);
+        // }
+
+        // // more new nodes, add them!
+        // if (newChildren.length > oldChildren.length) {
+        //     console.log(9);
+        //     for (let i = overlap; i < newChildren.length; i++) {
+        //         createElm(newChildren[i]);
+        //         elm.appendChild(newChildren[i].elm);
+        //     }
+        // } else if (newChildren.length < oldChildren.length) {
+        //     for (let i = overlap; i < oldChildren.length; i++) {
+        //         elm.removeChild(oldChildren[i].elm);
+        //     }
+        // }
+
+        // oldChildren.forEach((c) => {
+        //     elm.removeChild(c.elm);
+        // });
+        // newChildren.forEach((c) => {
+        //     createElm(c);
+        //     elm.appendChild(c.elm);
+        // });
     }
 }
 
-module.exports = function patch(oldVnode, newVnode) {
+function patch(oldVnode, newVnode) {
     let oldElm, parent, elm;
 
     if (oldVnode.nodeType) {
@@ -167,21 +238,20 @@ module.exports = function patch(oldVnode, newVnode) {
         // use vnode to generate real dom element
         createElm(newVnode);
     } else {
+        // different node type, no need to compare, just replace directly
         if (oldVnode.tag !== newVnode.tag) {
-            // different node type, no need to compare, just replace directly
-            // replaceVnode(oldVnode, vnode);
-
             console.log('2');
             oldElm = oldVnode.elm;
             parent = oldElm.parentNode;
-
             createElm(newVnode);
         } else {
             console.log('3');
-            // oldElm = oldVnode.elm;
-            // parent = oldElm.parentNode;
             elm = newVnode.elm = oldVnode.elm;
-            patchData(elm, oldVnode, newVnode);
+            // patch text
+            if (oldVnode.tag === undefined) {
+                console.log('3.1');
+                elm.data = newVnode.text;
+            } else patchData(elm, oldVnode, newVnode);
         }
     }
 
@@ -192,4 +262,6 @@ module.exports = function patch(oldVnode, newVnode) {
     }
 
     return newVnode.elm;
-};
+}
+
+module.exports = patch;
