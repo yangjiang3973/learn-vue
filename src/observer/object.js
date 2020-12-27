@@ -1,15 +1,3 @@
-// function $add(keyPath, val) {
-//     if (this.hasOwnProperty(key)) return;
-
-// }
-
-// Object.defineProperty(Object.prototype, '$add', {
-//     value: val,
-//     enumerable: false,
-//     writable: true,
-//     configurable: true,
-// });
-
 // Object.prototype['$add'] = function (keyPath, val) {
 //     if (this.hasOwnProperty(keyPath)) return;
 //     // if not observed, just finish this operation and return

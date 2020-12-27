@@ -76,7 +76,12 @@ function createElement(tag, data, children) {
             return tag.call(null, createElement);
         }
     } else if (typeof tag === 'object') {
+        console.log(tag);
         const compVnode = tag.render.call(null, createElement);
+        console.log(
+            '🚀 ~ file: create-element.js ~ line 81 ~ createElement ~ compVnode',
+            compVnode
+        );
         return compVnode;
     }
 }
