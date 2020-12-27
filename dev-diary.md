@@ -547,6 +547,44 @@ not too many new changes:
 
 3. (IN PROGRESS) diff algo
 
-# 2020-12-21
+# 2020-12-22
 
-1.
+1. right now just use react diff algo, maybe upgrade later.
+
+continue to implement other features, like `component`
+
+2. (TODO) start working on component
+
+3. use vue2.0 to try jsx and component development style
+
+4. why need to register component? what if not?
+
+5. use `<script>` tag in `.vue` file even writing jsx?
+
+if using in this way, then still possible to use scoped css.
+
+# 2020-12-23
+
+1. NOTE: pass props to child component:
+
+if child component defined props and has the pass key, this entry will move from attrs to props
+
+# 2020-12-24
+
+1. Question: if vue2.0 convert template to vnode, how to keep directives(without directive class)?
+
+# 2020-12-25
+
+1.  make the todo App work(including basic events and `component`)
+
+    (DONE) 1.0 convert back to basic syanx without any syntax sugar
+
+    1.1 data is a function, need to proxy correctly
+
+    1.2 Vue.extend() and Vue.component() as global api
+
+        Vue.extend() is to construct a sub class by using the Vue's constructor
+
+        this is the first important step for implementing component feature
+
+    1.3 (IN PROGRESS) maybe need to refactor the Aue class.
