@@ -588,3 +588,35 @@ if child component defined props and has the pass key, this entry will move from
         this is the first important step for implementing component feature
 
     1.3 (IN PROGRESS) maybe need to refactor the Aue class.
+
+    NOTE:
+
+    ```js
+    initMixin(Vue);
+
+    stateMixin(Vue);
+    eventsMixin(Vue);
+    lifecycleMixin(Vue);
+    renderMixin(Vue);
+    ```
+
+    initMixin is special but the left has similar structure
+
+    for example, state.js has 2 parts: initState and stateMixin.
+
+    initState is called in initMixin, stateMixin adds methods into Vue.prototype
+
+    so do others.
+
+    initMixin calls all other initXXX in \_init():
+
+    ```js
+    initLifecycle(vm);
+    initEvents(vm);
+    callHook(vm, 'beforeCreate');
+    initState(vm);
+    callHook(vm, 'created');
+    initRender(vm); //* NOTE: call vm.$mount() here!!
+    ```
+
+    \_init() is called in constructor of vue, and at that time all methods are already added to Vue.prototype.
