@@ -579,15 +579,15 @@ if child component defined props and has the pass key, this entry will move from
 
     (DONE) 1.0 convert back to basic syanx without any syntax sugar
 
-    1.1 data is a function, need to proxy correctly
+    1.1 (DONE)data is a function, need to proxy correctly
 
-    1.2 Vue.extend() and Vue.component() as global api
+    1.2 (IN PROGRESS) Vue.extend() and Vue.component() as global api
 
         Vue.extend() is to construct a sub class by using the Vue's constructor
 
         this is the first important step for implementing component feature
 
-    1.3 (IN PROGRESS) maybe need to refactor the Aue class.
+    1.3 (DONE) maybe need to refactor the Aue class.
 
     NOTE:
 
@@ -639,3 +639,16 @@ _assetTypes: [
     'filter'
 ],
 ```
+
+2. what is `hydrating`?
+
+3. BUG: bug when patch again abc->debc->abc
+
+becaue I bind the function in addEventListener but forgot bind in removeEventListener
+(passed two different fns)
+
+I should bind the method in initMethods, not in addEventListener
+
+(TODO) Event listener's update is much complicated than I thought, need to refactor event part!
+
+4. to continue task in #2020-12-25, finish extend and make component works!

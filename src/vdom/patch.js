@@ -58,7 +58,11 @@ function removeMissingData(elm, oldVnode, newVnode) {
                 break;
             case 'on':
                 for (let k in oldData.on) {
-                    elm.removeEventListener(k, oldData.on[k]);
+                    console.log(oldVnode.context);
+                    elm.removeEventListener(
+                        k,
+                        oldData.on[k].bind(oldVnode.context)
+                    );
                 }
                 break;
             default:
@@ -100,10 +104,7 @@ function addNewData(elm, oldVnode, newVnode) {
                 break;
             case 'on':
                 for (let k in newData.on) {
-                    elm.addEventListener(
-                        k,
-                        newData.on[k].bind(newVnode.context)
-                    );
+                    elm.addEventListener(k, newData.on[k]);
                 }
                 break;
             default:
@@ -151,6 +152,14 @@ function patchChildren(oldChildren, newChildren, elm) {
                     newChildren[i].key !== undefined &&
                     newChildren[i].key === oldChildren[j].key
                 ) {
+                    console.log(
+                        '🚀 ~ file: patch.js ~ line 154 ~ addNewData ~ newData.on',
+                        newData.on
+                    );
+                    console.log(
+                        '🚀 ~ file: patch.js ~ line 154 ~ addNewData ~ newData.on',
+                        newData.on
+                    );
                     flag = true;
                     patch(oldChildren[j], newChildren[i]);
                     if (j < maxIndex) {
@@ -178,7 +187,7 @@ function patchChildren(oldChildren, newChildren, elm) {
             let flag = false;
             for (let j = 0; j < newChildren.length; j++) {
                 if (
-                    newChildren[i].key !== undefined &&
+                    newChildren[j].key !== undefined &&
                     newChildren[j].key === oldChildren[i].key
                 ) {
                     flag = true;
@@ -189,38 +198,6 @@ function patchChildren(oldChildren, newChildren, elm) {
                 elm.removeChild(oldChildren[i].elm);
             }
         }
-
-        // check the shorter children list
-        // const overlap =
-        //     oldChildren.length > newChildren.length
-        //         ? newChildren.length
-        //         : oldChildren.length;
-
-        // for (let i = 0; i < overlap; i++) {
-        //     console.log(8);
-        //     patch(oldChildren[i], newChildren[i]);
-        // }
-
-        // // more new nodes, add them!
-        // if (newChildren.length > oldChildren.length) {
-        //     console.log(9);
-        //     for (let i = overlap; i < newChildren.length; i++) {
-        //         createElm(newChildren[i]);
-        //         elm.appendChild(newChildren[i].elm);
-        //     }
-        // } else if (newChildren.length < oldChildren.length) {
-        //     for (let i = overlap; i < oldChildren.length; i++) {
-        //         elm.removeChild(oldChildren[i].elm);
-        //     }
-        // }
-
-        // oldChildren.forEach((c) => {
-        //     elm.removeChild(c.elm);
-        // });
-        // newChildren.forEach((c) => {
-        //     createElm(c);
-        //     elm.appendChild(c.elm);
-        // });
     }
 }
 

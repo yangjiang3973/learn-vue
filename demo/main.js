@@ -21,7 +21,7 @@ let vm = new Aue({
     render: function render(h) {
         if (this.show)
             return (
-                <div onClick={this.showSwitch}>
+                <div onClick={this.showSwitch} id="test">
                     <span id="1">A</span>
                     <span id="2">B</span>
                     <span id="3">C</span>
@@ -29,7 +29,7 @@ let vm = new Aue({
             );
         else
             return (
-                <div onClick={this.showSwitch}>
+                <div onClick={this.showSwitch} id="test">
                     <span id="4">D</span>
                     <span id="2">B</span>
                     <span id="5">E</span>
