@@ -1,3 +1,5 @@
+const { createElement } = require('../vdom/create-element');
+
 module.exports.initRender = function (vm) {
     // vm.$vnode = null; // the placeholder node in parent tree
     // vm._vnode = null; // the root of the child tree
@@ -8,7 +10,7 @@ module.exports.initRender = function (vm) {
     }
 };
 
-module.exports.renderMixin = function(Aue) {
+module.exports.renderMixin = function (Aue) {
     Aue.prototype._render = function () {
         const { render } = this.$options;
         let vnode;
@@ -17,5 +19,7 @@ module.exports.renderMixin = function(Aue) {
         } catch (e) {
             console.error(e);
         }
+        console.log('🚀 ~ file: render.js ~ line 24 ~ vnode', vnode);
         return vnode;
-}
+    };
+};

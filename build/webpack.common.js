@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
-    entry: './demo/todoApp/main.js',
+    // entry: './demo/todoApp/main.js',
+    entry: './demo/main.js',
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'mini-vue.js',

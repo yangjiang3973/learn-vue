@@ -1,6 +1,3 @@
-const { Compiler } = require('./compiler');
-// const { Observer, observeData } = require('./observer/observer');
-const { createElement } = require('./vdom/create-element');
 const { initMixin } = require('./instance/init');
 const { stateMixin } = require('./instance/state');
 const { lifecycleMixin } = require('./instance/lifecycle');

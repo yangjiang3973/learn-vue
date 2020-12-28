@@ -29,8 +29,8 @@ module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
     };
 
     Aue.prototype._update = function (vnode) {
+        console.log('aaaaa');
         const preVnode = this._vnode;
-
         if (!preVnode) {
             this.$el = this.__patch__(this.$el, vnode);
         } else {

@@ -18,6 +18,6 @@ module.exports.initMixin = function (Aue) {
         // callHook(this, 'beforeCreate');
         initState(this);
         // callHook(vm, 'created');
-        initRender(vm); //* NOTE: call vm.$mount() here!!
+        initRender(this); //* NOTE: call vm.$mount() here!!
     };
 };

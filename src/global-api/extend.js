@@ -1,11 +1,11 @@
 //Vue.extend, so this points to Vue class
 
 module.exports.initExtend = function initExtend(Aue) {
-    Aue.extend = extend(extendOptions) {
+    Aue.extend = function extend(extendOptions) {
         Sub = function AueComponent(options) {
             this._init(options);
         };
-    
+
         Sub.prototype = Object.create(this.prototype);
         Sub.prototype.constructor = Sub;
         // Sub has Super's static options(Aue.options)! not options passed by consumers
@@ -13,10 +13,10 @@ module.exports.initExtend = function initExtend(Aue) {
         Sub['super'] = this;
         // allow further extension
         Sub.extend = Super.extend;
-    
+
         return Sub;
     };
-}
+};
 
 // new Sub(options);
 
