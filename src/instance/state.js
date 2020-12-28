@@ -9,7 +9,7 @@ module.exports.initState = function (vm) {
     initData(vm);
     initComputed(vm);
     initMethods(vm);
-    intiWatch(vm);
+    initWatch(vm);
 };
 
 function initProps(vm) {}
@@ -36,7 +36,7 @@ function initData(vm) {
     });
 
     // observe data
-    const ob = observeData(this._data);
+    const ob = observeData(vm._data);
     // ob.addVm(this); // for $add, after add new data on root level, need to proxy, save vm as the target
 }
 

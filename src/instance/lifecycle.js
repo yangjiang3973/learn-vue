@@ -9,7 +9,8 @@ module.exports.initLifecycle = function initLifecycle(vm) {
 };
 
 module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
-    Aue.prototype._mount = function (el) {
+    Aue.prototype._mount = function (el, hydrating) {
+        this.$el = el;
         if (!this.$options.render) {
             console.error('need render function!');
         }
@@ -29,7 +30,6 @@ module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
 
     Aue.prototype._update = function (vnode) {
         const preVnode = this._vnode;
-
         if (!preVnode) {
             this.$el = this.__patch__(this.$el, vnode);
         } else {

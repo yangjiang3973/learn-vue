@@ -5,7 +5,8 @@ const { initRender } = require('./render');
 module.exports.initMixin = function (Aue) {
     Aue.prototype._init = function (options) {
         options = options || {};
-        // TODO: could add a _uid and _isVue
+        // TODO: could add a _uid
+        this._isAue = true;
 
         // merge options(now just a basic merge)
         this.$options = { ...options, ...Aue.options };
@@ -17,6 +18,6 @@ module.exports.initMixin = function (Aue) {
         // callHook(this, 'beforeCreate');
         initState(this);
         // callHook(vm, 'created');
-        initRender(vm); //* NOTE: call vm.$mount() here!!
+        initRender(this); //* NOTE: call vm.$mount() here!!
     };
 };
