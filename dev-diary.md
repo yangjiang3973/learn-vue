@@ -620,3 +620,22 @@ if child component defined props and has the pass key, this entry will move from
     ```
 
     \_init() is called in constructor of vue, and at that time all methods are already added to Vue.prototype.
+
+# 2020-12-27
+
+1. finish refactoring Aue.js and make it works.(render left: mount)
+
+# 2020-12-28
+
+1. what is the meaning of `assets` in Vue???
+
+```js
+/**
+ * List of asset types that a component can own.
+ */
+_assetTypes: [
+    'component',
+    'directive',
+    'filter'
+],
+```

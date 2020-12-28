@@ -18,7 +18,7 @@ module.exports.observeData = function (data) {
     } else if (
         _.isPlainObject(data) &&
         Object.isExtensible(data) &&
-        !data._isVue
+        !data._isAue
     ) {
         return new Observer(data);
     }

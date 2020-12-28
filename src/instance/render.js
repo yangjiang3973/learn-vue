@@ -9,7 +9,7 @@ module.exports.initRender = function (vm) {
 };
 
 module.exports.renderMixin = function(Aue) {
-    Vue.prototype._render = function () {
+    Aue.prototype._render = function () {
         const { render } = this.$options;
         let vnode;
         try {
@@ -19,14 +19,3 @@ module.exports.renderMixin = function(Aue) {
         }
         return vnode;
 }
-
-// module.exports._render = function () {
-//     const { render } = this.$options;
-//     let vnode;
-//     try {
-//         vnode = render.call(this, this.$createElement);
-//     } catch (e) {
-//         console.error(e);
-//     }
-//     return vnode;
-// };

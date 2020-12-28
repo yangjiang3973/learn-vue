@@ -11,7 +11,7 @@ module.exports.set = function (obj, key, val) {
         obj[key] = val;
         return;
     }
-    if (obj._isVue) {
+    if (obj._isAue) {
         this.set(obj._data, key, val);
         return;
     }
@@ -35,7 +35,7 @@ module.exports.delete = function (obj, key) {
     const ob = obj.__ob__;
     if (!ob) {
         // obj===vm
-        if (obj._isVue) {
+        if (obj._isAue) {
             delete obj._data[key];
             obj._digest();
         }
