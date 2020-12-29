@@ -1,3 +1,4 @@
+const { Aue } = require('../aue');
 const { VNode } = require('./vnode');
 const { Watcher } = require('../watcher');
 
@@ -76,13 +77,21 @@ function createElement(tag, data, children) {
             return tag.call(null, createElement);
         }
     } else if (typeof tag === 'object') {
-        console.log(tag);
+        // extend
+        const Ctor = Aue.extend(tag);
+        // extract props
+        data = data || {};
+        const propsData = extractProps(data, Ctor);
+
         const compVnode = tag.render.call(null, createElement);
-        console.log(
-            '🚀 ~ file: create-element.js ~ line 81 ~ createElement ~ compVnode',
-            compVnode
-        );
         return compVnode;
+    }
+}
+
+function extractProps(data, Ctor) {
+    const propOptions = Ctor.options.props;
+    if (!propOptions) {
+        return;
     }
 }
 

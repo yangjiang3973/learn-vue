@@ -652,3 +652,7 @@ I should bind the method in initMethods, not in addEventListener
 (TODO) Event listener's update is much complicated than I thought, need to refactor event part!
 
 4. to continue task in #2020-12-25, finish extend and make component works!
+
+# 2020-12-29
+
+1.
