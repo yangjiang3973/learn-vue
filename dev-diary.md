@@ -653,6 +653,14 @@ I should bind the method in initMethods, not in addEventListener
 
 4. to continue task in #2020-12-25, finish extend and make component works!
 
-# 2020-12-29
+# 2020-12-30
 
-1.
+1. why not create component instance and call render in place(in create-element.js)?
+
+instead, add init as hooks and call in patch
+
+because it uses the $mount function, which will not return vnode?
+
+or other reason?
+
+ok, now still follow the vue's logic and see the whole workflow for compnent.
