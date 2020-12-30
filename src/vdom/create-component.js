@@ -1,0 +1,44 @@
+const { Aue } = require('../aue');
+
+module.exports.createComponent = function createComponent(
+    tag,
+    data,
+    context,
+    children
+) {
+    // 1. extend
+    const Ctor = Aue.extend(tag);
+    // 2. extract props
+    data = data || {};
+    // const propsData = extractProps(data, Ctor);
+
+    // 3. add hooks to data
+    data.hook.init = function init(vnode) {
+        if (!vnode.child) {
+            // create a new component instance
+            const vnodeComponentOptions = vnode.componentOptions;
+            const options = {
+                _isComponent: true,
+                // parent,
+                propsData: vnodeComponentOptions.propsData,
+                // _componentTag: vnodeComponentOptions.tag,
+                _parentVnode: vnode,
+                _parentListeners: vnodeComponentOptions.listeners,
+                _renderChildren: vnodeComponentOptions.children,
+            };
+            vnode.child = new vnode.componentOptions.Ctor(options);
+            vnode.child.$mount(undefined); // add elm to vnode
+        }
+    };
+
+    return new VNode(
+        'vue-component',
+        data,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        context,
+        { Ctor, propsData, listeners, children }
+    );
+};

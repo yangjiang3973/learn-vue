@@ -15,6 +15,7 @@ module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
             console.error('need render function!');
         }
         //* here should call hook: beforeMount
+        // callHook(vm, 'beforeMount');
 
         // why make a watcher here?
         this._watcher = new Watcher(
@@ -26,6 +27,7 @@ module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
             },
             () => {}
         );
+        return this;
     };
 
     Aue.prototype._update = function (vnode) {

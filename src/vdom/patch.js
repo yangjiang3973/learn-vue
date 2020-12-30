@@ -1,9 +1,24 @@
 const { VNode } = require('./vnode');
+
 function emptyNodeAt(elm) {
     return new VNode(elm.tagName.toLowerCase(), {}, [], undefined, elm);
 }
 
 function createElm(vnode, nested, isSVG) {
+    // check component first
+    if (vnode.data) {
+        if (vnode.data.hook && vnode.data.hook.init) {
+            vnode.data.hook.init(vnode);
+            if (vnode.child) {
+                // vnode.child is actually the component instance, vnode.child = new vnode.componentOptions.Ctor(options);
+                // initComponent(vnode, insertedVnodeQueue);
+                vnode.elm = vnode.child.$el;
+                return vnode.elm;
+            }
+            return vnode.elm;
+        }
+    }
+
     isSVG = isSVG || vnode.ns;
     // maybe can avoid using undefined in vnode and here change to !== null
     if (vnode.tag != null) {
@@ -152,14 +167,6 @@ function patchChildren(oldChildren, newChildren, elm) {
                     newChildren[i].key !== undefined &&
                     newChildren[i].key === oldChildren[j].key
                 ) {
-                    console.log(
-                        '🚀 ~ file: patch.js ~ line 154 ~ addNewData ~ newData.on',
-                        newData.on
-                    );
-                    console.log(
-                        '🚀 ~ file: patch.js ~ line 154 ~ addNewData ~ newData.on',
-                        newData.on
-                    );
                     flag = true;
                     patch(oldChildren[j], newChildren[i]);
                     if (j < maxIndex) {
@@ -202,42 +209,45 @@ function patchChildren(oldChildren, newChildren, elm) {
 }
 
 function patch(oldVnode, newVnode) {
-    let oldElm, parent, elm;
-
-    if (oldVnode.nodeType) {
-        console.log('1');
-        // create an empty vnode and replace it
-        oldVnode = emptyNodeAt(oldVnode);
-
-        oldElm = oldVnode.elm;
-        parent = oldElm.parentNode;
-
-        // use vnode to generate real dom element
+    if (!oldVnode) {
         createElm(newVnode);
     } else {
-        // different node type, no need to compare, just replace directly
-        if (oldVnode.tag !== newVnode.tag) {
-            console.log('2');
+        let oldElm, parent, elm;
+
+        if (oldVnode.nodeType) {
+            console.log('1');
+            // create an empty vnode and replace it
+            oldVnode = emptyNodeAt(oldVnode);
+
             oldElm = oldVnode.elm;
             parent = oldElm.parentNode;
+
+            // use vnode to generate real dom element
             createElm(newVnode);
         } else {
-            console.log('3');
-            elm = newVnode.elm = oldVnode.elm;
-            // patch text
-            if (oldVnode.tag === undefined) {
-                console.log('3.1');
-                elm.data = newVnode.text;
-            } else patchData(elm, oldVnode, newVnode);
+            // different node type, no need to compare, just replace directly
+            if (oldVnode.tag !== newVnode.tag) {
+                console.log('2');
+                oldElm = oldVnode.elm;
+                parent = oldElm.parentNode;
+                createElm(newVnode);
+            } else {
+                console.log('3');
+                elm = newVnode.elm = oldVnode.elm;
+                // patch text
+                if (oldVnode.tag === undefined) {
+                    console.log('3.1');
+                    elm.data = newVnode.text;
+                } else patchData(elm, oldVnode, newVnode);
+            }
+        }
+
+        if (parent != null) {
+            parent.insertBefore(newVnode.elm, oldElm.nextSibling);
+            parent.removeChild(oldElm);
+            // removeVnodes(parent, [oldVnode], 0, 0);
         }
     }
-
-    if (parent != null) {
-        parent.insertBefore(newVnode.elm, oldElm.nextSibling);
-        parent.removeChild(oldElm);
-        // removeVnodes(parent, [oldVnode], 0, 0);
-    }
-
     return newVnode.elm;
 }
 
