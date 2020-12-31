@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     props: ['addTodo', 'todos'],
     data() {
         return {

@@ -1,6 +1,6 @@
-const { Watcher } = require('../watcher');
+import Watcher from '../watcher';
 
-module.exports.initLifecycle = function initLifecycle(vm) {
+export const initLifecycle = function initLifecycle(vm) {
     // vm._watcher = null;
     // vm._inactive = false;
     vm._isMounted = false;
@@ -8,7 +8,7 @@ module.exports.initLifecycle = function initLifecycle(vm) {
     vm._isDestroyed = false;
 };
 
-module.exports.lifecycleMixin = function lifecycleMixin(Aue) {
+export const lifecycleMixin = function lifecycleMixin(Aue) {
     Aue.prototype._mount = function (el, hydrating) {
         this.$el = el;
         if (!this.$options.render) {

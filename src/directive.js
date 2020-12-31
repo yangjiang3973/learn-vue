@@ -1,6 +1,6 @@
-const { Watcher } = require('./watcher');
-const { Dep } = require('./dep');
-const _ = require('./utils');
+import { Watcher } from './watcher';
+import { Dep } from './dep';
+import { isElementNode } from './utils';
 
 class Directive {
     constructor(name, el, vm, descriptors, def) {
@@ -14,10 +14,10 @@ class Directive {
     }
 
     _bind(def) {
-        if (_.isElementNode(this.el)) this.el.removeAttribute('v-' + this.name);
+        if (isElementNode(this.el)) this.el.removeAttribute('v-' + this.name);
 
         this.bind = def.bind;
-        this.update = def.update; // TODO: use `_.extend like vue`
+        this.update = def.update;
         this.bind();
         if (!def.isLiteral) {
             this._watcherExp = this.expression;
@@ -43,4 +43,4 @@ class Directive {
     }
 }
 
-module.exports.Directive = Directive;
+export default Directive;

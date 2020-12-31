@@ -13,4 +13,4 @@ class VNode {
     }
 }
 
-module.exports.VNode = VNode;
+export default VNode;

@@ -1,8 +1,11 @@
-const { initMixin } = require('./instance/init');
-const { stateMixin } = require('./instance/state');
-const { lifecycleMixin } = require('./instance/lifecycle');
-const { renderMixin } = require('./instance/render');
-const _ = require('./utils');
+import { initMixin } from './instance/init';
+import { stateMixin } from './instance/state';
+import { lifecycleMixin } from './instance/lifecycle';
+import { renderMixin } from './instance/render';
+import patch from './vdom/patch';
+import { query } from './utils';
+
+import initGlobalAPI from './global-api/index';
 
 class Aue {
     constructor(options) {
@@ -56,12 +59,16 @@ stateMixin(Aue);
 lifecycleMixin(Aue);
 renderMixin(Aue);
 
+initGlobalAPI(Aue);
+
 Aue.prototype.$mount = function (el, hydrating) {
     // el = el && !config._isServer ? query(el) : undefined
-    el = _.query(el);
+    el = query(el);
     return this._mount(el, hydrating);
 };
-Aue.prototype.__patch__ = require('./vdom/patch');
-Object.assign(Aue, require('./global-api/extend'));
 
-module.exports.Aue = Aue;
+Aue.prototype.__patch__ = patch;
+
+// Object.assign(Aue, require('./global-api/extend'));
+
+export default Aue;

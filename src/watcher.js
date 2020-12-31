@@ -1,9 +1,12 @@
-const { Dep, pushTarget, popTarget } = require('./dep');
-const batcher = require('./batcher');
-const config = require('./config');
+import Dep, { pushTarget, popTarget } from './dep';
+import { queueWatcher } from './batcher';
+import config from './config';
+
 // NOTE: curious about details of require. If filters are not used, will it occupy memory space?
-const filtersList = require('./filters');
-const { parseExpression } = require('../src/parsers/expression');
+// remove filters in watchers
+// import filtersList from './filters';
+
+import { parseExpression } from '../src/parsers/expression';
 
 let uid = 0;
 
@@ -70,12 +73,12 @@ class Watcher {
         }
 
         // apply filters to new value first
-        const { filters } = this.options;
-        if (filters) {
-            filters.forEach((filter) => {
-                newVal = filtersList[filter.name](newVal);
-            });
-        }
+        // const { filters } = this.options;
+        // if (filters) {
+        //     filters.forEach((filter) => {
+        //         newVal = filtersList[filter.name](newVal);
+        //     });
+        // }
         popTarget();
         // Dep.target = null;
         return newVal;
@@ -86,7 +89,7 @@ class Watcher {
         if (!config.async) {
             this.run();
         } else {
-            batcher.push(this);
+            queueWatcher(this);
         }
     }
 
@@ -142,4 +145,4 @@ class Watcher {
     }
 }
 
-module.exports.Watcher = Watcher;
+export default Watcher;

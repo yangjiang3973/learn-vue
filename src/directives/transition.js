@@ -1,11 +1,10 @@
-module.exports.priority = 1000;
+export const priority = 1000;
+export const isLiteral = true;
 
-module.exports.isLiteral = true;
-
-module.exports.bind = function () {
+export const bind = function () {
     this.update(this.expression);
 };
 
-module.exports.update = function (exp) {
+export const update = function (exp) {
     this.el.__v_trans = exp; // save transition id
 };

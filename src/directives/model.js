@@ -1,6 +1,4 @@
-const _ = require('../utils');
-
-module.exports.bind = function () {
+export const bind = function () {
     this.el.addEventListener(
         'input',
         (e) => {
@@ -10,6 +8,6 @@ module.exports.bind = function () {
     );
 };
 
-module.exports.update = function (value) {
+export const update = function (value) {
     this.el.value = typeof value === 'undefined' ? '' : value;
 };

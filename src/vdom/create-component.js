@@ -1,18 +1,16 @@
-const { Aue } = require('../aue');
+import Aue from '../aue';
+import VNode from './vnode';
 
-module.exports.createComponent = function createComponent(
-    tag,
-    data,
-    context,
-    children
-) {
+function createComponent(tag, data, context, children) {
     // 1. extend
     const Ctor = Aue.extend(tag);
+
     // 2. extract props
     data = data || {};
     // const propsData = extractProps(data, Ctor);
 
     // 3. add hooks to data
+    data.hook = {};
     data.hook.init = function init(vnode) {
         if (!vnode.child) {
             // create a new component instance
@@ -39,6 +37,9 @@ module.exports.createComponent = function createComponent(
         undefined,
         undefined,
         context,
-        { Ctor, propsData, listeners, children }
+        { Ctor, children }
+        // { Ctor, propsData, listeners, children }
     );
-};
+}
+
+export default createComponent;

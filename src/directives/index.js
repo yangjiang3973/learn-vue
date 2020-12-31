@@ -1,15 +1,10 @@
 // module.exports.text = require('./text');
 
-module.exports.model = require('./model');
+export const model = require('./model');
 
-module.exports.on = require('./on');
-
-module.exports.if = require('./if');
-
-module.exports.for = require('./for');
-
-module.exports.show = require('./show');
-
-module.exports.transition = require('./transition');
-
-module.exports.component = require('./component');
+export const on = require('./on');
+export const if = require('./if');
+export const for = require('./for');
+export const show = require('./show');
+export const transition = require('./transition');
+export const component = require('./component');

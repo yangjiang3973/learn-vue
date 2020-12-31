@@ -1,14 +1,14 @@
 // const { Watcher } = require('../watcher');
 
-module.exports.$add = function (key, val) {
+export const $add = function (key, val) {
     this._data.$add(key, val);
 };
 
-module.exports.$delete = function (key) {
+export const $delete = function (key) {
     this._data.$delete(key);
 };
 
-module.exports.$set = function (key) {
+export const $set = function (key) {
     this._data.$set(key);
 };
 

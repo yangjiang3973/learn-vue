@@ -1,4 +1,4 @@
-module.exports.parse = function (text) {
+export const parse = function (text) {
     const tagRE = /\{?\{\{(.+?)\}\}\}?/g;
     // after test, need to reset lastIndex
     if (!tagRE.test(text)) return;

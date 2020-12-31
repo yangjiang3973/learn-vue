@@ -1,8 +1,7 @@
-const compile = require('../compile/compile'); // BUG: circle require..
-const { Directive } = require('../directive');
-const _ = require('../utils');
+import compile from '../compile/compile'; // BUG: circle require..
+import Directive from '../directive';
 
-module.exports.bind = function () {
+export const bind = function () {
     this.start = document.createComment('v-if-start');
     this.end = document.createComment('v-if-end');
     // replace on dom tree
@@ -19,7 +18,7 @@ module.exports.bind = function () {
     this.links = compile(this.template, this.vm);
 };
 
-module.exports.update = function (value) {
+export const update = function (value) {
     if (value) {
         // insert frag instead of template
         // apply transition

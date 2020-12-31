@@ -664,3 +664,15 @@ because it uses the $mount function, which will not return vnode?
 or other reason?
 
 ok, now still follow the vue's logic and see the whole workflow for compnent.
+
+2. BUG: circular dependency
+
+why in vue2.0 no issue like this, it seems the import structure is similar....
+
+need to print dependency tree in detail in both repo
+
+Progress 1: seems this is a commonJS feature for circular dependency: return empty object
+
+one solution is to put require at the end, after necessary require: `https://stackoverflow.com/questions/30378226/circular-imports-with-webpack-returning-empty-object`
+
+3. maybe this is the time to change from commonJS to ES6

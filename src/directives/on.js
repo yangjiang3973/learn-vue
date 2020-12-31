@@ -1,6 +1,4 @@
-const _ = require('../utils');
-
-module.exports.bind = function () {
+export const bind = function () {
     const eventType = this.name.split(':')[1];
     const fn = this.vm[this.expression];
     if (eventType && fn) {
@@ -8,6 +6,6 @@ module.exports.bind = function () {
     }
 };
 
-module.exports.update = function (value) {
+export const update = function (value) {
     return;
 };

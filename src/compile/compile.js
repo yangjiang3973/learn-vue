@@ -1,15 +1,20 @@
-const _ = require('../utils');
-const dirParser = require('../parsers/directive');
-const textParser = require('../parsers/text');
+import dirParser from '../parsers/directive';
+import textParser from '../parsers/text';
+import {
+    isElementNode,
+    isTextNode,
+    isDirective,
+    isEventDirective,
+} from '../utils';
 
 /* return links: [{node, dirs}] */
-module.exports = function compile(el, vm) {
+export default function compile(el, vm) {
     const links = []; // [{node, dirs}]
     if (el.hasChildNodes()) {
         compileNodeList(el.childNodes, vm, links);
     }
     return links;
-};
+}
 
 function compileNodeList(nodeList, vm, links) {
     let terminalFlag;
@@ -24,8 +29,8 @@ function compileNodeList(nodeList, vm, links) {
 }
 
 function compileNode(node, vm, links) {
-    if (_.isElementNode(node)) return compileElement(node, vm, links);
-    else if (_.isTextNode(node)) {
+    if (isElementNode(node)) return compileElement(node, vm, links);
+    else if (isTextNode(node)) {
         return compileText(node, vm, links);
     } else return null;
 }
@@ -73,32 +78,13 @@ function checkTerminalDirectives(attrs, vm) {
     for (let i = 0; i < attrs.length; i++) {
         const name = attrs[i].name;
         if (
-            _.isDirective(name) &&
+            isDirective(name) &&
             terminalDirectives.includes(name.substring(2))
         ) {
             return true;
         }
     }
 }
-
-// function checkTerminalDirectives(attrs, vm) {
-//     const terminalDirectives = ['repeat', 'if', 'component'];
-//     for (let i = 0; i < attrs.length; i++) {
-//         const name = attrs[i].name;
-//         if (
-//             _.isDirective(name) &&
-//             terminalDirectives.includes(name.substring(2))
-//         ) {
-//             return [
-//                 {
-//                     name: name.substring(2),
-//                     descriptors: dirParser.parse(attrs[i].value),
-//                     def: vm.options.directives[name.substring(2)],
-//                 },
-//             ];
-//         }
-//     }
-// }
 
 function collectDirectives(nodeAttrs, vm) {
     /* dirs=[{
@@ -109,10 +95,10 @@ function collectDirectives(nodeAttrs, vm) {
     }] */
     let dirs = [];
     nodeAttrs.forEach((attr) => {
-        if (_.isDirective(attr.name)) {
+        if (isDirective(attr.name)) {
             let dirName = attr.name.substring(2); // need to check event handler, such as v-on:click, vue 1.0 uses regExp
             let dirDef;
-            if (_.isEventDirective(dirName)) {
+            if (isEventDirective(dirName)) {
                 dirDef = vm.options.directives[dirName.substring(0, 2)];
             } else {
                 dirDef = vm.options.directives[dirName];

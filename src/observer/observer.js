@@ -1,28 +1,28 @@
-const _ = require('../utils');
-const { Dep } = require('../dep');
-require('./object'); // just include and make functions run
-require('./array');
+import Dep from '../dep';
+// import './object'; // just include and make functions run
+// import './array';
+import { isArray, isPlainObject, isReserverd } from '../utils';
 
 const ArrayType = 1;
 const ObjectType = 2;
 
 const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']; //overrideArrayMethod
 
-module.exports.observeData = function (data) {
+export default function observeData(data) {
     if (!data || typeof data !== 'object') return;
 
     if (data.__ob__ && data.__ob__ instanceof Observer) {
         return data.__ob__;
-    } else if (_.isArray(data)) {
+    } else if (isArray(data)) {
         return new Observer(data, ArrayType);
     } else if (
-        _.isPlainObject(data) &&
+        isPlainObject(data) &&
         Object.isExtensible(data) &&
         !data._isAue
     ) {
         return new Observer(data);
     }
-};
+}
 
 class Observer {
     constructor(obj, type) {
@@ -37,7 +37,7 @@ class Observer {
 
     observe(obj) {
         Object.keys(obj).forEach((key) => {
-            if (_.isReserverd(key)) return;
+            if (isReserverd(key)) return;
             this.defineReactive(obj, key, obj[key]);
         });
     }
@@ -149,5 +149,3 @@ class Observer {
         if (this.vm === vm) this.vm = null;
     }
 }
-
-module.exports.Observer = Observer;

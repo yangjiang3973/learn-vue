@@ -1,4 +1,4 @@
-const { VNode } = require('./vnode');
+import VNode from './vnode';
 
 function emptyNodeAt(elm) {
     return new VNode(elm.tagName.toLowerCase(), {}, [], undefined, elm);
@@ -251,4 +251,4 @@ function patch(oldVnode, newVnode) {
     return newVnode.elm;
 }
 
-module.exports = patch;
+export default patch;
