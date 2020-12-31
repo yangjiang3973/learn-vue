@@ -1,9 +1,8 @@
-const { observeData } = require('../observer/observer');
-const { Watcher } = require('../watcher');
+import observeData from '../observer/observer';
+import Watcher from '../watcher';
+import { isReserverd } from '../utils';
 
-const _ = require('../utils');
-
-module.exports.initState = function (vm) {
+export const initState = function (vm) {
     vm._watcherList = [];
     initProps(vm);
     initData(vm);
@@ -21,7 +20,7 @@ function initData(vm) {
     // proxy data
     Object.keys(vm._data).forEach((key) => {
         // check reserved key word
-        if (!_.isReserverd(key)) {
+        if (!isReserverd(key)) {
             Object.defineProperty(vm, key, {
                 enumerable: true,
                 configurable: true,
@@ -61,16 +60,18 @@ function initComputed(vm) {
 
 function initMethods(vm) {
     const methods = vm.$options.methods;
-    Object.keys(methods).forEach((key) => {
-        vm[key] = methods[key].bind(vm);
-    });
+    if (methods) {
+        Object.keys(methods).forEach((key) => {
+            vm[key] = methods[key].bind(vm);
+        });
+    }
 }
 
 function initWatch(vm) {
     // TODO:
 }
 
-module.exports.stateMixin = function (Aue) {
+export const stateMixin = function (Aue) {
     // $data
     Object.defineProperty(Aue.prototype, '$data', {
         get() {

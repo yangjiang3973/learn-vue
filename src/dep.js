@@ -40,14 +40,14 @@ class Dep {
 // can be evaluated at a time.
 const targetStack = [];
 
-module.exports.pushTarget = function pushTarget(target) {
+export const pushTarget = function pushTarget(target) {
     targetStack.push(target);
     Dep.target = target;
 };
 
-module.exports.popTarget = function popTarget() {
+export const popTarget = function popTarget() {
     targetStack.pop();
     Dep.target = targetStack[targetStack.length - 1];
 };
 
-module.exports.Dep = Dep;
+export default Dep;

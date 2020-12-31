@@ -1,7 +1,8 @@
 // seems not necessary to make batcher as a class
 // maybe change later
-const _ = require('./utils');
-const config = require('../src/config');
+import { warn, nextTick } from './utils';
+
+import config from '../src/config';
 
 let queue = [];
 let userQueue = [];
@@ -20,7 +21,7 @@ function runQueue(queue) {
         if (process.env.NODE_ENV !== 'production' && has[watcher.id] !== null) {
             circular[watcher.id] = (circular[watcher.id] || 0) + 1;
             if (circular[watcher.id] > config._maxUpdateCount) {
-                _.warn(`You may have an infinite update loop for watcher`);
+                warn(`You may have an infinite update loop for watcher`);
                 break;
             }
         }
@@ -44,7 +45,7 @@ function flush() {
     circular = {};
 }
 
-module.exports.push = function (watcher) {
+export const queueWatcher = function (watcher) {
     // NOTE: cannot use if(has[id]), because the first value may be 0
     // NOTE: when flushing is true, allow duplicate..I still do not understand
     // maybe only in 0.11? 1.0 is different?
@@ -65,6 +66,6 @@ module.exports.push = function (watcher) {
     q.push(watcher);
     if (!waiting) {
         waiting = true;
-        _.nextTick(flush);
+        nextTick(flush);
     }
 };

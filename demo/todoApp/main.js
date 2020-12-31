@@ -1,6 +1,7 @@
 // import Vue from 'vue';
-const { Aue } = require('../../src/aue');
-const Header = require('./header');
+import Aue from '../../src/aue';
+
+import Header from './header';
 // const List = require('./list');
 // const Foote = require('./footer');
 

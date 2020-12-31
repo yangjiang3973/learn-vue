@@ -1,6 +1,6 @@
 // keep properties in alphabetical order!
 
-module.exports = {
+export default {
     // Whether to use async updates.
     async: true,
 

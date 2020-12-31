@@ -1,6 +1,6 @@
-const templateParser = require('../parsers/template');
+import templateParser from '../parsers/template';
 
-module.exports.transclude = function (el, template) {
+export const transclude = function (el, template) {
     if (template) {
         const frag = templateParser.parse(template);
         // clear all el children

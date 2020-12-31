@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     props: ['todos', 'filter', 'chooseFilter'],
     computed: {
         remaining: function () {

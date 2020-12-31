@@ -1,6 +1,6 @@
-const { createElement } = require('../vdom/create-element');
+import createElement from '../vdom/create-element';
 
-module.exports.initRender = function (vm) {
+export const initRender = function (vm) {
     // vm.$vnode = null; // the placeholder node in parent tree
     // vm._vnode = null; // the root of the child tree
     // vm._staticTrees = null;
@@ -10,7 +10,7 @@ module.exports.initRender = function (vm) {
     }
 };
 
-module.exports.renderMixin = function (Aue) {
+export const renderMixin = function (Aue) {
     Aue.prototype._render = function () {
         const { render } = this.$options;
         let vnode;

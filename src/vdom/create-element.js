@@ -1,7 +1,6 @@
-const { VNode } = require('./vnode');
-// const { Aue } = require('../aue');
-const { Watcher } = require('../watcher');
-const { createComponent } = require('./create-component');
+import VNode from './vnode';
+import Watcher from '../watcher';
+import createComponent from './create-component';
 
 function createElement(tag, data, children) {
     if (data && (Array.isArray(data) || typeof data !== 'object')) {
@@ -82,11 +81,4 @@ function createElement(tag, data, children) {
     }
 }
 
-function extractProps(data, Ctor) {
-    const propOptions = Ctor.options.props;
-    if (!propOptions) {
-        return;
-    }
-}
-
-module.exports.createElement = createElement;
+export default createElement;

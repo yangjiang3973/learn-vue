@@ -1,6 +1,6 @@
-// const { warn } = require('../util/index');
-const { parsePath, setPath } = require('./path');
-const Cache = require('../cache');
+import { parsePath, setPath } from './path';
+
+import Cache from '../cache';
 
 const expressionCache = new Cache(1000);
 
@@ -104,7 +104,7 @@ function restore(str, i) {
  * @return {Function}
  */
 
-module.exports.parseExpression = function (exp, needSet) {
+export const parseExpression = function (exp, needSet) {
     exp = exp.trim();
     // try cache
     // var hit = expressionCache.get(exp);

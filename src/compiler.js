@@ -1,13 +1,13 @@
-const { Directive } = require('./directive');
-const { transclude } = require('./compile/transclude');
-const compile = require('./compile/compile');
-const _ = require('./utils');
+import Directive from './directive';
+import { transclude } from './compile/transclude';
+import compile from './compile/compile';
+import { isElementNode } from './utils';
 
 class Compiler {
     constructor(el, vm) {
         // 3 stages: transclude, compile and link
         // this.$vm = vm;
-        this.$el = _.isElementNode(el) ? el : document.querySelector(el);
+        this.$el = isElementNode(el) ? el : document.querySelector(el);
         // this.vm = vm;
         // transclude: convert template string to dom and append to el
         transclude(this.$el, vm.options.template);
@@ -30,4 +30,4 @@ class Compiler {
     }
 }
 
-module.exports.Compiler = Compiler;
+export default Compiler;

@@ -1,7 +1,7 @@
-const _ = require('../utils');
+import {isElementNode} from '../utils';
 
 module.exports.bind = function () {
-    _.isElementNode(this.el)
+    isElementNode(this.el)
         ? (this.attrToBind = 'textContent')
         : (this.attrToBind = 'data');
 };

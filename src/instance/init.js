@@ -1,8 +1,8 @@
-const { initLifecycle } = require('./lifecycle');
-const { initState } = require('./state.js');
-const { initRender } = require('./render');
+import { initLifecycle } from './lifecycle';
+import { initState } from './state.js';
+import { initRender } from './render';
 
-module.exports.initMixin = function (Aue) {
+export const initMixin = function (Aue) {
     Aue.prototype._init = function (options) {
         options = options || {};
         // TODO: could add a _uid

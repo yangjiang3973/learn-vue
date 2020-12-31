@@ -1,4 +1,4 @@
-module.exports.parse = function (template) {
+export const parse = function (template) {
     const frag = document.createDocumentFragment();
     const container = document.createElement('div');
     container.innerHTML = template.trim();

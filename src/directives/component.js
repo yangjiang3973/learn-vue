@@ -1,7 +1,6 @@
-const _ = require('../utils');
-const { Compiler } = require('../compiler');
+import Compiler from '../compiler';
 
-module.exports.bind = function () {
+export const bind = function () {
     /*
     1. instantiate sub class
     2. call compiler
@@ -11,4 +10,4 @@ module.exports.bind = function () {
     new Compiler(this.el, comp);
 };
 
-module.exports.update = function (value) {};
+export const update = function (value) {};

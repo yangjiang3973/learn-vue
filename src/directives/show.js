@@ -1,10 +1,8 @@
-const _ = require('../utils');
-
-module.exports.bind = function () {
+export const bind = function () {
     this.attrToBind = this.el.style;
 };
 
-module.exports.update = function (value) {
+export const update = function (value) {
     if (value) {
         this.attrToBind.display = '';
     } else {

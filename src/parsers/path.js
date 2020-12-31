@@ -1,1 +1,1 @@
-module.exports.parse = function (path) {};
+export const parse = function (path) {};

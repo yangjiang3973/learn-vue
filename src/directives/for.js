@@ -1,5 +1,2 @@
-const _ = require('../utils');
-
-module.exports.bind = function () {};
-
-module.exports.update = function (value) {};
+export const bind = function () {};
+export const update = function (value) {};

@@ -8,7 +8,7 @@
 //         args,
 //     }, {}...]
 // }
-module.exports.parse = function (str) {
+export const parse = function (str) {
     const dirs = [];
     const filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g; // TODO: learn RegExp further
 

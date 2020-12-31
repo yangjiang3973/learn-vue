@@ -1,6 +1,6 @@
-const { Aue } = require('./aue');
-const { Observer } = require('./observer/observer');
-const { Dep } = require('./dep');
+import { Aue } from './aue';
+import { Observer } from './observer/observer';
+import { Dep } from './dep';
 
 Aue.directive('demo', {
     bind: function () {
