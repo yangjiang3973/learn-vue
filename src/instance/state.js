@@ -11,11 +11,30 @@ export const initState = function (vm) {
     initWatch(vm);
 };
 
-function initProps(vm) {}
+function initProps(vm) {
+    // no copy to vm, just defineProperty on vm to get from prop
+    // TODO: re-use defineReactive logic from Observer, maybe extract some code in defineReactive into a new function(simple defineProperty) and use in defineReactive
+    const props = vm.$options.props;
+    const propsData = vm.$options.propsData;
+    if (!props || !propsData) return;
+
+    Object.keys(props).forEach((key) => {
+        const val = propsData[key];
+        Object.defineProperty(vm, key, {
+            enumerable: true,
+            configurable: true,
+            get: function reactiveGetter() {
+                return val;
+            },
+            set: function reactiveSetter(newVal) {},
+        });
+    });
+}
 
 function initData(vm) {
     let data = vm.$options.data;
     data = vm._data = typeof data === 'function' ? data.call(vm) : data || {};
+    console.log('🚀 ~ file: state.js ~ line 37 ~ initData ~ data', data);
 
     // proxy data
     Object.keys(vm._data).forEach((key) => {

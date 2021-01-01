@@ -7,7 +7,7 @@ function createComponent(tag, data, context, children) {
 
     // 2. extract props
     data = data || {};
-    // const propsData = extractProps(data, Ctor);
+    const propsData = extractProps(data, Ctor);
 
     // 3. add hooks to data
     data.hook = {};
@@ -37,9 +37,29 @@ function createComponent(tag, data, context, children) {
         undefined,
         undefined,
         context,
-        { Ctor, children }
+        { Ctor, propsData, children }
         // { Ctor, propsData, listeners, children }
     );
+}
+
+function extractProps(data, Ctor) {
+    const propsList = Ctor.options.props;
+    if (!propsList) return;
+    const res = {};
+
+    for (const key in propsList) {
+        // prop maybe in props, attrs or domProps
+        if (data.attrs) {
+            res[key] = data.attrs[key];
+        }
+        if (data.props) {
+            res[key] = data.props[key];
+        }
+        if (data.domProps) {
+            res[key] = data.domProps[key];
+        }
+    }
+    return res;
 }
 
 export default createComponent;
