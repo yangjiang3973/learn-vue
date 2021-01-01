@@ -67,7 +67,7 @@ function initComputed(vm) {
     Object.keys(computed).forEach((key) => {
         const userDef = computed[key];
         if (typeof userDef === 'function') {
-            Object.defineProperty(this, key, {
+            Object.defineProperty(vm, key, {
                 enumerable: true,
                 configurable: true,
                 get: userDef,
