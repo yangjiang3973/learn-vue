@@ -34,8 +34,6 @@ function initProps(vm) {
 function initData(vm) {
     let data = vm.$options.data;
     data = vm._data = typeof data === 'function' ? data.call(vm) : data || {};
-    console.log('🚀 ~ file: state.js ~ line 37 ~ initData ~ data', data);
-
     // proxy data
     Object.keys(vm._data).forEach((key) => {
         // check reserved key word

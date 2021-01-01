@@ -54,6 +54,7 @@ export default {
             <section class="main">
                 <ul class="todo-list">
                     {this.filteredTodos.map((todo) => {
+                        console.log('List:', todo.text);
                         return (
                             <li
                                 class={{

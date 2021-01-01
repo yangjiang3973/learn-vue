@@ -704,3 +704,17 @@ TODO: need to re-factor observer a little. For child obj, use observeData again?
 now just use a dirty fix
 
 2. TODO: refactor unit test(commonJS to es6)
+
+3. BUG: `this.filteredTodos.map` in JSX will return an array
+
+```jsx
+<ul>
+    {this.filteredTodos.map((todo) => {
+        return <li>aaa</li>;
+    })}
+</ul>
+```
+
+this mean `<ul>[li, li, li]</ul>`
+
+so need to normalize!
