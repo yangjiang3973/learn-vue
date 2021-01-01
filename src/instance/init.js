@@ -8,8 +8,14 @@ export const initMixin = function (Aue) {
         // TODO: could add a _uid
         this._isAue = true;
 
-        // merge options(now just a basic merge)
-        this.$options = { ...options, ...Aue.options };
+        if (options._isComponent) {
+            // TODO: use function: initInternalComponent(this, options);
+            // TODO: need to normalize props
+            this.$options = { ...options, ...this.constructor.options };
+        } else {
+            // merge options(now just a basic merge)
+            this.$options = { ...options, ...Aue.options };
+        }
 
         // TODO: in development mode, could add a proxy for debuging purpose
 
@@ -21,3 +27,7 @@ export const initMixin = function (Aue) {
         initRender(this); //* NOTE: call vm.$mount() here!!
     };
 };
+
+// function initInternalComponent(vm, options) {
+//     vm.$options = { ...options, ...vm.constructor.options };
+// }

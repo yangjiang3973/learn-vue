@@ -9,7 +9,16 @@ export default function initExtend(Aue) {
         Sub.prototype = Object.create(this.prototype);
         Sub.prototype.constructor = Sub;
         // Sub has Super's static options(Aue.options)! not options passed by consumers
+        // TODO: change to mergeOptions, which will normalize props
         Sub.options = { ...extendOptions, ...Aue.options };
+        const res = {};
+        if (Array.isArray(Sub.options.props)) {
+            Sub.options.props.forEach((element) => {
+                res[element] = null;
+            });
+        }
+        Sub.options.props = res;
+
         Sub['super'] = this;
         // allow further extension
         Sub.extend = this.extend; // this is super class

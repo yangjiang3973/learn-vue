@@ -675,4 +675,32 @@ Progress 1: seems this is a commonJS feature for circular dependency: return emp
 
 one solution is to put require at the end, after necessary require: `https://stackoverflow.com/questions/30378226/circular-imports-with-webpack-returning-empty-object`
 
-3. maybe this is the time to change from commonJS to ES6
+3. (DONE) maybe this is the time to change from commonJS to ES6
+
+4. FIXED: render function missing in component options
+
+TODO: but still have problem in process options in different stages.
+
+need to re-consider differnt options in instance and component class and Vue(or call it constructor function)
+
+5. TODO: props related features in component:
+
+    1. `normalizeProps`(is called in `mergeOptions`)
+
+    2. proxy prop
+
+    3. make props reactive to changes
+
+# 2020-12-31
+
+1. BUG: caused by `typeof null === 'object'`...
+
+in Observer, need to use a better way to check child data's type.
+
+maybe reuse 'observeData' function?
+
+TODO: need to re-factor observer a little. For child obj, use observeData again? and run the unit test again after refactor
+
+now just use a dirty fix
+
+2. TODO: refactor unit test(commonJS to es6)

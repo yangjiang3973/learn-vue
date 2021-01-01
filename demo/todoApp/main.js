@@ -1,9 +1,8 @@
 // import Vue from 'vue';
 import Aue from '../../src/aue';
-
 import Header from './header';
-// const List = require('./list');
-// const Foote = require('./footer');
+import List from './list';
+import Footer from './footer';
 
 let vm = new Aue({
     el: '#app',
@@ -28,8 +27,8 @@ let vm = new Aue({
         return (
             <section class="todoapp">
                 <Header todos={this.todos} addTodo={this.addTodo}></Header>
-                {/* <List todos={this.todos} filter={this.filter}></List>
-                <Footer
+                <List todos={this.todos} filter={this.filter}></List>
+                {/* <Footer
                     todos={this.todos}
                     filter={this.filter}
                     chooseFilter={this.chooseFilter}

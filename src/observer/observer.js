@@ -53,7 +53,9 @@ class Observer {
         }
 
         let dep = new Dep();
-        if (typeof obj[key] === 'object') {
+        if (obj[key] != null && typeof obj[key] === 'object') {
+            // TODO: call observaData(obj[key])?
+
             // if this is array, fake proto first?
             const childOb = new Observer(obj[key]);
             childOb.dep = dep;
@@ -84,7 +86,7 @@ class Observer {
                     if (val && val.__ob__) {
                         val.__ob__.dep = null;
                     }
-                    if (typeof newVal === 'object') {
+                    if (newVal != null && typeof newVal === 'object') {
                         let childOb;
                         if (Array.isArray(newVal)) {
                             childOb = new Observer(newVal, ArrayType);
