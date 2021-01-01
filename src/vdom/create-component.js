@@ -25,7 +25,7 @@ function createComponent(tag, data, context, children) {
                 _renderChildren: vnodeComponentOptions.children,
             };
             vnode.child = new vnode.componentOptions.Ctor(options);
-            vnode.child.$mount(undefined); // add elm to vnode
+            vnode.child.$mount(undefined); // add elm to vnode.child as $el
         }
     };
 

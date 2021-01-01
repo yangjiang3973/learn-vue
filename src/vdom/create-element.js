@@ -9,7 +9,10 @@ function createElement(tag, data, children) {
     }
 
     if (typeof tag === 'string') {
+        // console.log('tag!!!!!!!', tag);
         if (Array.isArray(children)) {
+            // TODO: use normalizeChild??
+            children = children.flat(); // by default, just one level depth
             for (let i = 0; i < children.length; i++) {
                 if (typeof children[i] === 'string') {
                     // text node
@@ -23,6 +26,12 @@ function createElement(tag, data, children) {
                         this
                     );
                 }
+                // else if (Array.isArray(children[i])) {
+                //     if (children[i].length === 0) children.splice(i, 1);
+                //     else {
+                //         children
+                //     }
+                // }
             }
         }
         if (tag === 'svg') {

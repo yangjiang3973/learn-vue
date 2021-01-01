@@ -36,6 +36,7 @@ function createElm(vnode, nested, isSVG) {
     } else if (vnode.isComment) {
         vnode.elm = document.createComment(vnode.text);
     } else {
+        console.log('!!!!!!', vnode.text);
         vnode.elm = document.createTextNode(vnode.text);
     }
     return vnode.elm;
