@@ -693,7 +693,7 @@ need to re-consider differnt options in instance and component class and Vue(or 
 
 # 2020-12-31
 
-1. BUG: caused by `typeof null === 'object'`...
+1. FIXED: caused by `typeof null === 'object'`...
 
 in Observer, need to use a better way to check child data's type.
 
@@ -705,7 +705,7 @@ now just use a dirty fix
 
 2. TODO: refactor unit test(commonJS to es6)
 
-3. BUG: `this.filteredTodos.map` in JSX will return an array
+3. FIXED: `this.filteredTodos.map` in JSX will return an array
 
 ```jsx
 <ul>
@@ -715,6 +715,56 @@ now just use a dirty fix
 </ul>
 ```
 
-this mean `<ul>[li, li, li]</ul>`
+this mean `<ul>[li, li, li]</ul>`(even deeper nested array: `[[],[[],[[]]]]`)
 
-so need to normalize!
+so need to flat!(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
+
+TODO: make a better `normalizeChildren()`
+
+# 2020-01-02
+
+1. TODO: make a better way to see the vnode patching process(maybe a visualized way? log? which can see each node's changes)
+
+2. FIXED: checkbox input jsx binding
+
+because domProps are not set properly
+
+# 2020-01-03
+
+1. (TODO) deal with `domProps`, what will be included into domProps and how to set these attributes in dom element? need to learn from Vue's `updateDOMProps()` function
+
+    1. (DONE) checked
+
+    2. value
+
+    3. selected
+
+    4. muted
+
+    5. textContent(it is prop, not in attr)
+
+    6. innerHTML
+
+in summary of `HTML attribute vs. DOM property`, attributes are defined by HTML. Properties are defined by the DOM (Document Object Model).
+
+attributes initialize DOM properties and then they are done. Property values can change; attribute values can't.
+
+A few HTML attributes have 1:1 mapping to properties. id is one example.
+
+Some HTML attributes don't have corresponding properties. colspan is one example.
+
+Some DOM properties don't have corresponding attributes. textContent is one example.
+
+Many HTML attributes appear to map to properties ... but not in the way you might think!
+
+(https://stackoverflow.com/questions/6003819/what-is-the-difference-between-properties-and-attributes-in-html)
+
+2. TODO: some directive syntax sugars in JSX(vModel, vShow...)
+
+3. TODO: $refs!!
+
+```html
+<input type="text" class="edit" ref="{`inputEdit-${todo.id}`}" />
+```
+
+should add each ref element to the `this.refs`. this means need to add to instance.
