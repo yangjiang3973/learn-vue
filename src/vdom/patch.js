@@ -36,7 +36,6 @@ function createElm(vnode, nested, isSVG) {
     } else if (vnode.isComment) {
         vnode.elm = document.createComment(vnode.text);
     } else {
-        console.log('!!!!!!', vnode.text);
         vnode.elm = document.createTextNode(vnode.text);
     }
     return vnode.elm;
@@ -74,11 +73,15 @@ function removeMissingData(elm, oldVnode, newVnode) {
                 break;
             case 'on':
                 for (let k in oldData.on) {
-                    console.log(oldVnode.context);
                     elm.removeEventListener(
                         k,
                         oldData.on[k].bind(oldVnode.context)
                     );
+                }
+                break;
+            case 'domProps':
+                for (let k in newData.domProps) {
+                    elm.setAttribute(k, newData.domProps[k]);
                 }
                 break;
             default:
@@ -111,7 +114,7 @@ function addNewData(elm, oldVnode, newVnode) {
             case 'class':
                 if (typeof newData.class === 'string') {
                     elm.className = newData.class;
-                } else if (newData.class === 'object') {
+                } else if (typeof newData.class === 'object') {
                     elm.className = '';
                     for (let k in newData.class) {
                         if (newData.class[k]) elm.classList.add(k);
@@ -121,6 +124,11 @@ function addNewData(elm, oldVnode, newVnode) {
             case 'on':
                 for (let k in newData.on) {
                     elm.addEventListener(k, newData.on[k]);
+                }
+                break;
+            case 'domProps':
+                for (let k in newData.domProps) {
+                    elm[k] = newData.domProps[k];
                 }
                 break;
             default:
@@ -172,7 +180,6 @@ function patchChildren(oldChildren, newChildren, elm) {
                     patch(oldChildren[j], newChildren[i]);
                     if (j < maxIndex) {
                         const refElm = newChildren[i - 1].elm.nextSibling;
-                        console.log('move', oldChildren[j].key);
                         elm.insertBefore(oldChildren[j].elm, refElm);
                         break;
                     } else {
@@ -181,7 +188,6 @@ function patchChildren(oldChildren, newChildren, elm) {
                 }
             }
             if (flag === false) {
-                console.log('new element');
                 const refElm =
                     i < 1
                         ? oldChildren[0].elm

@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         changeState: function (e, todo) {
-            todo.done = e.target.checked;
+            todo.done = !todo.done;
         },
         removeTodo: function (todo) {
             this.todos.splice(this.todos.indexOf(todo), 1);
@@ -54,7 +54,6 @@ export default {
             <section class="main">
                 <ul class="todo-list">
                     {this.filteredTodos.map((todo) => {
-                        console.log('List:', todo.text);
                         return (
                             <li
                                 class={{
@@ -68,7 +67,11 @@ export default {
                                     <input
                                         type="checkbox"
                                         class="toggle"
-                                        vModel={todo.done}
+                                        // vModel={todo.done}
+                                        checked={todo.done}
+                                        onChange={(e) =>
+                                            this.changeState(e, todo)
+                                        }
                                     />
                                     <label
                                         onDblclick={() => this.editTodo(todo)}
