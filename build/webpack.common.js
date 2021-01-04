@@ -1,6 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
@@ -16,6 +17,10 @@ module.exports = {
     },
     module: {
         rules: [
+            // {
+            //     test: /\.css$/,
+            //     use: ['style-loader', 'css-loader'],
+            // },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -39,5 +44,13 @@ module.exports = {
             title: 'Output Management',
             template: path.resolve(__dirname, '../index.html'),
         }), // generate html
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, '../demo/todoApp/style.css'),
+                    to: path.resolve(__dirname, '../dist/'),
+                },
+            ],
+        }),
     ],
 };

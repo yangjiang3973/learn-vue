@@ -768,3 +768,11 @@ Many HTML attributes appear to map to properties ... but not in the way you migh
 ```
 
 should add each ref element to the `this.refs`. this means need to add to instance.
+
+# 2020-01-04
+
+1. $refs can work on both element and component
+
+    1. element
+
+    2. component
