@@ -73,15 +73,14 @@ function removeMissingData(elm, oldVnode, newVnode) {
                 break;
             case 'on':
                 for (let k in oldData.on) {
-                    elm.removeEventListener(
-                        k,
-                        oldData.on[k].bind(oldVnode.context)
-                    );
+                    elm.removeEventListener(k, oldData.on[k]);
                 }
                 break;
             case 'domProps':
-                for (let k in newData.domProps) {
-                    elm.setAttribute(k, newData.domProps[k]);
+                for (let k in oldData.domProps) {
+                    if (!newData || !newData.domProps || !newData.domProps[k]) {
+                        elm.domProps[k] = undefined;
+                    }
                 }
                 break;
             default:
@@ -131,9 +130,14 @@ function addNewData(elm, oldVnode, newVnode) {
                     elm[k] = newData.domProps[k];
                 }
                 break;
+            case 'ref':
+                console.log(
+                    '🚀 ~ file: patch.js ~ line 141 ~ addNewData ~ newVnode.context',
+                    newVnode.context
+                );
             default:
-                // if (!oldData || !oldData.groupName)
-                elm.setAttribute(groupName, newData[groupName]);
+                if (!oldData || !oldData.groupName)
+                    elm.setAttribute(groupName, newData[groupName]);
 
                 break;
         }
