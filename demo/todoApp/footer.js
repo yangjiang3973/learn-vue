@@ -11,7 +11,7 @@ export default {
         return (
             <footer class="footer">
                 <span class="todo-count">
-                    {this.remaining} {this.remaining > 1 ? 'items' : 'item'}{' '}
+                    {this.remaining} {this.remaining > 1 ? 'items ' : 'item '}
                     left
                 </span>
                 <ul class="filters">

@@ -1,6 +1,7 @@
 import Watcher from '../watcher';
 
 export const initLifecycle = function initLifecycle(vm) {
+    vm.$refs = {};
     // vm._watcher = null;
     // vm._inactive = false;
     vm._isMounted = false;

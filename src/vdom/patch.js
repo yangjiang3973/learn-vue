@@ -83,6 +83,12 @@ function removeMissingData(elm, oldVnode, newVnode) {
                     }
                 }
                 break;
+            case 'ref':
+                if (!newData || !newData.ref || newData.ref !== oldData.ref) {
+                    const refName = oldData.ref;
+                    delete oldVnode.context.$refs[refName];
+                }
+                break;
             default:
                 if (!newData || !newData.groupName) {
                     elm.removeAttribute(groupName);
@@ -101,12 +107,10 @@ function addNewData(elm, oldVnode, newVnode) {
         switch (groupName) {
             case 'attrs':
                 for (let k in newData.attrs) {
-                    // if (!oldData || !oldData.attrs || !oldData.attrs[k])
                     elm.setAttribute(k, newData.attrs[k]);
                 }
             case 'style':
                 for (let k in newData.style) {
-                    // if (!oldData || !oldData.style || !oldData.style[k])
                     elm.style[k] = newData.style[k];
                 }
                 break;
@@ -131,14 +135,12 @@ function addNewData(elm, oldVnode, newVnode) {
                 }
                 break;
             case 'ref':
-                console.log(
-                    '🚀 ~ file: patch.js ~ line 141 ~ addNewData ~ newVnode.context',
-                    newVnode.context
-                );
+                const refName = newData.ref;
+                newVnode.context.$refs[refName] = elm;
+                break;
             default:
                 if (!oldData || !oldData.groupName)
                     elm.setAttribute(groupName, newData[groupName]);
-
                 break;
         }
     }

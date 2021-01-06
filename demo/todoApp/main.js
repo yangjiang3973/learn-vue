@@ -28,11 +28,11 @@ let vm = new Aue({
             <section class="todoapp">
                 <Header todos={this.todos} addTodo={this.addTodo}></Header>
                 <List todos={this.todos} filter={this.filter}></List>
-                {/* <Footer
+                <Footer
                     todos={this.todos}
                     filter={this.filter}
                     chooseFilter={this.chooseFilter}
-                ></Footer> */}
+                ></Footer>
             </section>
         );
     },
