@@ -773,6 +773,14 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 1. $refs can work on both element and component
 
-    1. element
+    1. element (DONE)
 
     2. component
+
+2. (DONE) include css into index.html.
+
+(no need to setup css-loader and style-loader because this is not included in js files)
+
+# 2020-01-06
+
+1.
