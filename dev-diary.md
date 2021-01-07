@@ -794,3 +794,9 @@ should add each ref element to the `this.refs`. this means need to add to instan
 1. (TODO) implement `$emit` for tree demo
 
 2. `v-show` runtime directive
+
+    how to update if v-show removed in new vnode
+
+3. look into `createPatchFunction` in detail, especially for the hooks and modules at the beginning.
+
+4.

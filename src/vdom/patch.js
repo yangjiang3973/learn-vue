@@ -89,6 +89,8 @@ function removeMissingData(elm, oldVnode, newVnode) {
                     delete oldVnode.context.$refs[refName];
                 }
                 break;
+            // case 'directives':
+            //     break;
             default:
                 if (!newData || !newData.groupName) {
                     elm.removeAttribute(groupName);
@@ -137,6 +139,14 @@ function addNewData(elm, oldVnode, newVnode) {
             case 'ref':
                 const refName = newData.ref;
                 newVnode.context.$refs[refName] = elm;
+                break;
+            case 'directives':
+                const dirs = newData.directives;
+                dirs.forEach((dir) => {
+                    if (dir.name === 'show') {
+                        elm.style.display = dir.value ? '' : 'none';
+                    }
+                });
                 break;
             default:
                 if (!oldData || !oldData.groupName)
