@@ -23,7 +23,7 @@ let vm = new Aue({
             this.filter = filter;
         },
     },
-    render(h) {
+    render() {
         return (
             <section class="todoapp">
                 <Header todos={this.todos} addTodo={this.addTodo}></Header>

@@ -14,22 +14,26 @@
             type="text/css"
             href="https://unpkg.com/todomvc-app-css@2.2.0/index.css"
         /> -->
-        <link rel="stylesheet" href="/style.css" />
+        <!-- <link rel="stylesheet" href="/style.css" /> -->
         
-        <!-- <style>
-            .flag {
-                transition: all .5s ease;
-                height: 300px;
-                padding: 10px;
-                background-color: #eee;
-                overflow: hidden;
+        <style>
+            /* for tree */
+            body {
+                font-family: Menlo, Consolas, monospace;
+                color: #444;
             }
-            .flag.expand-enter, .flag.expand-leave {
-                height: 0;
-                padding: 0 10px;
-                opacity: 0;
+            .item {
+                cursor: pointer;
             }
-        </style> -->
+            .bold {
+                font-weight: bold;
+            }
+            ul {
+                padding-left: 1em;
+                line-height: 1.5em;
+                list-style-type: dot;
+            }
+        </style>
     </head>
     <body>
         <div id="app">

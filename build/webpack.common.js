@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
-    entry: './demo/todoApp/main.js',
+    entry: './demo/tree/main.js',
     // entry: './demo/main.js',
     output: {
         path: path.resolve(__dirname, '../dist'),

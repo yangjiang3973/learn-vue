@@ -12,7 +12,6 @@ class Aue {
         this._init(options);
         // this._directives = []; // all directives
         // this._userWatchers = {}; // user watchers as a hash
-        // a flag to avoid this being observed
     }
 
     // should move to `initAssetRegisters`
