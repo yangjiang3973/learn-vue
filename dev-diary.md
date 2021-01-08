@@ -793,9 +793,15 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 1. (TODO) implement `$emit` for tree demo
 
-2. `v-show` runtime directive
+    Question: $emit should invoke events callback in parent component, but why in current vm(in vue source code)?
 
-    how to update if v-show removed in new vnode
+    because current vm has parent listeners?
+
+    need to understand vue event management from the beginning!
+
+2. (DONE)`v-show` runtime directive
+
+    NOTE: how to update elm if v-show removed in new vnode? current solution is enough?
 
 3. look into `createPatchFunction` in detail, especially for the hooks and modules at the beginning.
 

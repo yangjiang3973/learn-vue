@@ -10,7 +10,26 @@ export default function initGlobalAPI(Aue) {
 
     // TODO:
     // Aue.util = util;
-    // Aue.set = set;
+    // TODO: temp solution, need to polish again
+    // Aue.set = function set(obj, key, val) {
+    //     console.log('!!!!!', obj);
+    //     if (Array.isArray(obj)) {
+    //         obj.splice(key, 1, val);
+    //         return val;
+    //     }
+    //     if (obj.hasOwnProperty(key)) {
+    //         obj[key] = val;
+    //         return;
+    //     }
+    //     const ob = obj.__ob__;
+    //     if (!ob) {
+    //         obj[key] = val;
+    //         return;
+    //     }
+    //     ob.defineReactive(ob.value, key, val);
+    //     ob.dep.notify();
+    //     return val;
+    // };
     // Aue.delete = del;
     // Aue.nextTick = util.nextTick;
 
