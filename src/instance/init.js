@@ -1,6 +1,7 @@
 import { initLifecycle } from './lifecycle';
 import { initState } from './state.js';
 import { initRender } from './render';
+import { initEvents } from './events';
 
 export const initMixin = function (Aue) {
     Aue.prototype._init = function (options) {
@@ -20,7 +21,7 @@ export const initMixin = function (Aue) {
         // TODO: in development mode, could add a proxy for debuging purpose
 
         initLifecycle(this);
-        // initEvents(this);
+        initEvents(this);
         // callHook(this, 'beforeCreate');
         initState(this);
         // callHook(vm, 'created');

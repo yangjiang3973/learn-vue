@@ -1,5 +1,6 @@
 import { initMixin } from './instance/init';
 import { stateMixin } from './instance/state';
+import { eventsMixin } from './instance/events';
 import { lifecycleMixin } from './instance/lifecycle';
 import { renderMixin } from './instance/render';
 import patch from './vdom/patch';
@@ -54,7 +55,7 @@ class Aue {
 initMixin(Aue);
 stateMixin(Aue);
 // TODO: eventMixin: $on, $once, $off, $emit
-// eventsMixin(Aue);
+eventsMixin(Aue);
 lifecycleMixin(Aue);
 renderMixin(Aue);
 

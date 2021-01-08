@@ -31,7 +31,7 @@ let vm = new Aue({
     },
     methods: {
         makeFolder: function (item) {
-            Vue.set(item, 'children', []);
+            Aue.set(item, 'children', []);
             this.addItem(item);
         },
         addItem: function (item) {

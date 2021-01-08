@@ -9,6 +9,10 @@ function createComponent(tag, data, context, children) {
     data = data || {};
     const propsData = extractProps(data, Ctor);
 
+    // extract listeners on component(not DOM listeners)
+    const listeners = data.on;
+    // TODO: what if there are native listeners
+
     // 3. add hooks to data
     data.hook = {};
     data.hook.init = function init(vnode) {
@@ -37,8 +41,7 @@ function createComponent(tag, data, context, children) {
         undefined,
         undefined,
         context,
-        { Ctor, propsData, children }
-        // { Ctor, propsData, listeners, children }
+        { Ctor, propsData, listeners, children }
     );
 }
 
