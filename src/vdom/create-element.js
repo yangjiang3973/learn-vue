@@ -83,7 +83,7 @@ function createElement(tag, data, children) {
                 },
                 () => {}
             );
-            //* theoretically should call mounted hook here, and maybe need to change mount code
+            //* TODO: theoretically should call mounted hook here, and maybe need to change mount code
             instance._mounted = true;
             return instance.$vnode;
         } else {

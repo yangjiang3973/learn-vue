@@ -783,4 +783,20 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 # 2020-01-06
 
-1.
+1. (DONE) Milestone: make TODO APP works now
+
+2. make more demos to add APIs and test, before improving the code
+
+    1. Tree list
+
+# 2020-01-07
+
+1. (TODO) implement `$emit` for tree demo
+
+2. `v-show` runtime directive
+
+    how to update if v-show removed in new vnode
+
+3. look into `createPatchFunction` in detail, especially for the hooks and modules at the beginning.
+
+4.
