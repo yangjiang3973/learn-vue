@@ -24,7 +24,7 @@ export default function observeData(data) {
     }
 }
 
-class Observer {
+export class Observer {
     constructor(obj, type) {
         this.dep = new Dep(); // TODO: mabe init as null
         this.value = obj;

@@ -1,4 +1,4 @@
-const { Dep } = require('../../../src/dep');
+import Dep from '../../../src/dep';
 
 describe('Dep', function () {
     let d;

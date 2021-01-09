@@ -3,7 +3,6 @@
 
 //karma.conf.js
 const webpackConfig = {
-    //引入webpack，将es6转化为es5。 因为jasmine不支持es6语法
     mode: 'development',
     module: {
         rules: [
@@ -27,6 +26,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: ['./unit/**/*.js'],
+        // files: ['./demo/*.js'],
 
         // list of files / patterns to exclude
         exclude: [],
@@ -35,6 +35,7 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             './unit/**/*.js': ['webpack'],
+            // './demo/*.js'
         },
         webpack: webpackConfig,
         webpackMiddleware: {
