@@ -791,7 +791,7 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 # 2020-01-07
 
-1. (TODO) implement `$emit` for tree demo
+1. (DONE) implement `$emit` for tree demo
 
     Question: $emit should invoke events callback in parent component, but why in current vm(in vue source code)?
 
@@ -805,4 +805,14 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 3. look into `createPatchFunction` in detail, especially for the hooks and modules at the beginning.
 
-4.
+# 2020-01-08
+
+1. refactor observer and check if there is a bug in watcher and dep
+
+    0. (TODO) refactor unit tests of observer!
+
+    1. (TODO) pass unit test
+
+    2. (DONE) downgrade webpack to v4 until karma-webpack updates!
+
+2. make observer as perfect as vue's, including `set` and `del`

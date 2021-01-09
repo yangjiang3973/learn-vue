@@ -1,7 +1,7 @@
-const batcher = require('../../src/batcher');
-const config = require('../../src/config');
-const { nextTick } = require('../../src/utils');
-const _ = require('../../src/utils');
+import { queueWatcher } from '../../src/batcher';
+import config from '../../src/config';
+import * as _ from '../../src/utils';
+import { nextTick } from '../../src/utils';
 
 describe('Batcher', function () {
     let spy;
@@ -9,7 +9,7 @@ describe('Batcher', function () {
         spy = jasmine.createSpy("spy on watcher's run()");
     });
     it('pushWatcher', function (done) {
-        batcher.push({
+        queueWatcher({
             run: spy,
         });
         nextTick(function () {
@@ -20,11 +20,11 @@ describe('Batcher', function () {
 
     // remove duplicate
     it('dedup', function (done) {
-        batcher.push({
+        queueWatcher({
             id: 1,
             run: spy,
         });
-        batcher.push({
+        queueWatcher({
             id: 1,
             run: spy,
         });
@@ -41,11 +41,11 @@ describe('Batcher', function () {
             id: 1,
             run: spy,
         };
-        batcher.push(job);
-        batcher.push({
+        queueWatcher(job);
+        queueWatcher({
             id: 2,
             run: function () {
-                batcher.push(job);
+                queueWatcher(job);
             },
         });
         nextTick(function () {
@@ -59,19 +59,19 @@ describe('Batcher', function () {
         function run() {
             vals.push(this.id);
         }
-        batcher.push({
+        queueWatcher({
             id: 2,
             user: true,
             run: function () {
                 run.call(this);
                 // user watcher triggering another directive update!
-                batcher.push({
+                queueWatcher({
                     id: 3,
                     run: run,
                 });
             },
         });
-        batcher.push({
+        queueWatcher({
             id: 1,
             run: run,
         });
@@ -91,14 +91,14 @@ describe('Batcher', function () {
             id: 1,
             run: function () {
                 count++;
-                batcher.push(watcher);
+                queueWatcher(watcher);
             },
         };
-        batcher.push(watcher);
+        queueWatcher(watcher);
         nextTick(function () {
             expect(count).not.toBe(0);
             expect(count).toBe(config._maxUpdateCount + 1);
-            expect(_.warn).toHaveBeenCalled();
+            expect(warn).toHaveBeenCalled();
             // expect('infinite update loop').toHaveBeenWarned();
             done();
         });
@@ -106,12 +106,12 @@ describe('Batcher', function () {
 
     it('should call newly pushed watcher after current watcher is done', function (done) {
         var callOrder = [];
-        batcher.push({
+        queueWatcher({
             id: 1,
             user: true,
             run: function () {
                 callOrder.push(1);
-                batcher.push({
+                queueWatcher({
                     id: 2,
                     run: function () {
                         callOrder.push(3);
