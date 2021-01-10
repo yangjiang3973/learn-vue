@@ -198,7 +198,7 @@ describe('Observer', function () {
         Dep.target = watcher;
         let temp = obj.a.b; // obj.a.b is different from obj[a.b], I did not found a bug in watcher's update: this.vm[this.exp]
         Dep.target = null;
-        // NOTE: after follow vue's way, each observer has a dep: obj, obj.a, a
+        // NOTE: after follow vue's way, each observer has a dep to call depend: obj.a + a + a.b
         expect(watcher.deps.length).toBe(3);
         // expect(watcher.deps.length).toBe(2);
 
@@ -218,7 +218,7 @@ describe('Observer', function () {
         let temp2 = obj.a.b;
         Dep.target = null;
         //TODO: need to refactor
-        expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a + a.b
+        expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a(observer instance) + a.b
         // expect(watcher.deps.length).toBe(2);
         // set on the swapped object
         obj.a.b = 5;

@@ -815,14 +815,26 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
     2. (DONE) downgrade webpack to v4 until karma-webpack updates!
 
-2. make observer as perfect as vue's, including `set` and `del`
+2. (TODO) make observer as perfect as vue's, including `set` and `del`
 
 # 2020-01-10
 
 1. (TODO) right now totally follow Vue's observe and I feel it created extra dep instance...maybe point to the root one and avoid creating new ones for children.
 
-should carefully consider this point again.
+should carefully consider this point again and maybe it is possible to `improve`.
 
 and maybe check code of vue3
 
-2.
+```js
+const obj = {
+    a: {
+        b: 2,
+    },
+};
+```
+
+after `observeData(obj)` and `obj.a.b` will generate 3 dep connecting to watcher, because the observer instance of a will be the additional one compared with the previous way.
+
+Why need to keep a dep in observer instance and where will the be used?
+
+2. implement `set` and `del`

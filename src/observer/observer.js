@@ -22,7 +22,7 @@ export default function observeData(data) {
 
 export class Observer {
     constructor(obj) {
-        this.dep = new Dep(); // TODO: mabe init as null
+        this.dep = new Dep(); // TODO: mabe init as null(if not vue's way)
         this.value = obj;
         obj['__ob__'] = this;
         if (isArray(obj)) {
@@ -98,7 +98,7 @@ export function defineReactive(obj, key, val) {
                 // if (newVal != null && typeof newVal === 'object') {
                 //     let childOb;
                 //     if (Array.isArray(newVal)) {
-                //         childOb = observeData(newVal);
+                //         childOb = observeData(newVal, arryType);
                 //     } else {
                 //         childOb = observeData(newVal);
                 //     }
