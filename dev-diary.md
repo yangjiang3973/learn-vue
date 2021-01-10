@@ -816,3 +816,13 @@ should add each ref element to the `this.refs`. this means need to add to instan
     2. (DONE) downgrade webpack to v4 until karma-webpack updates!
 
 2. make observer as perfect as vue's, including `set` and `del`
+
+# 2020-01-10
+
+1. (TODO) right now totally follow Vue's observe and I feel it created extra dep instance...maybe point to the root one and avoid creating new ones for children.
+
+should carefully consider this point again.
+
+and maybe check code of vue3
+
+2.
