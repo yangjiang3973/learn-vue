@@ -1,9 +1,3 @@
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-function hasOwn(obj, key) {
-    return hasOwnProperty.call(obj, key);
-}
-export { hasOwn };
-
 // TODO: why move set/delete here?
 // where these 2 func be used?
 // export const set = function (obj, key, val) {
@@ -46,6 +40,9 @@ export { hasOwn };
 //         ob.vm._digest();
 //     } else ob.dep.notify();
 // };
+export const hasOwn = function (obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+};
 
 var toString = Object.prototype.toString;
 var OBJECT_STRING = '[object Object]';
@@ -56,6 +53,10 @@ export const isPlainObject = function (obj) {
 
 export const isArray = function (obj) {
     return Array.isArray(obj);
+};
+
+export const isObject = function (obj) {
+    return obj !== null && typeof obj === 'object';
 };
 
 export const isReserverd = function (str) {

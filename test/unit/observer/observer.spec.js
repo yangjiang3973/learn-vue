@@ -198,9 +198,9 @@ describe('Observer', function () {
         Dep.target = watcher;
         let temp = obj.a.b; // obj.a.b is different from obj[a.b], I did not found a bug in watcher's update: this.vm[this.exp]
         Dep.target = null;
-        expect(watcher.deps.length).toBe(2);
-        //TODO: ignore for now
-        // expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a + a.b
+        // NOTE: after follow vue's way, each observer has a dep to call depend: obj.a + a + a.b
+        expect(watcher.deps.length).toBe(3);
+        // expect(watcher.deps.length).toBe(2);
 
         obj.a.b = 3;
         expect(watcher.update.calls.count()).toBe(1);
@@ -208,7 +208,7 @@ describe('Observer', function () {
         let oldA = obj.a;
         obj.a = { b: 4 };
         expect(watcher.update.calls.count()).toBe(2);
-        // TODO: I should remove oldA's __ob__ directly, after change this.deps to this.dep
+        // TODO: should I remove oldA's __ob__ directly? after change this.deps to this.dep
         // expect(oldA.__ob__.deps.length).toBe(0);
         // expect(obj.a.__ob__.deps.length).toBe(1);
 
@@ -217,9 +217,9 @@ describe('Observer', function () {
         Dep.target = watcher;
         let temp2 = obj.a.b;
         Dep.target = null;
-        //TODO: ignore for now
-        // expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a + a.b
-        expect(watcher.deps.length).toBe(2);
+        //TODO: need to refactor
+        expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a(observer instance) + a.b
+        // expect(watcher.deps.length).toBe(2);
         // set on the swapped object
         obj.a.b = 5;
         expect(watcher.update.calls.count()).toBe(3);

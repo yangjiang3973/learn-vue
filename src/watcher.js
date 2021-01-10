@@ -17,7 +17,6 @@ function deepTouch(val) {
         Object.keys(val).forEach((key) => {
             if (key === '__ob__') return;
             childVal = val[key];
-            console.log('deepTouch -> childVal', childVal);
             if (typeof childVal === 'object') {
                 if (once.has(childVal.__ob__.dep.id)) {
                     return;
