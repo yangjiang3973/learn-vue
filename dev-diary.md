@@ -863,4 +863,4 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
     1. normal slot (DONE)
 
-    2. scoped slot
+    2. scoped slot (IN PROGRESS)
