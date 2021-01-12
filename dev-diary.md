@@ -787,7 +787,9 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 2. make more demos to add APIs and test, before improving the code
 
-    1. Tree list
+    1. Tree list(DONE)
+
+    2.
 
 # 2020-01-07
 
@@ -809,19 +811,19 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 1. refactor observer and check if there is a bug in watcher and dep
 
-    0. (TODO) refactor unit tests of observer!
+    0. (DONE) refactor unit tests of observer!
 
-    1. (TODO) pass unit test
+    1. (DONE) pass unit test
 
     2. (DONE) downgrade webpack to v4 until karma-webpack updates!
 
-2. (TODO) make observer as perfect as vue's, including `set` and `del`
+2. (DONE) make observer as perfect as vue's, including `set` and `del`
 
 # 2020-01-10
 
-1. (TODO) right now totally follow Vue's observe and I feel it created extra dep instance...maybe point to the root one and avoid creating new ones for children.
+1. (DONE) right now totally follow Vue's observe and I feel it created extra dep instance...maybe point to the root one and avoid creating new ones for children.
 
-should carefully consider this point again and maybe it is possible to `improve`.
+(TODO) should carefully consider this point again and maybe it is possible to `improve`.
 
 and maybe check code of vue3
 
@@ -835,6 +837,26 @@ const obj = {
 
 after `observeData(obj)` and `obj.a.b` will generate 3 dep connecting to watcher, because the observer instance of a will be the additional one compared with the previous way.
 
-Why need to keep a dep in observer instance and where will the be used?
+Q: Why need to keep a dep in observer instance and where will the be used?
 
-2. implement `set` and `del`
+Ans: when add a new key or delete a key, need to use observer's dep to notify
+
+before, I just change the observer's dep to key's dep, so looks like my way has one dep less than vue's way.
+
+2. (DONE) implement `set` and `del`
+
+# 2020-01-11
+
+1. make more demos to add APIs and test, before improving the code
+
+    1. Tree list (DONE)
+
+    2. Modal
+
+        2.1 transition
+
+        2.2 (IN PROGRESS) slot
+
+# 2020-01-12
+
+1.
