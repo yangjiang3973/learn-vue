@@ -1,7 +1,7 @@
 import Aue from '../../../src/aue';
 import observeData, { Observer } from '../../../src/observer/observer';
 import Dep from '../../../src/dep';
-// const _ = require('../../../src/utils');
+import { hasOwn } from '../../../src/utils';
 
 describe('Observer', function () {
     it('create on non-observables', function () {
@@ -217,7 +217,6 @@ describe('Observer', function () {
         Dep.target = watcher;
         let temp2 = obj.a.b;
         Dep.target = null;
-        //TODO: need to refactor
         expect(watcher.deps.length).toBe(3); // NOTE: why now changed to 3 on vue1.0: obj.a + a(observer instance) + a.b
         // expect(watcher.deps.length).toBe(2);
         // set on the swapped object
@@ -260,43 +259,46 @@ describe('Observer', function () {
     });
 
     // (TODO)
-    // it('observing set/delete', function () {
-    //     const obj = { a: 1 };
-    //     const ob = observeData(obj);
-    //     var dep = ob.dep;
-    //     spyOn(dep, 'notify');
-    //     _.set(obj, 'b', 2);
-    //     expect(obj.b).toBe(2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-
-    //     _.delete(obj, 'a');
-    //     expect(obj.hasOwnProperty('a')).toBe(false);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    //     // should ignore adding an existing key
-    //     _.set(obj, 'b', 3);
-    //     expect(obj.b).toBe(3);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    //     // set non-existing key
-    //     _.set(obj, 'c', 1);
-    //     expect(obj.c).toBe(1);
-    //     expect(dep.notify.calls.count()).toBe(3);
-    //     // should ignore deleting non-existing key
-    //     _.delete(obj, 'a');
-    //     expect(dep.notify.calls.count()).toBe(3);
-    //     // should work on non-observed objects
-    //     var obj2 = { a: 1 };
-    //     _.delete(obj2, 'a');
-    //     expect(obj2.hasOwnProperty('a')).toBe(false);
-    //     // should work on Object.create(null)
-    //     var obj3 = Object.create(null);
-    //     obj3.a = 1;
-    //     var ob3 = observeData(obj3);
-    //     var dep3 = ob3.dep;
-    //     spyOn(dep3, 'notify');
-    //     _.set(obj3, 'b', 2);
-    //     expect(obj3.b).toBe(2);
-    //     expect(dep3.notify.calls.count()).toBe(1);
-    // });
+    it('observing set/delete', function () {
+        const obj1 = { a: 1 };
+        const ob1 = observeData(obj1);
+        const dep1 = ob1.dep;
+        spyOn(dep1, 'notify');
+        Aue.set(obj1, 'b', 2);
+        expect(obj1.b).toBe(2);
+        expect(dep1.notify.calls.count()).toBe(1);
+        Aue.delete(obj1, 'a');
+        expect(hasOwn(obj1, 'a')).toBe(false);
+        expect(dep1.notify.calls.count()).toBe(2);
+        // set existing key, should be a plain set and not
+        // trigger own ob's notify
+        Aue.set(obj1, 'b', 3);
+        expect(obj1.b).toBe(3);
+        expect(dep1.notify.calls.count()).toBe(2);
+        // set non-existing key
+        Aue.set(obj1, 'c', 1);
+        expect(obj1.c).toBe(1);
+        expect(dep1.notify.calls.count()).toBe(3);
+        // should ignore deleting non-existing key
+        Aue.delete(obj1, 'a');
+        expect(dep1.notify.calls.count()).toBe(3);
+        // should work on non-observed objects
+        const obj2 = { a: 1 };
+        Aue.delete(obj2, 'a');
+        expect(hasOwn(obj2, 'a')).toBe(false);
+        // should work on Object.create(null)
+        const obj3 = Object.create(null);
+        obj3.a = 1;
+        const ob3 = observeData(obj3);
+        const dep3 = ob3.dep;
+        spyOn(dep3, 'notify');
+        Aue.set(obj3, 'b', 2);
+        expect(obj3.b).toBe(2);
+        expect(dep3.notify.calls.count()).toBe(1);
+        Aue.delete(obj3, 'a');
+        expect(hasOwn(obj3, 'a')).toBe(false);
+        expect(dep3.notify.calls.count()).toBe(2);
+    });
 
     it('observing root level array mutations', function () {
         const arr = [];
@@ -338,112 +340,5 @@ describe('Observer', function () {
         objs.forEach(function (obj) {
             expect(obj.__ob__ instanceof Observer).toBe(true);
         });
-    });
-
-    // it('root level array $set', function () {
-    //     // observe array at the first level
-    //     const arr = [1];
-    //     const ob = observeData(arr, 1);
-    //     let dep = ob.dep;
-    //     spyOn(dep, 'notify');
-    //     arr.$set(0, 2);
-    //     expect(arr[0]).toBe(2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // setting out of bound index
-    //     arr.$set(2, 3);
-    //     expect(arr[2]).toBe(3);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    // });
-
-    // it('child level array $set', function () {
-    //     // observe array at the child level
-    //     const data = { arr: [1] };
-    //     const ob = observeData(data);
-    //     const dep = data.arr.__ob__.dep;
-    //     spyOn(dep, 'notify');
-    //     data.arr.$set(0, 2);
-    //     expect(data.arr[0]).toBe(2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // setting out of bound index
-    //     data.arr.$set(2, 3);
-    //     expect(data.arr[2]).toBe(3);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    // });
-
-    // it('root level array $remove', function () {
-    //     // observe array at the first level
-    //     var arr = [{}, {}];
-    //     var obj1 = arr[0];
-    //     var obj2 = arr[1];
-    //     var ob = observeData(arr, 1);
-    //     var dep = ob.dep;
-    //     spyOn(dep, 'notify');
-    //     // remove by index
-    //     arr.$remove(0);
-    //     expect(arr.length).toBe(1);
-    //     expect(arr[0]).toBe(obj2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // remove by identity, not in array
-    //     arr.$remove(obj1);
-    //     expect(arr.length).toBe(1);
-    //     expect(arr[0]).toBe(obj2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // remove by identity, in array
-    //     arr.$remove(obj2);
-    //     expect(arr.length).toBe(0);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    // });
-
-    // it('child level array $remove', function () {
-    //     // observe array at the child level
-    //     const arr = [{}, {}];
-    //     const data = { arr };
-    //     const obj1 = arr[0];
-    //     const obj2 = arr[1];
-    //     const ob = observeData(data);
-    //     const dep = data.arr.__ob__.dep;
-    //     spyOn(dep, 'notify');
-    //     // remove by index
-    //     arr.$remove(0);
-    //     expect(arr.length).toBe(1);
-    //     expect(arr[0]).toBe(obj2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // remove by element, not in array
-    //     arr.$remove(obj1);
-    //     expect(arr.length).toBe(1);
-    //     expect(arr[0]).toBe(obj2);
-    //     expect(dep.notify.calls.count()).toBe(1);
-    //     // remove by element, in array
-    //     arr.$remove(obj2);
-    //     expect(arr.length).toBe(0);
-    //     expect(dep.notify.calls.count()).toBe(2);
-    // });
-
-    // Whether allow observer to alter data objects\'__proto__.
-    // I always set to true to modify proto, instead of adding methos to array instance
-    it('no proto', function () {
-        // config.proto = false;
-        // object
-        // var obj = { a: 1 };
-        // var ob = new Observer(obj);
-        // expect(obj.$add).toBeTruthy();
-        // expect(obj.$delete).toBeTruthy();
-        // var dep = new Dep();
-        // ob.deps.push(dep);
-        // spyOn(dep, 'notify');
-        // obj.$add('b', 2);
-        // expect(dep.notify).toHaveBeenCalled();
-        // // array
-        // var arr = [1, 2, 3];
-        // var ob2 = Observer.create(arr);
-        // expect(arr.$set).toBeTruthy();
-        // expect(arr.$remove).toBeTruthy();
-        // expect(arr.push).not.toBe([].push);
-        // var dep2 = new Dep();
-        // ob2.deps.push(dep2);
-        // spyOn(dep2, 'notify');
-        // arr.push(1);
-        // expect(dep2.notify).toHaveBeenCalled();
-        // config.proto = true;
     });
 });
