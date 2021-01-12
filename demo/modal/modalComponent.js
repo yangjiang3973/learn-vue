@@ -1,13 +1,15 @@
 export default {
     props: [],
     render() {
+        console.log(this.$slots);
         return (
             // <transition name="modal">
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
                         <div class="modal-header">{this.$slots.header}</div>
-                        <div class="modal-body">{this.$slots.body}</div>
+                        {/* <div class="modal-body">{this.$slots.body}</div> */}
+                        <div class="modal-body">{this.$slots.default}</div>
                         <div class="modal-footer">
                             {this.$slots.footer}
                             <button

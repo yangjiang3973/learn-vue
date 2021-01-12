@@ -3,6 +3,7 @@ import Watcher from '../watcher';
 import createComponent from './create-component';
 
 function createElement(tag, data, children) {
+    // if no props, data will hold child nodes and children will be undefined
     if (data && (Array.isArray(data) || typeof data !== 'object')) {
         children = data;
         data = undefined;
@@ -12,6 +13,9 @@ function createElement(tag, data, children) {
         if (Array.isArray(children)) {
             // TODO: use normalizeChild??
             children = children.flat(); // by default, just one level depth
+            children = children.filter((c) => {
+                return c != null;
+            });
             for (let i = 0; i < children.length; i++) {
                 // text node
                 if (typeof children[i] === 'string') {
