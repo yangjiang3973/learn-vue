@@ -23,10 +23,14 @@ let vm = new Aue({
                         onClose={() => {
                             this.showModal = false;
                         }}
+                        scopedSlots={{
+                            header: (props) => {
+                                return <span>{props.title}</span>;
+                                // return props.title;
+                            },
+                        }}
                     >
-                        <h3 slot="header">custom header1</h3>
-                        <h3 slot="header">custom header2</h3>
-                        <h3 slot="header">custom header3</h3>
+                        {/* <h3 slot="header">custom header1</h3> */}
                         <div>this is the main body</div>
                         <div slot="footer">this is the footer</div> {}
                     </Modal>

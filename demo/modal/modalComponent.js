@@ -1,5 +1,10 @@
 export default {
     props: [],
+    data() {
+        return {
+            title: 'hello!!!',
+        };
+    },
     render() {
         console.log(this.$slots);
         return (
@@ -7,9 +12,10 @@ export default {
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
-                        <div class="modal-header">{this.$slots.header}</div>
-                        {/* <div class="modal-body">{this.$slots.body}</div> */}
-                        <div class="modal-body">{this.$slots.default}</div>
+                        <div class="modal-header">
+                            {this.$scopedSlots.header({ title: this.title })}
+                        </div>
+                        <div class="modal-body">{this.$slots.body}</div>
                         <div class="modal-footer">
                             {this.$slots.footer}
                             <button

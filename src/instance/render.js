@@ -7,6 +7,13 @@ export const initRender = function (vm) {
     // vm._renderContext =
     //     vm.$options._parentVnode && vm.$options._parentVnode.context;
     vm.$slots = resolveSlots(vm.$options._renderChildren, vm._renderContext);
+    if (vm.$options._parentVnode) {
+        // TODO: need to improve normalization like v2.6
+        vm.$scopedSlots = normalizeScopedSlots(
+            vm.$options._parentVnode.data.scopedSlots,
+            vm.$slots
+        );
+    }
 
     vm.$createElement = createElement.bind(vm);
     if (vm.$options.el) {
@@ -67,4 +74,10 @@ function resolveSlots(renderChildren, context) {
         slots.default = defaultSlot;
     }
     return slots;
+}
+
+function normalizeScopedSlots(scopedSlots, normalSlots) {
+    const res = {};
+    if (!scopedSlots) return {};
+    return scopedSlots;
 }
