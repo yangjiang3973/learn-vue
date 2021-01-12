@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
-    entry: './demo/tree/main.js',
+    entry: './demo/modal/main.js',
     // entry: './demo/main.js',
     output: {
         path: path.resolve(__dirname, '../dist'),
@@ -47,7 +47,7 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.resolve(__dirname, '../demo/todoApp/style.css'),
+                    from: path.resolve(__dirname, '../demo/modal/style.css'),
                     to: path.resolve(__dirname, '../dist/'),
                 },
             ],

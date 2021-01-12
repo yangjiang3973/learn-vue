@@ -859,4 +859,8 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
 # 2020-01-12
 
-1.
+1. there are 2 types of slots:
+
+    1. normal slot (DONE)
+
+    2. scoped slot

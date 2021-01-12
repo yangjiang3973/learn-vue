@@ -8,7 +8,7 @@ function createElm(vnode, nested, isSVG) {
     // check component first
     if (vnode.data) {
         if (vnode.data.hook && vnode.data.hook.init) {
-            vnode.data.hook.init(vnode);
+            vnode.data.hook.init(vnode); // call init hook
             if (vnode.child) {
                 // vnode.child is actually the component instance, vnode.child = new vnode.componentOptions.Ctor(options);
                 // initComponent(vnode, insertedVnodeQueue);

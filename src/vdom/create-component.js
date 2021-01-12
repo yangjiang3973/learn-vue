@@ -26,7 +26,7 @@ function createComponent(tag, data, context, children) {
                 // _componentTag: vnodeComponentOptions.tag,
                 _parentVnode: vnode,
                 _parentListeners: vnodeComponentOptions.listeners,
-                _renderChildren: vnodeComponentOptions.children,
+                _renderChildren: vnodeComponentOptions.children, // slots will be in children
             };
             vnode.child = new vnode.componentOptions.Ctor(options);
             vnode.child.$mount(undefined); // add elm to vnode.child as $el
