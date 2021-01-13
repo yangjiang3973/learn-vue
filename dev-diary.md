@@ -855,7 +855,7 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
         2.1 transition
 
-        2.2 (IN PROGRESS) slot
+        2.2 (DONE) slot
 
 # 2020-01-12
 
@@ -863,4 +863,21 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
     1. normal slot (DONE)
 
-    2. scoped slot (IN PROGRESS)
+    2. scoped slot (DONE)
+
+2. transition
+
+    1. is there a way to use jsx and css to implement transition? and make it as a syntax sugar？
+
+    2. why need a transition built-in component? is it possible to achieve the same effect by pure css?
+
+# 2020-01-13
+
+Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加进入/离开过渡
+
+条件渲染 (使用 v-if)
+条件展示 (使用 v-show)
+动态组件
+组件根节点
+
+1. maybe I also need to learn more about css trnasition(Animation)
