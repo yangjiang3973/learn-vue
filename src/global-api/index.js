@@ -2,6 +2,7 @@ import { isArray, hasOwn, nextTick } from '../utils';
 import config from '../config';
 import initExtend from './extend';
 import { defineReactive } from '../observer/observer';
+import builtInComponents from '../components/index';
 
 export default function initGlobalAPI(Aue) {
     // config
@@ -12,7 +13,7 @@ export default function initGlobalAPI(Aue) {
 
     // TODO:
     // Aue.util = util;
-    // TODO: temp solution, need to polish again
+
     Aue.set = function set(obj, key, val) {
         if (isArray(obj)) {
             obj.splice(key, 1, val);
@@ -48,6 +49,9 @@ export default function initGlobalAPI(Aue) {
     config._assetTypes.forEach((type) => {
         Aue.options[type + 's'] = Object.create(null);
     });
+
+    // transition
+    Object.assign(Aue.options.components, builtInComponents);
 
     // initUse(Aue)
     // initMixin(Aue)
