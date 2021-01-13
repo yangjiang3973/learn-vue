@@ -881,3 +881,5 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 组件根节点
 
 1. maybe I also need to learn more about css trnasition(Animation)
+
+2. start writing `transition` while learning from source code of vue 2.0
