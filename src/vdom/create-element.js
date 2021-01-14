@@ -55,10 +55,6 @@ function createElement(tag, data, children) {
                 this
             );
         } else if ((Ctor = resolveAssets(this.$options, 'components', tag))) {
-            console.log(
-                '🚀 ~ file: create-element.js ~ line 58 ~ createElement ~ Ctor',
-                Ctor
-            );
             return createComponent(Ctor, data, this, children);
         }
         return new VNode(
@@ -77,10 +73,6 @@ function createElement(tag, data, children) {
             instance.props = data.props;
 
             instance._update = function (vnode) {
-                console.log(
-                    '🚀 ~ file: create-element.js ~ line 75 ~ createElement ~ tag',
-                    tag
-                );
                 const preVnode = this.$vnode;
                 if (preVnode) {
                     this.__patch__(preVnode, vnode);

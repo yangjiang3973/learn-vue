@@ -109,6 +109,7 @@ function addNewData(elm, oldVnode, newVnode) {
         switch (groupName) {
             case 'transition':
                 console.log('transition!!!');
+                console.log(newData);
                 break;
             case 'attrs':
                 for (let k in newData.attrs) {

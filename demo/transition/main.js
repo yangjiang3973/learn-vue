@@ -18,7 +18,7 @@ let vm = new Aue({
                 </button>
 
                 <transition name="fade">
-                    {this.showModal ? <p>hello</p> : null}
+                    {this.showModal ? <p id="test">hello</p> : null}
                 </transition>
             </div>
         );

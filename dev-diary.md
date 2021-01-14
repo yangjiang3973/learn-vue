@@ -905,3 +905,5 @@ transition 以插槽的形式对内部单一的子节点进行动画的管理，
 hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。
 
 3. TODO: need to play with vue transitin and learn more details about how to use it and releated APIs
+
+4. BUG: `Sub.options = { ...extendOptions, ...Aue.options };` lost props

@@ -50,6 +50,7 @@ function extractProps(data, Ctor) {
     if (!propsList) return;
     const res = {};
 
+    console.log(Ctor.options);
     for (const key in propsList) {
         // prop maybe in props, attrs or domProps
         if (data.attrs) {

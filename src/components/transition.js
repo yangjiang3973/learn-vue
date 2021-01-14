@@ -1,5 +1,19 @@
 import { warn } from '../utils';
 
+const transitionProps = {
+    name: undefined,
+    appear: undefined,
+    css: undefined,
+    mode: undefined,
+    type: undefined,
+    enterClass: undefined,
+    leaveClass: undefined,
+    enterActiveClass: undefined,
+    leaveActiveClass: undefined,
+    appearClass: undefined,
+    appearActiveClass: undefined,
+};
+
 export default {
     name: 'transition',
     props: transitionProps,
@@ -46,36 +60,26 @@ export default {
             child.data || (child.data = {})
         ).transition = extractTransitionData(this)); //* data={name: modal}, child.data.transition = {name: modal}
 
-        function extractTransitionData(comp) {
-            const data = {};
-            const options = comp.$options;
-            // props
-            for (const key in options.propsData) {
-                data[key] = comp[key];
-            }
-            // events.
-            // extract listeners and pass them directly to the transition methods
-            const listeners = options._parentListeners;
-            for (const key in listeners) {
-                data[camelize(key)] = listeners[key].fn;
-            }
-            return data;
-        }
-
         return rawChild;
     },
 };
 
-const transitionProps = {
-    name: String,
-    appear: Boolean,
-    css: Boolean,
-    mode: String,
-    type: String,
-    enterClass: String,
-    leaveClass: String,
-    enterActiveClass: String,
-    leaveActiveClass: String,
-    appearClass: String,
-    appearActiveClass: String,
-};
+function extractTransitionData(comp) {
+    const data = {};
+    const options = comp.$options;
+    console.log(
+        '🚀 ~ file: transition.js ~ line 52 ~ extractTransitionData ~ options',
+        options.propsData
+    );
+    // props
+    for (const key in options.propsData) {
+        data[key] = comp[key];
+    }
+    // events.
+    // extract listeners and pass them directly to the transition methods
+    const listeners = options._parentListeners;
+    for (const key in listeners) {
+        data[camelize(key)] = listeners[key].fn;
+    }
+    return data;
+}

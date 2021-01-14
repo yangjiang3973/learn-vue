@@ -25,10 +25,6 @@ export const initRender = function (vm) {
 export const renderMixin = function (Aue) {
     Aue.prototype._render = function () {
         const { render } = this.$options;
-        console.log(
-            '🚀 ~ file: render.js ~ line 16 ~ renderMixin ~ render',
-            render
-        );
         let vnode;
         try {
             vnode = render.call(this, this.$createElement);
