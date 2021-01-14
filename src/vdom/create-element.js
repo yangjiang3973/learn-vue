@@ -1,6 +1,7 @@
 import VNode from './vnode';
 import Watcher from '../watcher';
 import createComponent from './create-component';
+import { capitalize, resolveAssets } from '../utils';
 
 function createElement(tag, data, children) {
     // if no props, data will hold child nodes and children will be undefined
@@ -52,6 +53,9 @@ function createElement(tag, data, children) {
                 true,
                 this
             );
+        } else if ((tag = resolveAssets(this.$options, 'components', tag))) {
+            console.log('found transition!!!');
+            return createComponent(tag, data, this, children);
         }
         return new VNode(
             tag,

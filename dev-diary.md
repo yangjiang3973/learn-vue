@@ -883,3 +883,23 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 1. maybe I also need to learn more about css trnasition(Animation)
 
 2. start writing `transition` while learning from source code of vue 2.0
+
+# 2020-01-14
+
+1. continue on `transition`
+
+其实 enter 状态的这个函数它主要做的事情就是管理 v-enter/v-enter-active/v-enter-to 这三个 class 的添加和删除，具体的动画是用户定义的
+
+transition 以插槽的形式对内部单一的子节点进行动画的管理，
+
+在渲染阶段就会往子节点的 VNode 上挂载一个 transition 属性，
+
+表示它的一个被 transition 组件包裹的节点，
+
+在 patch 阶段就会执行 transition 组件内部钩子，
+
+钩子里分为 enter 和 leave 状态，在这个被包裹的子节点上使用 v-if 或 v-show 进行状态的切换。
+
+2. NOTE: 今天明白了，我 patch 文件里的 switch statement，在 vue 里用了 cbs 里的 hooks 代替。
+
+hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。

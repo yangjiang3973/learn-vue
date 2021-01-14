@@ -31,11 +31,13 @@ export default {
 
         const rawChild = children[0];
 
+        console.log('transition component setup');
+        // TODO: I don't get it here
         // if this is a component root node and the component's
         // parent container node also has transition, skip.
-        if (hasParentTransition(this.$vnode)) {
-            return rawChild;
-        }
+        // if (hasParentTransition(this.$vnode)) {
+        //     return rawChild;
+        // }
     },
 };
 

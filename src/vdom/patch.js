@@ -25,11 +25,11 @@ function createElm(vnode, nested, isSVG) {
         vnode.elm = isSVG
             ? document.createElementNS('http://www.w3.org/2000/svg', vnode.tag)
             : document.createElement(vnode.tag);
+
         if (vnode.data) {
             addNewData(vnode.elm, null, vnode);
         }
-        // it seems this is a scope for css
-        // setScope(vnode);
+
         if (Array.isArray(vnode.children)) {
             createChildren(vnode, vnode.children, isSVG);
         }
@@ -107,6 +107,9 @@ function addNewData(elm, oldVnode, newVnode) {
     // add to the elm if it is not in old data
     for (let groupName in newData) {
         switch (groupName) {
+            case 'transition':
+                console.log('transition!!!');
+                break;
             case 'attrs':
                 for (let k in newData.attrs) {
                     elm.setAttribute(k, newData.attrs[k]);

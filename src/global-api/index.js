@@ -52,6 +52,10 @@ export default function initGlobalAPI(Aue) {
 
     // transition
     Object.assign(Aue.options.components, builtInComponents);
+    console.log(
+        '🚀 ~ file: index.js ~ line 55 ~ initGlobalAPI ~ Aue.options.components',
+        Aue.options.components
+    );
 
     // initUse(Aue)
     // initMixin(Aue)
