@@ -1,6 +1,7 @@
 import VNode from './vnode';
 import Watcher from '../watcher';
 import createComponent from './create-component';
+import { capitalize, resolveAssets } from '../utils';
 
 function createElement(tag, data, children) {
     // if no props, data will hold child nodes and children will be undefined
@@ -42,6 +43,7 @@ function createElement(tag, data, children) {
                 }
             }
         }
+        let Ctor;
         if (tag === 'svg') {
             return new VNode(
                 tag,
@@ -52,6 +54,8 @@ function createElement(tag, data, children) {
                 true,
                 this
             );
+        } else if ((Ctor = resolveAssets(this.$options, 'components', tag))) {
+            return createComponent(Ctor, data, this, children);
         }
         return new VNode(
             tag,

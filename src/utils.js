@@ -40,8 +40,17 @@
 //         ob.vm._digest();
 //     } else ob.dep.notify();
 // };
+
+export const resolveAssets = function (options, type, key) {
+    return options[type][key] || options[type][capitalize(key)];
+};
+
 export const hasOwn = function (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
+};
+
+export const capitalize = function (s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
 var toString = Object.prototype.toString;

@@ -1,4 +1,5 @@
 import createElement from '../vdom/create-element';
+import VNode, { emptyVNode } from '../vdom/vnode';
 
 export const initRender = function (vm) {
     // vm.$vnode = null; // the placeholder node in parent tree
@@ -24,10 +25,6 @@ export const initRender = function (vm) {
 export const renderMixin = function (Aue) {
     Aue.prototype._render = function () {
         const { render } = this.$options;
-        console.log(
-            '🚀 ~ file: render.js ~ line 16 ~ renderMixin ~ render',
-            render
-        );
         let vnode;
         try {
             vnode = render.call(this, this.$createElement);
@@ -35,6 +32,17 @@ export const renderMixin = function (Aue) {
             console.error(e);
         }
         console.log('🚀 ~ file: render.js ~ line 24 ~ vnode', vnode);
+
+        // return empty vnode in case the render function errored out
+        if (!(vnode instanceof VNode)) {
+            if (Array.isArray(vnode)) {
+                warn(
+                    'Multiple root nodes returned from render function. Render function ' +
+                        'should return a single root node.'
+                );
+            }
+            vnode = emptyVNode();
+        }
         return vnode;
     };
 };
