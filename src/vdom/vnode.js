@@ -14,3 +14,10 @@ class VNode {
 }
 
 export default VNode;
+
+export const emptyVNode = () => {
+    const vnode = new VNode();
+    vnode.text = '';
+    // node.isComment = true;
+    return vnode;
+};

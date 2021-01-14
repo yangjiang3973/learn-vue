@@ -43,6 +43,7 @@ function createElement(tag, data, children) {
                 }
             }
         }
+        let Ctor;
         if (tag === 'svg') {
             return new VNode(
                 tag,
@@ -53,9 +54,12 @@ function createElement(tag, data, children) {
                 true,
                 this
             );
-        } else if ((tag = resolveAssets(this.$options, 'components', tag))) {
-            console.log('found transition!!!');
-            return createComponent(tag, data, this, children);
+        } else if ((Ctor = resolveAssets(this.$options, 'components', tag))) {
+            console.log(
+                '🚀 ~ file: create-element.js ~ line 58 ~ createElement ~ Ctor',
+                Ctor
+            );
+            return createComponent(Ctor, data, this, children);
         }
         return new VNode(
             tag,
@@ -73,6 +77,10 @@ function createElement(tag, data, children) {
             instance.props = data.props;
 
             instance._update = function (vnode) {
+                console.log(
+                    '🚀 ~ file: create-element.js ~ line 75 ~ createElement ~ tag',
+                    tag
+                );
                 const preVnode = this.$vnode;
                 if (preVnode) {
                     this.__patch__(preVnode, vnode);

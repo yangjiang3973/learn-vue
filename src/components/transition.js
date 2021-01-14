@@ -6,7 +6,7 @@ export default {
     abstract: true,
     render(h) {
         let children = this.$slots.default;
-        if (!children) return;
+        if (!children) return; // no vnode returned, need to fix
         children = children.filter((c) => c.tag);
         if (!children.length) return;
 
@@ -31,13 +31,38 @@ export default {
 
         const rawChild = children[0];
 
-        console.log('transition component setup');
         // TODO: I don't get it here
         // if this is a component root node and the component's
         // parent container node also has transition, skip.
         // if (hasParentTransition(this.$vnode)) {
         //     return rawChild;
         // }
+
+        // TODO: why need to getRealChild?
+        // const child = getRealChild(rawChild);
+        const child = rawChild;
+
+        const data = ((
+            child.data || (child.data = {})
+        ).transition = extractTransitionData(this)); //* data={name: modal}, child.data.transition = {name: modal}
+
+        function extractTransitionData(comp) {
+            const data = {};
+            const options = comp.$options;
+            // props
+            for (const key in options.propsData) {
+                data[key] = comp[key];
+            }
+            // events.
+            // extract listeners and pass them directly to the transition methods
+            const listeners = options._parentListeners;
+            for (const key in listeners) {
+                data[camelize(key)] = listeners[key].fn;
+            }
+            return data;
+        }
+
+        return rawChild;
     },
 };
 

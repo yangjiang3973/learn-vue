@@ -903,3 +903,5 @@ transition 以插槽的形式对内部单一的子节点进行动画的管理，
 2. NOTE: 今天明白了，我 patch 文件里的 switch statement，在 vue 里用了 cbs 里的 hooks 代替。
 
 hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。
+
+3. TODO: need to play with vue transitin and learn more details about how to use it and releated APIs
