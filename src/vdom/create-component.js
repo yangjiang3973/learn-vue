@@ -1,5 +1,6 @@
 import Aue from '../aue';
 import VNode from './vnode';
+import { hasOwn } from '../utils';
 
 function createComponent(tag, data, context, children) {
     // 1. extend
@@ -8,6 +9,10 @@ function createComponent(tag, data, context, children) {
     // 2. extract props
     data = data || {};
     const propsData = extractProps(data, Ctor);
+    console.log(
+        '🚀 ~ file: create-component.js ~ line 11 ~ createComponent ~ propsData',
+        propsData
+    );
 
     // extract listeners on component(not DOM listeners)
     const listeners = data.on;
@@ -50,16 +55,15 @@ function extractProps(data, Ctor) {
     if (!propsList) return;
     const res = {};
 
-    console.log(Ctor.options);
     for (const key in propsList) {
         // prop maybe in props, attrs or domProps
-        if (data.attrs) {
+        if (data.attrs && hasOwn(data.attrs, key)) {
             res[key] = data.attrs[key];
         }
-        if (data.props) {
+        if (data.props && hasOwn(data.props, key)) {
             res[key] = data.props[key];
         }
-        if (data.domProps) {
+        if (data.domProps && hasOwn(data.domProps, key)) {
             res[key] = data.domProps[key];
         }
     }
