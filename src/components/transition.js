@@ -14,7 +14,7 @@ const transitionProps = {
     appearActiveClass: undefined,
 };
 
-export default {
+const transition = {
     name: 'transition',
     props: transitionProps,
     abstract: true,
@@ -67,10 +67,6 @@ export default {
 function extractTransitionData(comp) {
     const data = {};
     const options = comp.$options;
-    console.log(
-        '🚀 ~ file: transition.js ~ line 52 ~ extractTransitionData ~ options',
-        options.propsData
-    );
     // props
     for (const key in options.propsData) {
         data[key] = comp[key];
@@ -83,3 +79,5 @@ function extractTransitionData(comp) {
     }
     return data;
 }
+
+export default transition;

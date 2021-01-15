@@ -32,16 +32,52 @@
 // const property = Object.getOwnPropertyDescriptor(obj, 'a');
 // console.log('property', property);
 
-function Watcher() {
-    this.value = this.get();
-}
+// function Watcher() {
+//     this.value = this.get();
+// }
 
-Watcher.prototype.get = function () {
-    console.log('get!');
+// Watcher.prototype.get = function () {
+//     console.log('get!');
+// };
+
+// const watcher = new Watcher();
+
+// watcher.value;
+// watcher.value;
+// watcher.value;
+
+const transitionProps = {
+    appear: undefined,
+    appearActiveClass: undefined,
+    appearClass: undefined,
+    css: undefined,
+    enterActiveClass: undefined,
+    enterClass: undefined,
+    leaveActiveClass: undefined,
+    leaveClass: undefined,
+    mode: undefined,
+    name: undefined,
+    type: undefined,
 };
 
-const watcher = new Watcher();
+const a = {
+    name: 'transition',
+    abstract: true,
+    props: transitionProps,
+};
 
-watcher.value;
-watcher.value;
-watcher.value;
+const b = {
+    components: {
+        Transition: 'llkkk',
+    },
+};
+
+const Sub = function AueComponent(options) {
+    this._init(options);
+};
+
+Sub.options = { ...a, ...b };
+
+console.log(Sub.options);
+
+a.props = {};
