@@ -1,4 +1,5 @@
 import VNode from './vnode';
+import { enter } from './modules/transition';
 
 function emptyNodeAt(elm) {
     return new VNode(elm.tagName.toLowerCase(), {}, [], undefined, elm);
@@ -110,6 +111,7 @@ function addNewData(elm, oldVnode, newVnode) {
             case 'transition':
                 // call transition module
                 // TODO: module
+                enter(newVnode);
                 break;
             case 'attrs':
                 for (let k in newData.attrs) {

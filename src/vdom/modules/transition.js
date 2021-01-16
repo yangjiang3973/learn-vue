@@ -1,5 +1,6 @@
 export function enter(vnode) {
     const data = resolveTransition(vnode.data.transition);
+    console.log('🚀 ~ file: transition.js ~ line 3 ~ enter ~ data', data);
     // if (!data) return;
 
     const {
@@ -29,15 +30,19 @@ export function enter(vnode) {
     const startClass = enterClass;
     const activeClass = enterActiveClass;
 
-    addTransitionClass(el, startClass);
-    addTransitionClass(el, activeClass);
+    addTransitionClass(vnode.elm, startClass);
+    addTransitionClass(vnode.elm, activeClass);
 
-    nextFrame(() => {
-        removeTransitionClass(el, startClass);
-        if (!cb.cancelled && !userWantsControl) {
-            whenTransitionEnds(el, type, cb);
-        }
+    window.requestAnimationFrame(() => {
+        removeTransitionClass(vnode.elm, startClass);
+        // if (!cb.cancelled && !userWantsControl) {
+        //     whenTransitionEnds(el, type, cb);
+        // }
     });
+}
+
+function removeTransitionClass(el, className) {
+    el.classList.remove(className);
 }
 
 // this wrapper is for fallback of setTimeout, maybe could remove if only use requestAnimationFrame
@@ -48,16 +53,15 @@ export function enter(vnode) {
 //   })
 // }
 
-function nextFrame() {
+// function nextFrame() {
 
-}
+// }
 
 function resolveTransition(def) {
     // if(!def) return;
     // if(typeof def === 'object') {}
 
-    const res = {};
-    res = { ...def, ...autoCssTransition(def.name || 'v') };
+    const res = { ...def, ...autoCssTransition(def.name || 'v') };
     return res;
 }
 
@@ -72,6 +76,6 @@ function autoCssTransition(name) {
     };
 }
 
-function addTransitionClass(el, class) {
-    el.classList.add(class)
+function addTransitionClass(el, className) {
+    el.classList.add(className);
 }
