@@ -28,7 +28,15 @@ export function enter(vnode) {
     // const startClass = isAppear ? appearClass : enterClass;
     // const activeClass = isAppear ? appearActiveClass : enterActiveClass;
     const startClass = enterClass;
+    console.log(
+        '🚀 ~ file: transition.js ~ line 31 ~ enter ~ startClass',
+        startClass
+    );
     const activeClass = enterActiveClass;
+    console.log(
+        '🚀 ~ file: transition.js ~ line 33 ~ enter ~ activeClass',
+        activeClass
+    );
 
     addTransitionClass(vnode.elm, startClass);
     addTransitionClass(vnode.elm, activeClass);
@@ -40,22 +48,6 @@ export function enter(vnode) {
         // }
     });
 }
-
-function removeTransitionClass(el, className) {
-    el.classList.remove(className);
-}
-
-// this wrapper is for fallback of setTimeout, maybe could remove if only use requestAnimationFrame
-// const raf = (inBrowser && window.requestAnimationFrame) || setTimeout
-// export function nextFrame (fn: Function) {
-//   raf(() => {
-//     raf(fn)
-//   })
-// }
-
-// function nextFrame() {
-
-// }
 
 function resolveTransition(def) {
     // if(!def) return;
@@ -78,4 +70,8 @@ function autoCssTransition(name) {
 
 function addTransitionClass(el, className) {
     el.classList.add(className);
+}
+
+function removeTransitionClass(el, className) {
+    el.classList.remove(className);
 }

@@ -906,14 +906,22 @@ hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。
 
 3. TODO: need to play with vue transitin and learn more details about how to use it and releated APIs
 
-4. BUG: `Sub.options = { ...extendOptions, ...Aue.options };` lost props
+4. FIXED: `Sub.options = { ...extendOptions, ...Aue.options };` lost props
 
     no, this is not the actualy bug...
 
     `console.log` is not reliable when debugging object's value...
 
-    because it just prinet things based on reference, and this is not a snapshot at that time.
+    because it just print things based on reference, and this is not a snapshoot at that time.
 
-    if you change the obj after console.log....you will see the content of obj that changed already...
+    if you change the obj after console.log....you will see the content of obj that changed already(if you click to expand obj content in browser)...
 
-    fix this bug and move to switch's transition
+# 2020-01-16
+
+1. learn `raf` and use it to replace `setTimeout` in transition example.
+
+2. TODO: i cannot make my example work with `raf`, but article's example works fine...
+
+# 2020-01-21
+
+1.
