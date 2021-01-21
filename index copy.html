@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>myeeeVue</title>
+        <style>
+            /* .content {
+                background-color: red;
+                transition: opacity 2000ms;
+            }
+
+            .is-visible {
+                opacity: 1;
+            }
+
+            .content.is-invisible {
+                opacity: 0;
+            } */
+
+            .box {
+                width: 100px;
+                height: 100px;
+                background-color: #9D5B75;
+                transition: opacity 4000ms;
+            }
+
+            .box.faded-out {
+                opacity: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="demo">
+            <button id="btn">Toggle</button>
+        </div>
+        <script>
+            let parent = document.getElementById('demo');
+            let btn = document.getElementById('btn');
+
+            let content = document.createElement('div');
+            content.textContent = 'this is the content';
+
+            function mount() {
+                parent.appendChild(content);
+                content.classList.add('box', 'faded-out');
+            }
+            function toggle() {
+                if(!content.isConnected) {
+                    mount();
+                    requestAnimationFrame(()=>{
+                        requestAnimationFrame(() => {
+                            // second state
+                            content.classList.remove("faded-out")
+                        })
+                    })
+                } else {
+                    content.classList.add("faded-out")
+
+                    // requestAnimationFrame(()=>{
+                    //     requestAnimationFrame(()=>{
+                    //         parent.removeChild(content);
+                    //     })
+                    // })
+                }
+            }
+
+            btn.addEventListener('click', toggle);
+        </script>
+    </body>
+</html>
