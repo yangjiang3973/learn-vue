@@ -1,6 +1,5 @@
 export function enter(vnode) {
     const data = resolveTransition(vnode.data.transition);
-    console.log('🚀 ~ file: transition.js ~ line 3 ~ enter ~ data', data);
     // if (!data) return;
 
     const {

@@ -920,8 +920,24 @@ hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。
 
 1. learn `raf` and use it to replace `setTimeout` in transition example.
 
-2. TODO: i cannot make my example work with `raf`, but article's example works fine...
+2. (DONE) i cannot make my example work with `raf`, but article's example works fine...
 
 # 2020-01-21
 
-1.
+1. no need to implement a perfect transition module as Vue.
+
+just implement the basic example and fully understand Vue's transition.
+
+maybe in my Aue, make transition as a independent package. Only install when needed.
+
+2. TODO: because of `transition module`, I realized I may need to use a better way to manage lifecycle of elements.
+
+for example, when leave transition and need to remove element, how to combine them better
+
+Vue use hooks to call element's lifecycle fn.
+
+I split them into createElm and use switch statement to manage props.
+
+but in transition, if I want to use setTimeout to remove element, how should I do?
+
+Before remove, call a hook(maybe call it destroy hook), in this hook check transition first, then remove?

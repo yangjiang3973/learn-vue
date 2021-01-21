@@ -57,13 +57,31 @@
                     })
                 } else {
                     content.classList.add("faded-out")
-
-                    // requestAnimationFrame(()=>{
-                    //     requestAnimationFrame(()=>{
-                    //         parent.removeChild(content);
-                    //     })
-                    // })
+                    // then to remove
+                    const timeOut = getTransitionInfo(content);
+                    setTimeout(() => {
+                        parent.removeChild(content);
+                    }, timeOut);
                 }
+            }
+
+            function getTransitionInfo(el) {
+                const styles = window.getComputedStyle(el);
+                const transitioneDelays = styles['transitionDelay'].split(', ');
+                const transitionDurations = styles['transitionDuration'].split(', ');
+                const transitionTimeout = getTimeout(transitioneDelays, transitionDurations);
+                return transitionTimeout;
+            }
+
+
+            function getTimeout (delays, durations) {
+                return Math.max.apply(null, durations.map((d, i) => {                    
+                    return toMs(d) + toMs(delays[i])
+                }))
+            }
+
+            function toMs(s) {
+                return Number(s.slice(0, -1)) * 1000;
             }
 
             btn.addEventListener('click', toggle);
