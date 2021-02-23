@@ -14,7 +14,7 @@ export default {
                         <div class="modal-header">
                             {this.$scopedSlots.header({ title: this.title })}
                         </div>
-                        <div class="modal-body">{this.$slots.body}</div>
+                        <div class="modal-body">{this.$slots.default}</div>
                         <div class="modal-footer">
                             {this.$slots.footer}
                             <button
