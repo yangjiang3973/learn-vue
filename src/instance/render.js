@@ -31,7 +31,6 @@ export const renderMixin = function (Aue) {
         } catch (e) {
             console.error(e);
         }
-        console.log('🚀 ~ file: render.js ~ line 24 ~ vnode', vnode);
 
         // return empty vnode in case the render function errored out
         if (!(vnode instanceof VNode)) {

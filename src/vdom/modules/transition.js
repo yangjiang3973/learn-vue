@@ -1,6 +1,5 @@
 export function enter(vnode) {
     const data = resolveTransition(vnode.data.transition);
-    console.log('🚀 ~ file: transition.js ~ line 3 ~ enter ~ data', data);
     // if (!data) return;
 
     const {
@@ -28,15 +27,6 @@ export function enter(vnode) {
     // const startClass = isAppear ? appearClass : enterClass;
     // const activeClass = isAppear ? appearActiveClass : enterActiveClass;
     const startClass = enterClass;
-    console.log(
-        '🚀 ~ file: transition.js ~ line 31 ~ enter ~ startClass',
-        startClass
-    );
-    const activeClass = enterActiveClass;
-    console.log(
-        '🚀 ~ file: transition.js ~ line 33 ~ enter ~ activeClass',
-        activeClass
-    );
 
     addTransitionClass(vnode.elm, startClass);
     addTransitionClass(vnode.elm, activeClass);

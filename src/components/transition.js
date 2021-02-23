@@ -20,7 +20,7 @@ const transition = {
     abstract: true,
     render(h) {
         let children = this.$slots.default;
-        if (!children) return; // no vnode returned, need to fix
+        if (!children) return;
         children = children.filter((c) => c.tag);
         if (!children.length) return;
 
@@ -30,8 +30,8 @@ const transition = {
                     '<transition-group> for lists.'
             );
         }
+        // init ends, start main logic
 
-        // init check done, start main logic
         const mode = this.mode;
         // warn invalid mode
         if (
@@ -54,7 +54,9 @@ const transition = {
 
         // TODO: why need to getRealChild?
         // const child = getRealChild(rawChild);
+
         const child = rawChild;
+        // TODO: need to make more clear about this piece
 
         const data = ((
             child.data || (child.data = {})

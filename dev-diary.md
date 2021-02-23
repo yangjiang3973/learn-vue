@@ -721,7 +721,7 @@ so need to flat!(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referen
 
 TODO: make a better `normalizeChildren()`
 
-# 2020-01-02
+# 2021-01-02
 
 1. TODO: make a better way to see the vnode patching process(maybe a visualized way? log? which can see each node's changes)
 
@@ -729,7 +729,7 @@ TODO: make a better `normalizeChildren()`
 
 because domProps are not set properly
 
-# 2020-01-03
+# 2021-01-03
 
 1. (TODO) deal with `domProps`, what will be included into domProps and how to set these attributes in dom element? need to learn from Vue's `updateDOMProps()` function
 
@@ -769,7 +769,7 @@ Many HTML attributes appear to map to properties ... but not in the way you migh
 
 should add each ref element to the `this.refs`. this means need to add to instance.
 
-# 2020-01-04
+# 2021-01-04
 
 1. $refs can work on both element and component
 
@@ -781,7 +781,7 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 (no need to setup css-loader and style-loader because this is not included in js files)
 
-# 2020-01-06
+# 2021-01-06
 
 1. (DONE) Milestone: make TODO APP works now
 
@@ -791,7 +791,7 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
     2.
 
-# 2020-01-07
+# 2021-01-07
 
 1. (DONE) implement `$emit` for tree demo
 
@@ -807,7 +807,7 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 3. look into `createPatchFunction` in detail, especially for the hooks and modules at the beginning.
 
-# 2020-01-08
+# 2021-01-08
 
 1. refactor observer and check if there is a bug in watcher and dep
 
@@ -819,7 +819,7 @@ should add each ref element to the `this.refs`. this means need to add to instan
 
 2. (DONE) make observer as perfect as vue's, including `set` and `del`
 
-# 2020-01-10
+# 2021-01-10
 
 1. (DONE) right now totally follow Vue's observe and I feel it created extra dep instance...maybe point to the root one and avoid creating new ones for children.
 
@@ -845,7 +845,7 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
 2. (DONE) implement `set` and `del`
 
-# 2020-01-11
+# 2021-01-11
 
 1. make more demos to add APIs and test, before improving the code
 
@@ -857,7 +857,7 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
         2.2 (DONE) slot
 
-# 2020-01-12
+# 2021-01-12
 
 1. there are 2 types of slots:
 
@@ -869,9 +869,9 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
     1. is there a way to use jsx and css to implement transition? and make it as a syntax sugar？
 
-    2. why need a transition built-in component? is it possible to achieve the same effect by pure css?
+    2. NOTE: why need a transition built-in component? is it possible to achieve the same effect by pure css?
 
-# 2020-01-13
+# 2021-01-13
 
 Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加进入/离开过渡
 
@@ -884,7 +884,7 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 
 2. start writing `transition` while learning from source code of vue 2.0
 
-# 2020-01-14
+# 2021-01-14
 
 1. continue on `transition`
 
@@ -916,12 +916,38 @@ hooks 里的那些 updateAttrs 等等函数，在 modules 文件夹下。
 
     if you change the obj after console.log....you will see the content of obj that changed already(if you click to expand obj content in browser)...
 
-# 2020-01-16
+# 2021-01-16
 
 1. learn `raf` and use it to replace `setTimeout` in transition example.
 
-2. TODO: i cannot make my example work with `raf`, but article's example works fine...
+2. (DONE) i cannot make my example work with `raf`, but article's example works fine...
 
-# 2020-01-21
+# 2021-01-21
 
-1.
+1. no need to implement a perfect transition module as Vue.
+
+just implement the basic example and fully understand Vue's transition.
+
+maybe in my Aue, make transition as a independent package. Only install when needed.
+
+2. TODO: because of `transition module`, I realized I may need to use a better way to manage lifecycle of elements.
+
+for example, when leave transition and need to remove element, how to combine them better
+
+Vue uses hooks to call element's lifecycle fn.
+
+I split them into createElm and use `switch` statement to manage props.
+
+but in transition, if I want to use setTimeout to remove element, how should I do?
+
+Before remove, call a hook(maybe call it destroy hook), in this hook check transition first, then remove?
+
+# 2021-02-20
+
+1. refresh my mind about the progress before my vacation
+
+    1.1 slot
+
+    1.2 transition
+
+2. contine to implement transition
