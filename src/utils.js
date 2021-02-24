@@ -109,6 +109,12 @@ export const query = function (el) {
     return el;
 };
 
+export const nextFrame = function (fn) {
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(fn);
+    });
+};
+
 export const nextTick = function (cb) {
     function handler() {
         cb();
