@@ -951,3 +951,26 @@ Before remove, call a hook(maybe call it destroy hook), in this hook check trans
     1.2 transition
 
 2. contine to implement transition
+
+# 2021-02-24
+
+1. (DONE) finish basic transition enter part
+
+2. finish basic transition leave part
+
+problem#1:
+
+when trying to remove a vnode, the vnode is `transition` component itself, need to find the first node in transition children.
+
+3. TODO: how to load multiple modules in patch.js in Vue2.0. need to do more research:
+
+```js
+0: {create: ƒ updateAttrs(oldVnode /*: VNodeWithData*/ , vnode /*: VNodeWithData*/ ), update: ƒ updateAttrs(oldVnode /*: VNodeWithData*/ , vnode /*: VNodeWithData*/ )}
+1: {create: ƒ ..., update: ƒ ...}
+2: {create: ƒ, update: ƒ}
+3: {create: ƒ, update: ƒ}
+4: {create: ƒ, update: ƒ}
+5: {create: ƒ, remove: ƒ}
+6: {create: ƒ, update: ƒ, destroy: ƒ}
+7: {create: ƒ, update: ƒ, postpatch: ƒ, destroy: ƒ}
+```

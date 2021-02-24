@@ -1,5 +1,5 @@
 import VNode from './vnode';
-import { enter } from './modules/transition';
+import { enter, leave } from './modules/transition';
 
 function emptyNodeAt(elm) {
     return new VNode(elm.tagName.toLowerCase(), {}, [], undefined, elm);
@@ -199,6 +199,7 @@ function patchChildren(oldChildren, newChildren, elm) {
                     newChildren[i].key === oldChildren[j].key
                 ) {
                     flag = true;
+                    console.log(8);
                     patch(oldChildren[j], newChildren[i]);
                     if (j < maxIndex) {
                         const refElm = newChildren[i - 1].elm.nextSibling;
@@ -210,6 +211,7 @@ function patchChildren(oldChildren, newChildren, elm) {
                 }
             }
             if (flag === false) {
+                console.log(9);
                 const refElm =
                     i < 1
                         ? oldChildren[0].elm
@@ -231,7 +233,18 @@ function patchChildren(oldChildren, newChildren, elm) {
             }
             if (flag === false) {
                 console.log('remove');
-                elm.removeChild(oldChildren[i].elm);
+                let rootVnode;
+                if (oldChildren[i].child) {
+                    rootVnode = oldChildren[i].child._vnode;
+                } else rootVnode = oldChildren[i];
+                if (!rootVnode.data) {
+                    elm.removeChild(rootVnode.elm);
+                } else {
+                    leave(rootVnode, () => {
+                        elm.removeChild(rootVnode.elm);
+                    });
+                }
+                // elm.removeChild(oldChildren[i].elm);
             }
         }
     }

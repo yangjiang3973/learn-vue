@@ -3,14 +3,15 @@ import { nextFrame } from '../../utils';
 // TODO: maybe delete some code that is not used now
 export function enter(vnode) {
     const data = resolveTransition(vnode.data.transition);
-    // if (!data) return;
 
     const {
         css,
         type,
         enterClass,
+        enterToClass,
         enterActiveClass,
         appearClass,
+        appearToClass,
         appearActiveClass,
         beforeEnter,
         enter,
@@ -20,6 +21,7 @@ export function enter(vnode) {
         appear,
         afterAppear,
         appearCancelled,
+        duration,
     } = data;
 
     const startClass = enterClass;
@@ -43,6 +45,44 @@ export function enter(vnode) {
     });
 }
 
+export function leave(vnode, rm) {
+    // console.log('🚀 ~ file: transition.js ~ line 46 ~ leave ~ vnode', vnode);
+    const data = resolveTransition(vnode.data.transition);
+    if (!data) return rm();
+
+    const {
+        css,
+        type,
+        leaveClass,
+        leaveToClass,
+        leaveActiveClass,
+        beforeLeave,
+        leave,
+        afterLeave,
+        leaveCancelled,
+        delayLeave,
+        duration,
+    } = data;
+
+    addTransitionClass(vnode.elm, leaveClass);
+    addTransitionClass(vnode.elm, leaveActiveClass);
+    nextFrame(() => {
+        removeTransitionClass(vnode.elm, leaveClass);
+        addTransitionClass(vnode.elm, leaveToClass);
+        const styles = window.getComputedStyle(vnode.elm);
+        const transitioneDelays = styles['transitionDelay'].split(', ');
+        const transitionDurations = styles['transitionDuration'].split(', ');
+        const transitionTimeout = getTimeout(
+            transitioneDelays,
+            transitionDurations
+        );
+        setTimeout(() => {
+            removeTransitionClass(vnode.elm, leaveActiveClass);
+            rm();
+        }, transitionTimeout + 1);
+    });
+}
+
 function getTimeout(delays, durations) {
     return Math.max.apply(
         null,
@@ -57,6 +97,7 @@ function toMs(s) {
 }
 
 function resolveTransition(def) {
+    if (!def) return;
     const res = { ...def, ...autoCssTransition(def.name || 'v') };
     return res;
 }
@@ -64,11 +105,11 @@ function resolveTransition(def) {
 function autoCssTransition(name) {
     return {
         enterClass: `${name}-enter`,
-        leaveClass: `${name}-leave`,
-        // appearClass: `${name}-enter`,
+        enterToClass: `${name}-enter-to`,
         enterActiveClass: `${name}-enter-active`,
+        leaveClass: `${name}-leave`,
+        leaveToClass: `${name}-leave-to`,
         leaveActiveClass: `${name}-leave-active`,
-        // appearActiveClass: `${name}-enter-active`,
     };
 }
 

@@ -9,10 +9,6 @@ function createComponent(tag, data, context, children) {
     // 2. extract props
     data = data || {};
     const propsData = extractProps(data, Ctor);
-    console.log(
-        '🚀 ~ file: create-component.js ~ line 11 ~ createComponent ~ propsData',
-        propsData
-    );
 
     // extract listeners on component(not DOM listeners)
     const listeners = data.on;
