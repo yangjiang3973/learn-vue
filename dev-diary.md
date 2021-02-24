@@ -956,7 +956,7 @@ Before remove, call a hook(maybe call it destroy hook), in this hook check trans
 
 1. (DONE) finish basic transition enter part
 
-2. finish basic transition leave part
+2. (DONE) finish basic transition leave part
 
 problem#1:
 

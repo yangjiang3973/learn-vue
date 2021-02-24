@@ -234,9 +234,13 @@ function patchChildren(oldChildren, newChildren, elm) {
             if (flag === false) {
                 console.log('remove');
                 let rootVnode;
-                if (oldChildren[i].child) {
-                    rootVnode = oldChildren[i].child._vnode;
-                } else rootVnode = oldChildren[i];
+                // TODO: here is a temp solution, may need recusively locate actual root vnode
+                // now only solve the problem of one level transition(i.e. oldChildren[i] is transition component vnode, not its root vnode)
+                console.log(
+                    '🚀 ~ file: patch.js ~ line 240 ~ patchChildren ~ oldChildren',
+                    oldChildren[i]
+                );
+                rootVnode = locateVnode(oldChildren[i]);
                 if (!rootVnode.data) {
                     elm.removeChild(rootVnode.elm);
                 } else {
@@ -244,10 +248,14 @@ function patchChildren(oldChildren, newChildren, elm) {
                         elm.removeChild(rootVnode.elm);
                     });
                 }
-                // elm.removeChild(oldChildren[i].elm);
             }
         }
     }
+}
+
+function locateVnode(vnode) {
+    if (!vnode.child) return vnode;
+    return locateVnode(vnode.child._vnode);
 }
 
 function patch(oldVnode, newVnode) {

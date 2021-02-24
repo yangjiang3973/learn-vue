@@ -80,6 +80,10 @@ export function leave(vnode, rm) {
             removeTransitionClass(vnode.elm, leaveActiveClass);
             rm();
         }, transitionTimeout + 1);
+        console.log(
+            '🚀 ~ file: transition.js ~ line 83 ~ nextFrame ~ transitionTimeout',
+            transitionTimeout
+        );
     });
 }
 
