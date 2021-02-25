@@ -11,7 +11,7 @@ let vm = new Aue({
                 <button
                     id="show-modal"
                     onClick={() => {
-                        this.showModal = true;
+                        this.showModal = !this.showModal;
                     }}
                 >
                     Show Modal
