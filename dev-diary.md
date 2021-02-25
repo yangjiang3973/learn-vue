@@ -851,9 +851,9 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
     1. Tree list (DONE)
 
-    2. Modal
+    2. Modal (DONE)
 
-        2.1 transition
+        2.1 (DONE) transition
 
         2.2 (DONE) slot
 
@@ -974,3 +974,37 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 6: {create: ƒ, update: ƒ, destroy: ƒ}
 7: {create: ƒ, update: ƒ, postpatch: ƒ, destroy: ƒ}
 ```
+
+4. (DONE) finished the demo example: Modal
+
+5. (TODO) firebase validation demo
+
+# 2021-02-25
+
+1.  fv demo has some features need to be done:
+
+    1.0 (TODO) firebase setup(make it works)
+
+    BUG: right now Aue does not support firebase, need to check and fix
+
+    1.1 transition-group
+
+    1.2 vShow with transition (TODO)
+
+        basic vShow implemented before,
+
+        now need to combine with transition.
+
+    1.3 BUG: it seems every time I use onInput to change state, the node will be removed and re-insert, so inputbox loses focus
+
+        temp solution: add a key to it
+
+        because only node what has the same tag and key will be kept and patch,
+
+        otherwise it will be remove and create a new one replace it.
+
+        need to modify the diff algo
+
+2.  things related to transition or transition-group may not have high priority now.
+
+    check `preact` and find the boundary of my project(what features should be included and excluded)
