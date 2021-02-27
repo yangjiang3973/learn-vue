@@ -1007,4 +1007,43 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 
 2.  things related to transition or transition-group may not have high priority now.
 
-    check `preact` and find the boundary of my project(what features should be included and excluded)
+    (IN PROGRESS) check `preact` and find the boundary of my project(what features should be included and excluded)
+
+3.  (IN PROGRESS) Need to learn Vue3 and keep the pace with vue
+
+4.  (TODO) learn web component
+
+5.  (TODO) learn Server-Side Rendering
+
+# 2021-02-26
+
+1. learning Vue 3 by starting reading the new doc
+
+# 2021-02-27
+
+1.  continue reading vue3 doc
+
+2.  (TODO) need to learn react hooks, because composition apis are like react hooks
+
+3.  start debugging vue3
+
+    3.1 run the source code(IN PROGRESS)
+
+    3.2
+
+4.  prioritize tasks I want to do:
+
+    4.1 skeleton code of vue2(clean and brief)
+
+    4.2 write articles of how to make vue2(serialized blogs)
+    Q: vue3 will come, if it is worth writing things about vue2?
+
+        A: like a loop, start from vue2 and update when vue3 becomes popular, since the apis does not change to much?
+
+    4.3 learn vue3 source code by writing a similar runtime project and publish it as a lib(called `postvue`)
+
+    ideas:
+
+    continue on vue3 code and the new lib(with ts), because I feel it will not take to much time to learn.
+
+    after I can obsorb some modules, start writing blogs from vue2 to vue3 or event vue3 directly.
