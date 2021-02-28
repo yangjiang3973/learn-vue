@@ -1,4 +1,6 @@
-# Vue.createApp
+# Document
+
+## Vue.createApp
 
 In vue3, it uses `Vue.createApp` to create an application instance.
 
@@ -12,15 +14,15 @@ const app = createApp({});
 app.mount('#my-app');
 ```
 
-# composition api
+## composition api
 
-# teleports
+## teleports
 
-# Plugins
+## Plugins
 
 maybe move transition to a seperate plugin
 
-# ref
+## ref
 
 ```js
 import { ref } from 'vue';

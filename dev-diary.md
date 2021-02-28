@@ -1047,3 +1047,23 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
     continue on vue3 code and the new lib(with ts), because I feel it will not take to much time to learn.
 
     after I can obsorb some modules, start writing blogs from vue2 to vue3 or event vue3 directly.
+
+# 2021-02-28
+
+1. (DONE) how to make vue3 run and debug by line, like what I did in vue2
+
+    1.1 read the vue package module's readme, and import vue from `../dist/vue.runtime.esm-browser.js`
+
+    1.2 since render function changed in vue3(`https://github.com/vuejs/rfcs/blob/master/active-rfcs/0008-render-function-api-change.md`),
+
+    need a different jsx parser(`https://github.com/vuejs/jsx-next`)
+
+2. how does vue3 get build?
+
+    2.1 learn rollup
+
+    2.2 what is the meaning of .ems, .cjs files??
+
+3. call new repo `veer`
+
+4. learn typescript while reading code of vue3(if anything new, search and learn)
