@@ -1052,7 +1052,7 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 
 1. (DONE) how to make vue3 run and debug by line, like what I did in vue2
 
-    1.1 read the vue package module's readme, and import vue from `../dist/vue.runtime.esm-browser.js`
+    1.1 read the package module: `vue`'s readme, and import vue from `../dist/vue.runtime.esm-browser.js`
 
     1.2 since render function changed in vue3(`https://github.com/vuejs/rfcs/blob/master/active-rfcs/0008-render-function-api-change.md`),
 
@@ -1067,3 +1067,9 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 3. call new repo `veer`
 
 4. learn typescript while reading code of vue3(if anything new, search and learn)
+
+    maybe add typescript to learn-vue? or still use js?
+
+    (TODO)now create a new branch 3.0 and refactor code
+
+    use js for new because quick development is more important
