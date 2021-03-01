@@ -1070,6 +1070,19 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 
     maybe add typescript to learn-vue? or still use js?
 
-    (TODO)now create a new branch 3.0 and refactor code
+    (DONE) now create a new branch 3.0 and refactor code
 
     use js for new because quick development is more important
+
+# 2021-03-01
+
+1. (DONE) Learn `proxy`, which is used in Vue3 to replace `Object.defineProperty`
+
+2. (IN PROGRESS) refactor reactivity module with typescript(good chance to learn ts)
+
+    2.1 (DONE) `createReactiveObject` structure
+
+    2.2 baseHandlers and collectionHandlers (IN PROGRESS)
+    working on get function
+
+3. `WeakMap` uses obj as key

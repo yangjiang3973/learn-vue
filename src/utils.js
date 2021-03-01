@@ -68,6 +68,11 @@ export const isObject = function (obj) {
     return obj !== null && typeof obj === 'object';
 };
 
+export const toRawType = (value) => {
+    // extract "RawType" from strings like "[object RawType]"
+    return toTypeString(value).slice(8, -1);
+};
+
 export const isReserverd = function (str) {
     return str.startsWith('$') || str.startsWith('_');
 };
