@@ -1,4 +1,5 @@
 import observeData from '../observer/observer';
+import { set, del } from '../observer/utils';
 import Watcher from '../watcher';
 import { isReserverd } from '../utils';
 
@@ -103,6 +104,8 @@ export const stateMixin = function (Aue) {
 
     // $set and $delete
     // TODO: add back and test
+    Aue.prototype.$set = set;
+    Aue.prototype.$delete = del;
 
     // $watch
     // TODO: $watch in vue2.6 is much simpler, maybe need to refactor and test again

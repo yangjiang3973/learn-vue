@@ -1,4 +1,4 @@
-import { nextFrame } from '../../utils';
+import { nextFrame } from '../utils';
 
 // TODO: maybe delete some code that is not used now
 export function enter(vnode) {
@@ -46,7 +46,6 @@ export function enter(vnode) {
 }
 
 export function leave(vnode, rm) {
-    // console.log('🚀 ~ file: transition.js ~ line 46 ~ leave ~ vnode', vnode);
     const data = resolveTransition(vnode.data.transition);
     if (!data) return rm();
 
@@ -80,10 +79,6 @@ export function leave(vnode, rm) {
             removeTransitionClass(vnode.elm, leaveActiveClass);
             rm();
         }, transitionTimeout + 1);
-        console.log(
-            '🚀 ~ file: transition.js ~ line 83 ~ nextFrame ~ transitionTimeout',
-            transitionTimeout
-        );
     });
 }
 

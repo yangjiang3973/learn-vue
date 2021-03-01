@@ -1,5 +1,5 @@
 import VNode from './vnode';
-import { enter, leave } from './modules/transition';
+import { enter, leave } from '../modules/transition';
 
 function emptyNodeAt(elm) {
     return new VNode(elm.tagName.toLowerCase(), {}, [], undefined, elm);
@@ -80,7 +80,7 @@ function removeMissingData(elm, oldVnode, newVnode) {
             case 'domProps':
                 for (let k in oldData.domProps) {
                     if (!newData || !newData.domProps || !newData.domProps[k]) {
-                        elm.domProps[k] = undefined;
+                        elm[k] = undefined;
                     }
                 }
                 break;
@@ -233,13 +233,10 @@ function patchChildren(oldChildren, newChildren, elm) {
             }
             if (flag === false) {
                 console.log('remove');
+                console.log(oldChildren[i]);
                 let rootVnode;
                 // TODO: here is a temp solution, may need recusively locate actual root vnode
                 // now only solve the problem of one level transition(i.e. oldChildren[i] is transition component vnode, not its root vnode)
-                console.log(
-                    '🚀 ~ file: patch.js ~ line 240 ~ patchChildren ~ oldChildren',
-                    oldChildren[i]
-                );
                 rootVnode = locateVnode(oldChildren[i]);
                 if (!rootVnode.data) {
                     elm.removeChild(rootVnode.elm);
@@ -248,6 +245,7 @@ function patchChildren(oldChildren, newChildren, elm) {
                         elm.removeChild(rootVnode.elm);
                     });
                 }
+                // elm.removeChild(oldChildren[i].elm);
             }
         }
     }

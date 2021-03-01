@@ -851,9 +851,9 @@ before, I just change the observer's dep to key's dep, so looks like my way has 
 
     1. Tree list (DONE)
 
-    2. Modal
+    2. Modal (DONE)
 
-        2.1 transition
+        2.1 (DONE) transition
 
         2.2 (DONE) slot
 
@@ -974,3 +974,102 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
 6: {create: ƒ, update: ƒ, destroy: ƒ}
 7: {create: ƒ, update: ƒ, postpatch: ƒ, destroy: ƒ}
 ```
+
+4. (DONE) finished the demo example: Modal
+
+5. (TODO) firebase validation demo
+
+# 2021-02-25
+
+1.  fv demo has some features need to be done:
+
+    1.0 (TODO) firebase setup(make it works)
+
+    BUG: right now Aue does not support firebase, need to check and fix
+
+    1.1 transition-group
+
+    1.2 vShow with transition (TODO)
+
+        basic vShow implemented before,
+
+        now need to combine with transition.
+
+    1.3 BUG: it seems every time I use onInput to change state, the node will be removed and re-insert, so inputbox loses focus
+
+        temp solution: add a key to it
+
+        because only node what has the same tag and key will be kept and patch,
+
+        otherwise it will be remove and create a new one replace it.
+
+        need to modify the diff algo
+
+2.  things related to transition or transition-group may not have high priority now.
+
+    (IN PROGRESS) check `preact` and find the boundary of my project(what features should be included and excluded)
+
+3.  (IN PROGRESS) Need to learn Vue3 and keep the pace with vue
+
+4.  (TODO) learn web component
+
+5.  (TODO) learn Server-Side Rendering
+
+# 2021-02-26
+
+1. learning Vue 3 by starting reading the new doc
+
+# 2021-02-27
+
+1.  continue reading vue3 doc
+
+2.  (TODO) need to learn react hooks, because composition apis are like react hooks
+
+3.  start debugging vue3
+
+    3.1 run the source code(IN PROGRESS)
+
+    3.2
+
+4.  prioritize tasks I want to do:
+
+    4.1 skeleton code of vue2(clean and brief)
+
+    4.2 write articles of how to make vue2(serialized blogs)
+    Q: vue3 will come, if it is worth writing things about vue2?
+
+        A: like a loop, start from vue2 and update when vue3 becomes popular, since the apis does not change to much?
+
+    4.3 learn vue3 source code by writing a similar runtime project and publish it as a lib(called `postvue`)
+
+    ideas:
+
+    continue on vue3 code and the new lib(with ts), because I feel it will not take to much time to learn.
+
+    after I can obsorb some modules, start writing blogs from vue2 to vue3 or event vue3 directly.
+
+# 2021-02-28
+
+1. (DONE) how to make vue3 run and debug by line, like what I did in vue2
+
+    1.1 read the package module: `vue`'s readme, and import vue from `../dist/vue.runtime.esm-browser.js`
+
+    1.2 since render function changed in vue3(`https://github.com/vuejs/rfcs/blob/master/active-rfcs/0008-render-function-api-change.md`),
+
+    need a different jsx parser(`https://github.com/vuejs/jsx-next`)
+
+2. how does vue3 get build?
+
+    2.1 learn rollup
+
+    2.2 what is the meaning of .ems, .cjs files??
+
+3. call new repo `veer`
+
+4. learn typescript while reading code of vue3(if anything new, search and learn)
+
+    maybe add typescript to learn-vue? or still use js?
+
+    (TODO)now create a new branch 3.0 and refactor code
+
+    use js for new because quick development is more important

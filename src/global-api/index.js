@@ -1,7 +1,7 @@
-import { isArray, hasOwn, nextTick } from '../utils';
+import { nextTick } from '../utils';
 import config from '../config';
 import initExtend from './extend';
-import { defineReactive } from '../observer/observer';
+import { set, del } from '../observer/utils';
 import builtInComponents from '../components/index';
 
 export default function initGlobalAPI(Aue) {
@@ -14,35 +14,8 @@ export default function initGlobalAPI(Aue) {
     // TODO:
     // Aue.util = util;
 
-    Aue.set = function set(obj, key, val) {
-        if (isArray(obj)) {
-            obj.splice(key, 1, val);
-            return val;
-        }
-        if (hasOwn(obj, key)) {
-            obj[key] = val;
-            return;
-        }
-        const ob = obj.__ob__;
-        if (!ob) {
-            obj[key] = val;
-            return;
-        }
-        defineReactive(ob.value, key, val);
-        ob.dep.notify();
-        return val;
-    };
-    Aue.delete = function del(obj, key) {
-        const ob = obj.__ob__;
-        if (!hasOwn(obj, key)) {
-            return;
-        }
-        delete obj[key];
-        if (!ob) {
-            return;
-        }
-        ob.dep.notify();
-    };
+    Aue.set = set;
+    Aue.delete = del;
     Aue.nextTick = nextTick;
 
     Aue.options = Object.create(null);
