@@ -49,6 +49,10 @@ export const hasOwn = function (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 };
 
+//* NOTE: compare whether a value has changed, accounting for NaN. (NaN === NaN => false)
+export const hasChanged = (value, oldValue) =>
+    value !== oldValue && (value === value || oldValue === oldValue);
+
 export const capitalize = function (s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
@@ -63,6 +67,11 @@ export const isPlainObject = function (obj) {
 export const isArray = function (obj) {
     return Array.isArray(obj);
 };
+export const isIntegerKey = (key: unknown) =>
+    isString(key) &&
+    key !== 'NaN' &&
+    key[0] !== '-' && // negative integer
+    '' + parseInt(key, 10) === key;
 
 export const isObject = function (obj) {
     return obj !== null && typeof obj === 'object';
