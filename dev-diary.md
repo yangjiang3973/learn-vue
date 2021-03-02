@@ -1083,6 +1083,59 @@ when trying to remove a vnode, the vnode is `transition` component itself, need 
     2.1 (DONE) `createReactiveObject` structure
 
     2.2 baseHandlers and collectionHandlers (IN PROGRESS)
-    working on get function
+    working on `get` function
 
 3. `WeakMap` uses obj as key
+
+# 2021-03-02
+
+1.  (DONE) very basic proxy(v0.01)
+
+2.  how does vue initialize and call reactivity module?
+
+3.  General structure of Vue3:
+
+    packages:
+
+        a. reactivity: use proxy to make data object reactive(proxy's set handler can detect newly added key)
+
+            1. reactive: convert obj, array, collections and return proxy
+
+            2. ref: convert number, string and other primitive type and return proxy
+
+            3. effect: like watcher in vue2? handle results of data changes
+
+        b. runtime-core: independent from platform. vdom render, vue api and so on.
+
+        c. runtime-dom: runtime for browser! so include native DOM api, events and so on.
+
+        d. runtime-test: a small runtime for testing. The DOM is actually a js object, so it can be used in any js env.
+
+            It could be used to test rendering process.
+
+        e. shared: some utils function
+
+        f. vue: include compiler and runtime to build the completed version
+
+    workflows:
+
+        a.  call `createApp(app)` and create app instance and call `mount` method
+
+        b. in `mount` stage, create VNode and call `render` function
+
+        c. in `render` stage, create elements and patch
+
+4.  Q: I don't understand this part:
+
+    ```js
+    // 动态加载执行render，这样可以import  可以保证tree shake
+    function ensureRenderer() {
+        return renderer || (renderer = createRendere(rendererOptions));
+    }
+    ```
+
+Need to learn concepts: 1. tree shake 2. dynamic loading
+
+5. working on effect(i.e. watcher + dep in vue2)
+
+(TODO) maybe search if there is any article about reactivity

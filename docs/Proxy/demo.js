@@ -99,3 +99,71 @@
 // console.log(Tony.age); // 13
 
 /* NOTE: */
+
+// let target = {
+//     msg1: 'hello',
+//     msg2: 'everyone',
+//     obj: {
+//         a: '1111',
+//     },
+// };
+
+// const handler = {
+//     // intercept `get` method
+//     get: function (target, prop, reveiver) {
+//         console.log('intercept');
+//         return Reflect.get(...arguments);
+//     },
+//     set: function (target, prop) {
+//         console.log('also know new prop');
+//     },
+// };
+
+// const proxy = new Proxy(target, handler);
+// // const c = proxy.obj;
+// // console.log(proxy.msg1);
+// // console.log(proxy.msg2);
+// // console.log(c.a);
+// proxy.obj.a = '22222';
+// // proxy.msg1 = '1';
+// proxy.x = 'qqq';
+
+/* NOTE: Array*/
+
+// let t = [1, 2, 3];
+
+// const handler = {
+//     set: function (t, k) {
+//         console.log('change!');
+//         t[9] = 0;
+//     },
+// };
+
+// const proxy = new Proxy(t, handler);
+
+// proxy[9] = 0;
+// // proxy.push(0);
+// console.log(proxy);
+
+//* NOTE: prototype chain issue
+
+let objParent = { a: 1 };
+
+const handler = {
+    // intercept `get` method
+    get: function (target, prop, reveiver) {
+        console.log('get');
+        return Reflect.get(...arguments);
+    },
+    set: function (target, prop) {
+        console.log('set');
+        Reflect.set(target, prop);
+        return true;
+    },
+};
+
+const proxyParent = new Proxy(objParent, handler);
+let objChild = Object.create(proxyParent);
+const proxyChild = new Proxy(objChild, handler);
+
+console.log(proxyChild.a);
