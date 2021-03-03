@@ -1159,3 +1159,13 @@ map : {
 once the key's value changed, effects will get noticed(like subscribers)
 
 2. (TODO) need to learn `Symbal`, `WeekMap`
+
+3. (TODO) re-organizet the workflow of reactivity and connect `reactive.ts(proxy)`, `baseHandlers(handler)`,`effect(dep+watcher)`
+
+    make reactivity module work! and write unit test
+
+    PS: can learn how to use APIs from unit tests
+
+4. (TODO) setup unit test!!
+
+tmr: set up jest for unit test and add unit tests
