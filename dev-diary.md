@@ -1139,3 +1139,33 @@ Need to learn concepts: 1. tree shake 2. dynamic loading
 5. working on effect(i.e. watcher + dep in vue2)
 
 (TODO) maybe search if there is any article about reactivity
+
+# 2021-03-03
+
+1. read some articles about `reactivity`
+
+data structure between effect and target:
+
+```js
+map : {
+    [target]: {
+        [key]: [effect1, effect2....]
+    }
+}
+```
+
+`[target]---->key1---->[effect1, effect2...]`, `[target]---->key1---->[effect1, effect2...]`
+
+once the key's value changed, effects will get noticed(like subscribers)
+
+2. (TODO) need to learn `Symbal`, `WeekMap`
+
+3. (TODO) re-organizet the workflow of reactivity and connect `reactive.ts(proxy)`, `baseHandlers(handler)`,`effect(dep+watcher)`
+
+    make reactivity module work! and write unit test
+
+    PS: can learn how to use APIs from unit tests
+
+4. (TODO) setup unit test!!
+
+tmr: set up jest for unit test and add unit tests
