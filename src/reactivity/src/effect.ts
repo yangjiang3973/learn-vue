@@ -97,11 +97,11 @@ type Dep = Set<ReactiveEffect>;
 //         key1: [effect1, effect2];
 //     }
 // }
-
+let shouldTrack = true;
 export function track(target: object, type: TrackOpTypes, key: unknown) {
-    // if (!shouldTrack || activeEffect === undefined) {
-    //     return;
-    // }
+    if (!shouldTrack || activeEffect === undefined) {
+        return;
+    }
     let depsMap = targetMap.get(target);
     if (!depsMap) {
         depsMap = new Map();

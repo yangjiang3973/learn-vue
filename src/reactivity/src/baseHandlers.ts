@@ -27,7 +27,7 @@ import {
     // isIntegerKey,
     // extend,
     // makeMap
-} from '../utils';
+} from '../../utils';
 
 // const get = /*#__PURE__*/ createGetter()
 // NOTE: When will get's receiver be used??
@@ -40,18 +40,20 @@ function get(target: Target, key: string | symbol, receiver: object) {
     // TODO: `IS_XXX` is a short for private properties of Target
     //* these if statements check special cases
 
-    // if (key === ReactiveFlags.IS_REACTIVE) {
-    //   return !isReadonly
-    // }
+    if (key === ReactiveFlags.IS_REACTIVE) {
+        //   return !isReadonly
+        return true;
+    }
     // else if (key === ReactiveFlags.IS_READONLY) {
     //   return isReadonly
     // }
-    // else if (
-    //   key === ReactiveFlags.RAW &&
-    //   receiver === (isReadonly ? readonlyMap : reactiveMap).get(target)
-    // ) {
-    //   return target
-    // }
+    else if (
+        key === ReactiveFlags.RAW &&
+        receiver === reactiveMap.get(target)
+        //   receiver === (isReadonly ? readonlyMap : reactiveMap).get(target)
+    ) {
+        return target;
+    }
 
     // TODO: target is array
 
@@ -88,8 +90,9 @@ function get(target: Target, key: string | symbol, receiver: object) {
         // and reactive here to avoid circular dependency.
         // TODO: implement readonly
         // return isReadonly ? readonly(res) : reactive(res)
-        reactive(res);
+        return reactive(res);
     }
+    return res;
 }
 
 function set(
@@ -103,20 +106,21 @@ function set(
     // TODO: need to learn what shallow mode is
     // if (!shallow) {
     // TODO: what is toRaw()
-    // value = toRaw(value);
+    value = toRaw(value);
     // if (!isArray(target) && isRef(oldValue) && !isRef(value)) {
     //     oldValue.value = value;
     //     return true;
     // }
     // } else {
-    // in shallow mode, objects are set as-is regardless of reactive or not
+    // // in shallow mode, objects are set as-is regardless of reactive or not
     // }
 
     const result = Reflect.set(target, key, value, receiver);
     // check key exists or not(modify or add)
     const hadKey =
         isArray(target) && isIntegerKey(key)
-            ? Number(key) < target.length
+            ? // @ts-ignore
+              Number(key) < target.length
             : hasOwn(target, key);
     //* don't trigger if target is something up in the prototype chain of original
     /* NOTE: process prototype issue: if an obj inherits from a parent proxy(prototype points to proxy)

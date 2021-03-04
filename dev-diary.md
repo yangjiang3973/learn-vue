@@ -1168,4 +1168,10 @@ once the key's value changed, effects will get noticed(like subscribers)
 
 4. (TODO) setup unit test!!
 
-tmr: set up jest for unit test and add unit tests
+tmr: set up jest for unit test and add unit tests of reactivity
+
+make the basic reactivity done
+
+# 2021-03-04
+
+1. 
