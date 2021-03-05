@@ -57,6 +57,14 @@ export const capitalize = function (s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+export const def = (obj: object, key: string | symbol, value: any) => {
+    Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: false,
+        value,
+    });
+};
+
 export const objectToString = Object.prototype.toString;
 export const toTypeString = (value: unknown): string =>
     objectToString.call(value);

@@ -10,7 +10,7 @@ import {
     // shallowCollectionHandlers
 } from './collectionHandlers';
 
-import { isObject, toRawType } from '../../utils';
+import { isObject, toRawType, def } from '../../utils';
 
 export const enum ReactiveFlags {
     SKIP = '__v_skip',
@@ -115,6 +115,12 @@ export function toRaw<T>(observed: T): T {
     return (
         (observed && toRaw((observed as Target)[ReactiveFlags.RAW])) || observed
     );
+}
+
+//* better to call it keepRaw
+export function markRaw<T extends object>(value: T): T {
+    def(value, ReactiveFlags.SKIP, true);
+    return value;
 }
 
 export function isReactive(value: unknown): boolean {

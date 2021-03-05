@@ -36,14 +36,18 @@ export interface ReactiveEffectOptions {
 const effectStack: ReactiveEffect[] = [];
 let activeEffect: ReactiveEffect | undefined;
 
-//* IMO, should not call this function effect
+export function isEffect(fn: any): fn is ReactiveEffect {
+    return fn && fn._isEffect === true;
+}
+
+//* IMO, should not call this function effect, better to call it makeEffect
 export function effect<T = any>(
     fn: () => T,
-    options: ReactiveEffectOptions
+    options: ReactiveEffectOptions = {} //* vue use EMPTY_OBJ
 ): ReactiveEffect<T> {
-    // if (isEffect(fn)) {
-    //     fn = fn.raw;
-    // }
+    if (isEffect(fn)) {
+        fn = fn.raw;
+    }
     const effect = createReactiveEffect(fn, options);
 
     //* run effect immediately
@@ -63,8 +67,11 @@ function createReactiveEffect<T = any>(
         // if (!effect.active) {
         //     return options.scheduler ? undefined : fn();
         // }
+        // avoid infinite loop when set inside effect callback function
         if (!effectStack.includes(effect)) {
-            // cleanup(effect);
+            // test case: `should not be triggered by mutating a property, which is used in an inactive branch`
+            // cleanup dependencies of this effect and re-collect
+            cleanup(effect);
             try {
                 // enableTracking()
                 effectStack.push(effect);
@@ -85,6 +92,16 @@ function createReactiveEffect<T = any>(
     effect.deps = [];
     effect.options = options;
     return effect;
+}
+
+function cleanup(effect: ReactiveEffect) {
+    const { deps } = effect;
+    if (deps.length) {
+        for (let i = 0; i < deps.length; i++) {
+            deps[i].delete(effect);
+        }
+        deps.length = 0;
+    }
 }
 
 // let shouldTrack = true;

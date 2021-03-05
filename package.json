@@ -7,7 +7,7 @@
         "doc": "docs"
     },
     "scripts": {
-        "jest": "jest src/reactivity/ --config=jest.config.js",
+        "jest": "jest src/reactivity/ --config=jest.config.js --watch",
         "test": "karma start ./test/karma.conf.js",
         "dev": "webpack serve --config ./build/webpack.dev.js",
         "build:prod": "webpack --config ./build/webpack.prod.js",
