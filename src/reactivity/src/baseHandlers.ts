@@ -29,8 +29,24 @@ import {
     // makeMap
 } from '../../utils';
 
+// NOTE: in vue3, sort and reverse are missing
+const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
+
+const arrayInstrumentations: Record<string, Function> = {};
+OAM.forEach((methodName) => {
+    const method = Array.prototype[methodName] as any;
+    arrayInstrumentations[methodName] = function (
+        this: unknown[],
+        ...args: unknown[]
+    ) {
+        // pauseTracking();
+        const res = method.apply(this, args);
+        // resetTracking();
+        return res;
+    };
+});
+
 // const get = /*#__PURE__*/ createGetter()
-// NOTE: When will get's receiver be used??
 function get(target: Target, key: string | symbol, receiver: object) {
     // SKIP = '__v_skip',
     // IS_REACTIVE = '__v_isReactive',
@@ -56,6 +72,13 @@ function get(target: Target, key: string | symbol, receiver: object) {
     }
 
     // TODO: target is array
+    const targetIsArray = isArray(target);
+    // if (!isReadonly && targetIsArray && hasOwn(arrayInstrumentations, key)) {
+    //   return Reflect.get(arrayInstrumentations, key, receiver)
+    // }
+    if (targetIsArray && hasOwn(arrayInstrumentations, key)) {
+        return Reflect.get(arrayInstrumentations, key, receiver);
+    }
 
     const res = Reflect.get(target, key, receiver);
 

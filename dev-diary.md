@@ -1190,20 +1190,38 @@ make the basic reactivity done
 
 # 2021-03-05
 
-1. BUG: in vscode, ts source map seems mis-match code lines...need to fix
+1.  BUG: in vscode, ts source map seems mis-match code lines...need to fix
 
-2. TODO: array's reactivity, 
+2.  TODO:
 
-        effect's lazy + 
-        
-        scheduler + 
-        
-        onTrack + 
-        
-        onTrigger + 
-        
+        (IN PROGRESS) array's reactivity (NOTE: sort and reverse are missing)
+
+            there are two ways to customize array methods:
+
+            1. in vue2, fake an array protptype and add it to array obj.
+
+                array -> fake array proto -> real array proto
+
+                in fake array proto function, notify watcher and call real method
+
+            2. trap array methods in get function, then look up custimized method in a dictionary
+
+                {'push': ()=>{// do the job}}
+
+                [1,2,3].push() can consider as two parts: `.push`(get fn) and `push()` run the fn
+
+            why vue3 use the second way?
+
+        effect's lazy +
+
+        scheduler +
+
+        onTrack +
+
+        onTrigger +
+
         stop +
 
         onStop
 
-3. TODO: 
+3.  TODO:

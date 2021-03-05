@@ -172,8 +172,18 @@
 // console.log('🚀 ~ file: demo.js ~ line 171 ~ proxyChild.a', proxyChild.a);
 // console.log('🚀 ~ file: demo.js ~ line 171 ~ proxyChild.a', proxyParent.a);
 
-let target = { a: 1 };
-let tt = { v: 2 };
-Object.setPrototypeOf(target, tt);
-console.log(Reflect.has(target, 'a'));
-console.log(Reflect.has(target, 'v'));
+// let target = { a: 1 };
+// let tt = { v: 2 };
+// Object.setPrototypeOf(target, tt);
+// console.log(Reflect.has(target, 'a'));
+// console.log(Reflect.has(target, 'v'));
+
+// NOTE: Reflect
+
+let a = {
+    func: () => {
+        console.log('call');
+    },
+};
+
+Reflect.get(a, 'func');
