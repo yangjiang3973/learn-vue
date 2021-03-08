@@ -2,6 +2,7 @@
     "compilerOptions": {
         "outDir": "./js-built",
         "allowJs": true,
+        "sourceMap": true,
         "target": "esnext",
         "module": "esnext",
         "esModuleInterop": true,

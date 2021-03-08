@@ -154,6 +154,7 @@ export function trigger(
     oldValue?: unknown,
     oldTarget?: Map<unknown, unknown> | Set<unknown>
 ) {
+    console.log('🚀 ~ file: effect.ts ~ line 160 ~ key', key);
     const depsMap = targetMap.get(target);
     if (!depsMap) {
         // never been tracked

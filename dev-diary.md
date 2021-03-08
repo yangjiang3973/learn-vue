@@ -1194,7 +1194,7 @@ make the basic reactivity done
 
 2.  TODO:
 
-        (IN PROGRESS) array's reactivity (NOTE: sort and reverse are missing)
+        (IN PROGRESS) array's reactivity (NOTE: sort and reverse are missing, why?)
 
             there are two ways to customize array methods:
 
@@ -1225,3 +1225,11 @@ make the basic reactivity done
         onStop
 
 3.  TODO:
+
+# 2021-03-08
+
+1. Maybe make a saas for open source projects. Help with building docs site, community, or even chat room.
+
+2. `for (const key of array)` and `for (const key in array)`
+
+3. work on array api and test cases(1 still fails)

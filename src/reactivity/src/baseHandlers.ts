@@ -29,16 +29,39 @@ import {
     // makeMap
 } from '../../utils';
 
-// NOTE: in vue3, sort and reverse are missing
-const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
+// const raw = {};
+// const arr = reactive([{}, {}]);
+// arr.push(raw);
+// expect(arr.indexOf(raw)).toBe(2);
 
 const arrayInstrumentations: Record<string, Function> = {};
-OAM.forEach((methodName) => {
+
+const ISM = ['includes', 'indexOf', 'lastIndexOf'];
+ISM.forEach((methodName) => {
+    const method = Array.prototype[methodName];
+    arrayInstrumentations[methodName] = function (this, ...args) {
+        const arr = toRaw(this);
+        for (let i = 0, l = this.length; i < l; i++) {
+            track(arr, TrackOpTypes.GET, i + '');
+        }
+        // we run the method using the original args first (which may be reactive)
+        const res = method.apply(arr, args);
+        if (res === -1 || res === false) {
+            // if that didn't work, run it again using raw values.
+            return method.apply(arr, args.map(toRaw));
+        } else {
+            return res;
+        }
+    };
+});
+
+// NOTE: in vue3, sort and reverse are missing, only take care of length-altering methods
+// TODO: do i need to add sort and reverse and test? no, because proxy is differnt then defineProperty
+const LAM = ['push', 'pop', 'shift', 'unshift', 'splice'];
+
+LAM.forEach((methodName) => {
     const method = Array.prototype[methodName] as any;
-    arrayInstrumentations[methodName] = function (
-        this: unknown[],
-        ...args: unknown[]
-    ) {
+    arrayInstrumentations[methodName] = function (this, ...args) {
         // pauseTracking();
         const res = method.apply(this, args);
         // resetTracking();
@@ -77,6 +100,7 @@ function get(target: Target, key: string | symbol, receiver: object) {
     //   return Reflect.get(arrayInstrumentations, key, receiver)
     // }
     if (targetIsArray && hasOwn(arrayInstrumentations, key)) {
+        // Array.push will return the definition, then push() to execute
         return Reflect.get(arrayInstrumentations, key, receiver);
     }
 
@@ -147,8 +171,9 @@ function set(
             : hasOwn(target, key);
     //* don't trigger if target is something up in the prototype chain of original
     /* NOTE: process prototype issue: if an obj inherits from a parent proxy(prototype points to proxy)
-      if update a prop that is not obj proxy's own prop, it will also invoke parent proxy set
+    if update a prop that is not obj proxy's own prop, it will also invoke parent proxy set
     */
+    console.log('🚀 ~ file: baseHandlers.ts ~ line 179 ~ key', key);
     if (target === toRaw(receiver)) {
         if (!hadKey) {
             trigger(target, TriggerOpTypes.ADD, key, value);
@@ -178,10 +203,20 @@ function has(target: object, key: string | symbol): boolean {
     return result;
 }
 
+function ownKeys(target: object): (string | number | symbol)[] {
+    track(
+        target,
+        TrackOpTypes.ITERATE,
+        // TODO:
+        // isArray(target) ? 'length' : ITERATE_KEY
+        'length'
+    );
+    return Reflect.ownKeys(target);
+}
 export const mutableHandlers: ProxyHandler<object> = {
     get,
     set,
     deleteProperty,
     has,
-    // ownKeys,
+    ownKeys,
 };
