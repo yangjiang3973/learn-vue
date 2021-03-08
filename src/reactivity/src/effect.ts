@@ -36,14 +36,18 @@ export interface ReactiveEffectOptions {
 const effectStack: ReactiveEffect[] = [];
 let activeEffect: ReactiveEffect | undefined;
 
-//* IMO, should not call this function effect
+export function isEffect(fn: any): fn is ReactiveEffect {
+    return fn && fn._isEffect === true;
+}
+
+//* IMO, should not call this function effect, better to call it makeEffect
 export function effect<T = any>(
     fn: () => T,
-    options: ReactiveEffectOptions
+    options: ReactiveEffectOptions = {} //* vue use EMPTY_OBJ
 ): ReactiveEffect<T> {
-    // if (isEffect(fn)) {
-    //     fn = fn.raw;
-    // }
+    if (isEffect(fn)) {
+        fn = fn.raw;
+    }
     const effect = createReactiveEffect(fn, options);
 
     //* run effect immediately
@@ -63,8 +67,11 @@ function createReactiveEffect<T = any>(
         // if (!effect.active) {
         //     return options.scheduler ? undefined : fn();
         // }
+        // avoid infinite loop when set inside effect callback function
         if (!effectStack.includes(effect)) {
-            // cleanup(effect);
+            // test case: `should not be triggered by mutating a property, which is used in an inactive branch`
+            // cleanup dependencies of this effect and re-collect
+            cleanup(effect);
             try {
                 // enableTracking()
                 effectStack.push(effect);
@@ -87,6 +94,16 @@ function createReactiveEffect<T = any>(
     return effect;
 }
 
+function cleanup(effect: ReactiveEffect) {
+    const { deps } = effect;
+    if (deps.length) {
+        for (let i = 0; i < deps.length; i++) {
+            deps[i].delete(effect);
+        }
+        deps.length = 0;
+    }
+}
+
 // let shouldTrack = true;
 const targetMap = new WeakMap<any, KeyToDepMap>();
 type KeyToDepMap = Map<any, Dep>;
@@ -97,11 +114,11 @@ type Dep = Set<ReactiveEffect>;
 //         key1: [effect1, effect2];
 //     }
 // }
-
+let shouldTrack = true;
 export function track(target: object, type: TrackOpTypes, key: unknown) {
-    // if (!shouldTrack || activeEffect === undefined) {
-    //     return;
-    // }
+    if (!shouldTrack || activeEffect === undefined) {
+        return;
+    }
     let depsMap = targetMap.get(target);
     if (!depsMap) {
         depsMap = new Map();
@@ -137,6 +154,7 @@ export function trigger(
     oldValue?: unknown,
     oldTarget?: Map<unknown, unknown> | Set<unknown>
 ) {
+    console.log('🚀 ~ file: effect.ts ~ line 160 ~ key', key);
     const depsMap = targetMap.get(target);
     if (!depsMap) {
         // never been tracked

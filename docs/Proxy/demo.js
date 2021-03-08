@@ -147,23 +147,71 @@
 
 //* NOTE: prototype chain issue
 
-let objParent = { a: 1 };
+// let objParent = { a: 1 };
+// let objChild = {};
 
+// const handler = {
+//     // intercept `get` method
+//     get: function (target, prop, reveiver) {
+//         console.log('get');
+//         return Reflect.get(...arguments);
+//     },
+//     set: function (target, prop, value, receiver) {
+//         console.log('set');
+//         Reflect.set(target, prop, value, receiver);
+//         return true;
+//     },
+// };
+
+// const proxyParent = new Proxy(objParent, handler);
+// const proxyChild = new Proxy(objChild, handler);
+// Object.setPrototypeOf(proxyChild, proxyParent);
+
+// // console.log(proxyChild.a);
+// proxyChild.a = 8;
+// console.log('🚀 ~ file: demo.js ~ line 171 ~ proxyChild.a', proxyChild.a);
+// console.log('🚀 ~ file: demo.js ~ line 171 ~ proxyChild.a', proxyParent.a);
+
+// let target = { a: 1 };
+// let tt = { v: 2 };
+// Object.setPrototypeOf(target, tt);
+// console.log(Reflect.has(target, 'a'));
+// console.log(Reflect.has(target, 'v'));
+
+// NOTE: Reflect
+
+// let a = {
+//     func: () => {
+//         console.log('call');
+//     },
+// };
+
+// Reflect.get(a, 'func');
+
+let arr = [1, 2, 3];
 const handler = {
-    // intercept `get` method
     get: function (target, prop, reveiver) {
         console.log('get');
         return Reflect.get(...arguments);
     },
-    set: function (target, prop) {
+    set: function (target, prop, value, receiver) {
         console.log('set');
-        Reflect.set(target, prop);
+        Reflect.set(target, prop, value, receiver);
         return true;
     },
+    ownKeys(target) {
+        console.log('ownKeys');
+        return Reflect.ownKeys(target);
+    },
+    has(target, key) {
+        if (key[0] === '_') {
+            return false;
+        }
+        return key in target;
+    },
 };
+const proxy = new Proxy(arr, handler);
 
-const proxyParent = new Proxy(objParent, handler);
-let objChild = Object.create(proxyParent);
-const proxyChild = new Proxy(objChild, handler);
-
-console.log(proxyChild.a);
+for (const key in proxy) {
+    console.log(key);
+}

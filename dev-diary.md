@@ -1168,4 +1168,68 @@ once the key's value changed, effects will get noticed(like subscribers)
 
 4. (TODO) setup unit test!!
 
-tmr: set up jest for unit test and add unit tests
+tmr: set up jest for unit test and add unit tests of reactivity
+
+make the basic reactivity done
+
+# 2021-03-04
+
+1. Added some unit tests for current work
+
+2. continue to implement reactivity
+
+3. tmr: understand the general structure of reactivity and even the whole project
+
+    3.1 Evan You's video about writing a simple vue: https://www.bilibili.com/video/BV1rC4y187Vw?content_source_url=https%3A%2F%2Fgithub.com%2Fvue3%2Fvue3-News
+
+    maybe it is this link
+
+    3.2 Another video in Global Vue Meetup: https://www.youtube.com/watch?v=Nk3cC7xNfkk
+
+    3.3 尤雨溪 - 聊聊 Vue.js 3.0 Beta 官方直播完整版 2020-04-21: https://www.bilibili.com/video/BV1Tg4y1z7FH/?spm_id_from=333.788.videocard.1
+
+# 2021-03-05
+
+1.  BUG: in vscode, ts source map seems mis-match code lines...need to fix
+
+2.  TODO:
+
+        (IN PROGRESS) array's reactivity (NOTE: sort and reverse are missing, why?)
+
+            there are two ways to customize array methods:
+
+            1. in vue2, fake an array protptype and add it to array obj.
+
+                array -> fake array proto -> real array proto
+
+                in fake array proto function, notify watcher and call real method
+
+            2. trap array methods in get function, then look up custimized method in a dictionary
+
+                {'push': ()=>{// do the job}}
+
+                [1,2,3].push() can consider as two parts: `.push`(get fn) and `push()` run the fn
+
+            why vue3 use the second way?
+
+        effect's lazy +
+
+        scheduler +
+
+        onTrack +
+
+        onTrigger +
+
+        stop +
+
+        onStop
+
+3.  TODO:
+
+# 2021-03-08
+
+1. Maybe make a saas for open source projects. Help with building docs site, community, or even chat room.
+
+2. `for (const key of array)` and `for (const key in array)`
+
+3. work on array api and test cases(1 still fails)

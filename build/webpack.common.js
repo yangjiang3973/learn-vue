@@ -5,8 +5,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     // mode: 'production',
-    entry: './demo/firebase-validation/app.js',
-    // entry: './demo/main.js',
+    // entry: './demo/firebase-validation/app.js',
+    entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'mini-vue.js',

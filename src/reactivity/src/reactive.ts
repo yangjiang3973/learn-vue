@@ -10,7 +10,7 @@ import {
     // shallowCollectionHandlers
 } from './collectionHandlers';
 
-import { isObject, toRawType } from '../utils';
+import { isObject, toRawType, def } from '../../utils';
 
 export const enum ReactiveFlags {
     SKIP = '__v_skip',
@@ -59,9 +59,15 @@ function createReactiveObject(
         //* TODO: warn()
         return target;
     }
-    // target is already a proxy, return
+    // target `is` already a proxy, return
+    if (
+        target[ReactiveFlags.RAW] &&
+        !(isReadonly && target[ReactiveFlags.IS_REACTIVE])
+    ) {
+        return target;
+    }
 
-    // check target if has a proxy
+    // check target if `has` a proxy ({target: proxy})
     const proxyMap = isReadonly ? readonlyMap : reactiveMap;
     const existingProxy = proxyMap.get(target);
     if (existingProxy) {
@@ -109,4 +115,17 @@ export function toRaw<T>(observed: T): T {
     return (
         (observed && toRaw((observed as Target)[ReactiveFlags.RAW])) || observed
     );
+}
+
+//* better to call it keepRaw
+export function markRaw<T extends object>(value: T): T {
+    def(value, ReactiveFlags.SKIP, true);
+    return value;
+}
+
+export function isReactive(value: unknown): boolean {
+    // if (isReadonly(value)) {
+    //     return isReactive((value as Target)[ReactiveFlags.RAW]);
+    // }
+    return !!(value && (value as Target)[ReactiveFlags.IS_REACTIVE]); // get function will return true if reactive
 }
