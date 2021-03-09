@@ -1,15 +1,15 @@
 import {
     reactive,
     effect,
-    // stop,
+    stop,
     toRaw,
     TrackOpTypes,
     TriggerOpTypes,
-    // DebuggerEvent,
+    DebuggerEvent,
     markRaw,
 } from '../src/index';
 
-//   import { ITERATE_KEY } from '../src/effect'
+import { ITERATE_KEY } from '../src/effect';
 
 describe('reactivity/effect', () => {
     it('should run the passed function once (wrapped by a effect)', () => {
@@ -584,192 +584,191 @@ describe('reactivity/effect', () => {
         expect(dummy).toBe(1);
     });
 
-    // TODO:
-    // it('lazy', () => {
-    //     const obj = reactive({ foo: 1 });
-    //     let dummy;
-    //     const runner = effect(() => (dummy = obj.foo), { lazy: true });
-    //     expect(dummy).toBe(undefined);
+    it('lazy', () => {
+        const obj = reactive({ foo: 1 });
+        let dummy;
+        const runner = effect(() => (dummy = obj.foo), { lazy: true });
+        expect(dummy).toBe(undefined);
 
-    //     expect(runner()).toBe(1);
-    //     expect(dummy).toBe(1);
-    //     obj.foo = 2;
-    //     expect(dummy).toBe(2);
-    // });
+        expect(runner()).toBe(1);
+        expect(dummy).toBe(1);
+        obj.foo = 2;
+        expect(dummy).toBe(2);
+    });
 
-    // it('scheduler', () => {
-    //     let runner: any, dummy;
-    //     const scheduler = jest.fn((_runner) => {
-    //         runner = _runner;
-    //     });
-    //     const obj = reactive({ foo: 1 });
-    //     effect(
-    //         () => {
-    //             dummy = obj.foo;
-    //         },
-    //         { scheduler }
-    //     );
-    //     expect(scheduler).not.toHaveBeenCalled();
-    //     expect(dummy).toBe(1);
-    //     // should be called on first trigger
-    //     obj.foo++;
-    //     expect(scheduler).toHaveBeenCalledTimes(1);
-    //     // should not run yet
-    //     expect(dummy).toBe(1);
-    //     // manually run
-    //     runner();
-    //     // should have run
-    //     expect(dummy).toBe(2);
-    // });
+    it('scheduler', () => {
+        let runner: any, dummy;
+        const scheduler = jest.fn((_runner) => {
+            runner = _runner;
+        });
+        const obj = reactive({ foo: 1 });
+        effect(
+            () => {
+                dummy = obj.foo;
+            },
+            { scheduler }
+        );
+        expect(scheduler).not.toHaveBeenCalled();
+        expect(dummy).toBe(1);
+        // should be called on first trigger
+        obj.foo++;
+        expect(scheduler).toHaveBeenCalledTimes(1);
+        // should not run yet
+        expect(dummy).toBe(1);
+        // manually run
+        runner();
+        // should have run
+        expect(dummy).toBe(2);
+    });
 
-    // it('events: onTrack', () => {
-    //     let events: DebuggerEvent[] = [];
-    //     let dummy;
-    //     const onTrack = jest.fn((e: DebuggerEvent) => {
-    //         events.push(e);
-    //     });
-    //     const obj = reactive({ foo: 1, bar: 2 });
-    //     const runner = effect(
-    //         () => {
-    //             dummy = obj.foo;
-    //             dummy = 'bar' in obj;
-    //             dummy = Object.keys(obj);
-    //         },
-    //         { onTrack }
-    //     );
-    //     expect(dummy).toEqual(['foo', 'bar']);
-    //     expect(onTrack).toHaveBeenCalledTimes(3);
-    //     expect(events).toEqual([
-    //         {
-    //             effect: runner,
-    //             target: toRaw(obj),
-    //             type: TrackOpTypes.GET,
-    //             key: 'foo',
-    //         },
-    //         {
-    //             effect: runner,
-    //             target: toRaw(obj),
-    //             type: TrackOpTypes.HAS,
-    //             key: 'bar',
-    //         },
-    //         {
-    //             effect: runner,
-    //             target: toRaw(obj),
-    //             type: TrackOpTypes.ITERATE,
-    //             key: ITERATE_KEY,
-    //         },
-    //     ]);
-    // });
+    it('events: onTrack', () => {
+        let events: DebuggerEvent[] = [];
+        let dummy;
+        const onTrack = jest.fn((e: DebuggerEvent) => {
+            events.push(e);
+        });
+        const obj = reactive({ foo: 1, bar: 2 });
+        const runner = effect(
+            () => {
+                dummy = obj.foo;
+                dummy = 'bar' in obj;
+                dummy = Object.keys(obj);
+            },
+            { onTrack }
+        );
+        expect(dummy).toEqual(['foo', 'bar']);
+        expect(onTrack).toHaveBeenCalledTimes(3);
+        expect(events).toEqual([
+            {
+                effect: runner,
+                target: toRaw(obj),
+                type: TrackOpTypes.GET,
+                key: 'foo',
+            },
+            {
+                effect: runner,
+                target: toRaw(obj),
+                type: TrackOpTypes.HAS,
+                key: 'bar',
+            },
+            {
+                effect: runner,
+                target: toRaw(obj),
+                type: TrackOpTypes.ITERATE,
+                key: ITERATE_KEY,
+            },
+        ]);
+    });
 
-    // it('events: onTrigger', () => {
-    //     let events: DebuggerEvent[] = [];
-    //     let dummy;
-    //     const onTrigger = jest.fn((e: DebuggerEvent) => {
-    //         events.push(e);
-    //     });
-    //     const obj = reactive({ foo: 1 });
-    //     const runner = effect(
-    //         () => {
-    //             dummy = obj.foo;
-    //         },
-    //         { onTrigger }
-    //     );
+    it('events: onTrigger', () => {
+        let events: DebuggerEvent[] = [];
+        let dummy;
+        const onTrigger = jest.fn((e: DebuggerEvent) => {
+            events.push(e);
+        });
+        const obj = reactive({ foo: 1 });
+        const runner = effect(
+            () => {
+                dummy = obj.foo;
+            },
+            { onTrigger }
+        );
 
-    //     obj.foo++;
-    //     expect(dummy).toBe(2);
-    //     expect(onTrigger).toHaveBeenCalledTimes(1);
-    //     expect(events[0]).toEqual({
-    //         effect: runner,
-    //         target: toRaw(obj),
-    //         type: TriggerOpTypes.SET,
-    //         key: 'foo',
-    //         oldValue: 1,
-    //         newValue: 2,
-    //     });
+        obj.foo++;
+        expect(dummy).toBe(2);
+        expect(onTrigger).toHaveBeenCalledTimes(1);
+        expect(events[0]).toEqual({
+            effect: runner,
+            target: toRaw(obj),
+            type: TriggerOpTypes.SET,
+            key: 'foo',
+            oldValue: 1,
+            newValue: 2,
+        });
 
-    //     // @ts-ignore
-    //     delete obj.foo;
-    //     expect(dummy).toBeUndefined();
-    //     expect(onTrigger).toHaveBeenCalledTimes(2);
-    //     expect(events[1]).toEqual({
-    //         effect: runner,
-    //         target: toRaw(obj),
-    //         type: TriggerOpTypes.DELETE,
-    //         key: 'foo',
-    //         oldValue: 2,
-    //     });
-    // });
+        // @ts-ignore
+        delete obj.foo;
+        expect(dummy).toBeUndefined();
+        expect(onTrigger).toHaveBeenCalledTimes(2);
+        expect(events[1]).toEqual({
+            effect: runner,
+            target: toRaw(obj),
+            type: TriggerOpTypes.DELETE,
+            key: 'foo',
+            oldValue: 2,
+        });
+    });
 
-    // it('stop', () => {
-    //     let dummy;
-    //     const obj = reactive({ prop: 1 });
-    //     const runner = effect(() => {
-    //         dummy = obj.prop;
-    //     });
-    //     obj.prop = 2;
-    //     expect(dummy).toBe(2);
-    //     stop(runner);
-    //     obj.prop = 3;
-    //     expect(dummy).toBe(2);
+    it('stop', () => {
+        let dummy;
+        const obj = reactive({ prop: 1 });
+        const runner = effect(() => {
+            dummy = obj.prop;
+        });
+        obj.prop = 2;
+        expect(dummy).toBe(2);
+        stop(runner);
+        obj.prop = 3;
+        expect(dummy).toBe(2);
 
-    //     // stopped effect should still be manually callable
-    //     runner();
-    //     expect(dummy).toBe(3);
-    // });
+        // stopped effect should still be manually callable
+        runner();
+        expect(dummy).toBe(3);
+    });
 
-    // it('stop with scheduler', () => {
-    //     let dummy;
-    //     const obj = reactive({ prop: 1 });
-    //     const queue: (() => void)[] = [];
-    //     const runner = effect(
-    //         () => {
-    //             dummy = obj.prop;
-    //         },
-    //         {
-    //             scheduler: (e) => queue.push(e),
-    //         }
-    //     );
-    //     obj.prop = 2;
-    //     expect(dummy).toBe(1);
-    //     expect(queue.length).toBe(1);
-    //     stop(runner);
+    it('stop with scheduler', () => {
+        let dummy;
+        const obj = reactive({ prop: 1 });
+        const queue: (() => void)[] = [];
+        const runner = effect(
+            () => {
+                dummy = obj.prop;
+            },
+            {
+                scheduler: (e) => queue.push(e),
+            }
+        );
+        obj.prop = 2;
+        expect(dummy).toBe(1);
+        expect(queue.length).toBe(1);
+        stop(runner);
 
-    //     // a scheduled effect should not execute anymore after stopped
-    //     queue.forEach((e) => e());
-    //     expect(dummy).toBe(1);
-    // });
+        // a scheduled effect should not execute anymore after stopped
+        queue.forEach((e) => e());
+        expect(dummy).toBe(1);
+    });
 
-    // it('events: onStop', () => {
-    //     const onStop = jest.fn();
-    //     const runner = effect(() => {}, {
-    //         onStop,
-    //     });
+    it('events: onStop', () => {
+        const onStop = jest.fn();
+        const runner = effect(() => {}, {
+            onStop,
+        });
 
-    //     stop(runner);
-    //     expect(onStop).toHaveBeenCalled();
-    // });
+        stop(runner);
+        expect(onStop).toHaveBeenCalled();
+    });
 
-    // it('stop: a stopped effect is nested in a normal effect', () => {
-    //     let dummy;
-    //     const obj = reactive({ prop: 1 });
-    //     const runner = effect(() => {
-    //         dummy = obj.prop;
-    //     });
-    //     stop(runner);
-    //     obj.prop = 2;
-    //     expect(dummy).toBe(1);
+    it('stop: a stopped effect is nested in a normal effect', () => {
+        let dummy;
+        const obj = reactive({ prop: 1 });
+        const runner = effect(() => {
+            dummy = obj.prop;
+        });
+        stop(runner);
+        obj.prop = 2;
+        expect(dummy).toBe(1);
 
-    //     // observed value in inner stopped effect
-    //     // will track outer effect as an dependency
-    //     effect(() => {
-    //         runner();
-    //     });
-    //     expect(dummy).toBe(2);
+        // observed value in inner stopped effect
+        // will track outer effect as an dependency
+        effect(() => {
+            runner();
+        });
+        expect(dummy).toBe(2);
 
-    //     // notify outer effect to run
-    //     obj.prop = 3;
-    //     expect(dummy).toBe(3);
-    // });
+        // notify outer effect to run
+        obj.prop = 3;
+        expect(dummy).toBe(3);
+    });
 
     it('markRaw', () => {
         const obj = reactive({

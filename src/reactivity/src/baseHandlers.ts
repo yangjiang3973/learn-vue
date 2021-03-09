@@ -13,7 +13,7 @@ import { TrackOpTypes, TriggerOpTypes } from './operations';
 import {
     track,
     trigger,
-    // ITERATE_KEY,
+    ITERATE_KEY,
     // pauseTracking,
     // resetTracking
 } from './effect';
@@ -208,9 +208,7 @@ function ownKeys(target: object): (string | number | symbol)[] {
     track(
         target,
         TrackOpTypes.ITERATE,
-        // TODO:
-        // isArray(target) ? 'length' : ITERATE_KEY
-        'length'
+        isArray(target) ? 'length' : ITERATE_KEY
     );
     return Reflect.ownKeys(target);
 }

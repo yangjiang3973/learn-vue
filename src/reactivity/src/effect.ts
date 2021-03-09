@@ -15,30 +15,44 @@ export interface ReactiveEffect<T = any> {
 export interface ReactiveEffectOptions {
     lazy?: boolean;
     scheduler?: (job: ReactiveEffect) => void;
-    // onTrack?: (event: DebuggerEvent) => void;
-    // onTrigger?: (event: DebuggerEvent) => void;
-    // onStop?: () => void;
+    onTrack?: (event: DebuggerEvent) => void;
+    onTrigger?: (event: DebuggerEvent) => void;
+    onStop?: () => void;
     allowRecurse?: boolean;
 }
 
-// export type DebuggerEvent = {
-//     effect: ReactiveEffect;
-//     target: object;
-//     type: TrackOpTypes | TriggerOpTypes;
-//     key: any;
-// } & DebuggerEventExtraInfo;
+export type DebuggerEvent = {
+    effect: ReactiveEffect;
+    target: object;
+    type: TrackOpTypes | TriggerOpTypes;
+    key: any;
+} & DebuggerEventExtraInfo;
 
-// export interface DebuggerEventExtraInfo {
-//     newValue?: any;
-//     oldValue?: any;
-//     oldTarget?: Map<any, any> | Set<any>;
-// }
+export interface DebuggerEventExtraInfo {
+    newValue?: any;
+    oldValue?: any;
+    oldTarget?: Map<any, any> | Set<any>;
+}
+
+// TODO: what is this?
+export const ITERATE_KEY = Symbol(__DEV__ ? 'iterate' : '');
+export const MAP_KEY_ITERATE_KEY = Symbol(__DEV__ ? 'Map key iterate' : '');
 
 const effectStack: ReactiveEffect[] = [];
 let activeEffect: ReactiveEffect | undefined;
 
 export function isEffect(fn: any): fn is ReactiveEffect {
     return fn && fn._isEffect === true;
+}
+
+export function stop(effect: ReactiveEffect) {
+    if (effect.active) {
+        cleanup(effect);
+        if (effect.options.onStop) {
+            effect.options.onStop();
+        }
+        effect.active = false;
+    }
 }
 
 //* IMO, should not call this function effect, better to call it makeEffect
@@ -65,9 +79,10 @@ function createReactiveEffect<T = any>(
 ): ReactiveEffect<T> {
     // define the effect now and will be called in effect function
     const effect = function reactiveEffect() {
-        // if (!effect.active) {
-        //     return options.scheduler ? undefined : fn();
-        // }
+        // test case: `stop with scheduler`
+        if (!effect.active) {
+            return options.scheduler ? undefined : fn();
+        }
         // avoid infinite loop when set inside effect callback function
         if (!effectStack.includes(effect)) {
             // test case: `should not be triggered by mutating a property, which is used in an inactive branch`
@@ -133,14 +148,15 @@ export function track(target: object, type: TrackOpTypes, key: unknown) {
     if (!dep.has(activeEffect)) {
         dep.add(activeEffect);
         activeEffect.deps.push(dep);
-        // if (__DEV__ && activeEffect.options.onTrack) {
-        //     activeEffect.options.onTrack({
-        //         effect: activeEffect,
-        //         target,
-        //         type,
-        //         key,
-        //     });
-        // }
+        // this for debugging
+        if (__DEV__ && activeEffect.options.onTrack) {
+            activeEffect.options.onTrack({
+                effect: activeEffect,
+                target,
+                type,
+                key,
+            });
+        }
     }
 }
 
@@ -195,21 +211,21 @@ export function trigger(
 
     // run
     effectsToExe.forEach((effect) => {
-        // if (__DEV__ && effect.options.onTrigger) {
-        //     effect.options.onTrigger({
-        //       effect,
-        //       target,
-        //       key,
-        //       type,
-        //       newValue,
-        //       oldValue,
-        //       oldTarget
-        //     })
-        //   }
-        // if (effect.options.scheduler) {
-        //     effect.options.scheduler(effect);
-        // } else {
-        effect();
-        // }
+        if (__DEV__ && effect.options.onTrigger) {
+            effect.options.onTrigger({
+                effect,
+                target,
+                key,
+                type,
+                newValue,
+                oldValue,
+                oldTarget,
+            });
+        }
+        if (effect.options.scheduler) {
+            effect.options.scheduler(effect);
+        } else {
+            effect();
+        }
     });
 }
