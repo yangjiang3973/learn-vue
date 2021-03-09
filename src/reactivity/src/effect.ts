@@ -1,3 +1,4 @@
+import { isArray, isIntegerKey } from '../../utils';
 import { TrackOpTypes, TriggerOpTypes } from './operations';
 
 export interface ReactiveEffect<T = any> {
@@ -154,7 +155,6 @@ export function trigger(
     oldValue?: unknown,
     oldTarget?: Map<unknown, unknown> | Set<unknown>
 ) {
-    console.log('🚀 ~ file: effect.ts ~ line 160 ~ key', key);
     const depsMap = targetMap.get(target);
     if (!depsMap) {
         // never been tracked
@@ -180,8 +180,18 @@ export function trigger(
             });
         }
     }
-
+    // IMO, the logic in Vue3 is not clean, maybe could refactor
     // TODO: also run for iteration key on ADD | DELETE | Map.SET
+    if (type === TriggerOpTypes.ADD) {
+        if (!isArray(target)) {
+        } else if (isIntegerKey(key)) {
+            depsMap.get('length').forEach((effect) => {
+                if (effect !== activeEffect || effect.allowRecurse) {
+                    effectsToExe.add(effect);
+                }
+            });
+        }
+    }
 
     // run
     effectsToExe.forEach((effect) => {

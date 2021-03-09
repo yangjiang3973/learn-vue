@@ -1233,3 +1233,7 @@ make the basic reactivity done
 2. `for (const key of array)` and `for (const key in array)`
 
 3. work on array api and test cases(1 still fails)
+
+# 2021-03-09
+
+1. TODO: cannot debug line by line in vscode for vue-next...I remember before I could?
