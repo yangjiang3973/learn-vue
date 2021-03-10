@@ -2,6 +2,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     // mode: 'production',
@@ -39,6 +40,11 @@ module.exports = {
         ],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            __DEV__: JSON.stringify(
+                JSON.parse(process.env.BUILD_DEV || 'true')
+            ),
+        }),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Output Management',

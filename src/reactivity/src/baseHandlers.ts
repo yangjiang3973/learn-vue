@@ -13,7 +13,7 @@ import { TrackOpTypes, TriggerOpTypes } from './operations';
 import {
     track,
     trigger,
-    // ITERATE_KEY,
+    ITERATE_KEY,
     // pauseTracking,
     // resetTracking
 } from './effect';
@@ -162,18 +162,19 @@ function set(
     // // in shallow mode, objects are set as-is regardless of reactive or not
     // }
 
-    const result = Reflect.set(target, key, value, receiver);
     // check key exists or not(modify or add)
     const hadKey =
         isArray(target) && isIntegerKey(key)
             ? // @ts-ignore
               Number(key) < target.length
             : hasOwn(target, key);
+    // NOTE: check key before modify result! especially for array operations!
+    const result = Reflect.set(target, key, value, receiver);
+
     //* don't trigger if target is something up in the prototype chain of original
     /* NOTE: process prototype issue: if an obj inherits from a parent proxy(prototype points to proxy)
     if update a prop that is not obj proxy's own prop, it will also invoke parent proxy set
     */
-    console.log('🚀 ~ file: baseHandlers.ts ~ line 179 ~ key', key);
     if (target === toRaw(receiver)) {
         if (!hadKey) {
             trigger(target, TriggerOpTypes.ADD, key, value);
@@ -207,9 +208,7 @@ function ownKeys(target: object): (string | number | symbol)[] {
     track(
         target,
         TrackOpTypes.ITERATE,
-        // TODO:
-        // isArray(target) ? 'length' : ITERATE_KEY
-        'length'
+        isArray(target) ? 'length' : ITERATE_KEY
     );
     return Reflect.ownKeys(target);
 }

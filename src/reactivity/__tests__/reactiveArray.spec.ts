@@ -143,7 +143,7 @@ describe('reactivity/reactive/Array', () => {
         expect(length).toBe('01');
     });
 
-    // TODO: add a testcase for for...of
+    // TODO: add a testcase for for...of?
 
     // TODO: ref and isRef
     // describe('Array methods w/ refs', () => {

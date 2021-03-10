@@ -1194,7 +1194,7 @@ make the basic reactivity done
 
 2.  TODO:
 
-        (IN PROGRESS) array's reactivity (NOTE: sort and reverse are missing, why?)
+        (DONE) array's reactivity (NOTE: sort and reverse are missing, why?)
 
             there are two ways to customize array methods:
 
@@ -1212,15 +1212,15 @@ make the basic reactivity done
 
             why vue3 use the second way?
 
-        effect's lazy +
+        (DONE) effect's lazy +
 
-        scheduler +
+        (DONE) scheduler +
 
-        onTrack +
+        (DONE) onTrack +
 
-        onTrigger +
+        (DONE) onTrigger +
 
-        stop +
+        (DONE) stop +
 
         onStop
 
@@ -1233,3 +1233,13 @@ make the basic reactivity done
 2. `for (const key of array)` and `for (const key in array)`
 
 3. work on array api and test cases(1 still fails)
+
+# 2021-03-09
+
+1. FIXED: cannot debug line by line in vscode for vue-next...I remember before I could?
+
+    NOTE: it seems that in vue3 repo, webpack still uses the old tsconfig.json file
+
+2. FIXED: for...in bug in array test case(caused by handler and trigger)
+
+3. implemented some simple apis in effect and handler(such as scheduler, stop...)

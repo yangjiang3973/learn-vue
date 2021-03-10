@@ -36,14 +36,16 @@ export {
 // } from './computed';
 export {
     effect,
-    // stop,
+    stop,
     trigger,
     track,
     // enableTracking,
     // pauseTracking,
     // resetTracking,
-    // ITERATE_KEY,
+    ITERATE_KEY,
     ReactiveEffect,
-    ReactiveEffectOptions, // DebuggerEvent,
+    ReactiveEffectOptions,
+    DebuggerEvent,
 } from './effect';
+
 export { TrackOpTypes, TriggerOpTypes } from './operations';
