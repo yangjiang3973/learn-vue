@@ -75,6 +75,9 @@ export const isPlainObject = function (obj) {
     return toTypeString.call(obj) === OBJECT_STRING;
 };
 
+export const isMap = (val: unknown): val is Map<any, any> =>
+    toTypeString(val) === '[object Map]';
+
 export const isArray = function (obj) {
     return Array.isArray(obj);
 };
@@ -91,6 +94,9 @@ export const isIntegerKey = (key: unknown) =>
 export const isObject = function (obj) {
     return obj !== null && typeof obj === 'object';
 };
+
+export const isSymbol = (val: unknown): val is symbol =>
+    typeof val === 'symbol';
 
 export const toRawType = (value) => {
     // extract "RawType" from strings like "[object RawType]"
@@ -116,6 +122,20 @@ export const isDirective = function isDirective(attr) {
 export const isEventDirective = function isEventDirective(attr) {
     return attr.startsWith('on');
 };
+
+export function makeMap(
+    str: string,
+    expectsLowerCase?: boolean
+): (key: string) => boolean {
+    const map: Record<string, boolean> = Object.create(null);
+    const list: Array<string> = str.split(',');
+    for (let i = 0; i < list.length; i++) {
+        map[list[i]] = true;
+    }
+    return expectsLowerCase
+        ? (val) => !!map[val.toLowerCase()]
+        : (val) => !!map[val];
+}
 
 export const inBrowser =
     typeof window !== 'undefined' &&

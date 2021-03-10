@@ -1243,3 +1243,36 @@ make the basic reactivity done
 2. FIXED: for...in bug in array test case(caused by handler and trigger)
 
 3. implemented some simple apis in effect and handler(such as scheduler, stop...)
+
+4. follow effect test case and finish all features:
+
+# 2021-03-10
+
+1. NOTE: is this a bug?
+
+```js
+let dummy;
+let events = [];
+let triggers = [];
+const list = reactive(['Hello']);
+effect(() => (dummy = list.join(' ')), {
+    onTrack: (e) => {
+        events.push(e);
+    },
+    onTrigger: (e) => {
+        triggers.push(e);
+    },
+});
+console.log('Hello: ~~~', dummy);
+list.push('World!');
+console.log('trackPush:', events);
+console.log('Hello World!:!!!!~~~~', dummy);
+list.shift();
+console.log('triggerShift', triggers);
+console.log('trackShift:', events);
+console.log('World!:~~~~~~', dummy);
+```
+
+the track and trigger events list will contain duplicate events! look into it!
+
+2. test cases of effect are all done!

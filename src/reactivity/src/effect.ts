@@ -1,4 +1,4 @@
-import { isArray, isIntegerKey } from '../../utils';
+import { isArray, isIntegerKey, isMap } from '../../utils';
 import { TrackOpTypes, TriggerOpTypes } from './operations';
 
 export interface ReactiveEffect<T = any> {
@@ -45,6 +45,24 @@ export function isEffect(fn: any): fn is ReactiveEffect {
     return fn && fn._isEffect === true;
 }
 
+let shouldTrack = true;
+const trackStack: boolean[] = [];
+
+export function pauseTracking() {
+    trackStack.push(shouldTrack);
+    shouldTrack = false;
+}
+
+export function enableTracking() {
+    trackStack.push(shouldTrack);
+    shouldTrack = true;
+}
+
+export function resetTracking() {
+    const last = trackStack.pop();
+    shouldTrack = last === undefined ? true : last;
+}
+
 export function stop(effect: ReactiveEffect) {
     if (effect.active) {
         cleanup(effect);
@@ -89,13 +107,13 @@ function createReactiveEffect<T = any>(
             // cleanup dependencies of this effect and re-collect
             cleanup(effect);
             try {
-                // enableTracking()
+                enableTracking();
                 effectStack.push(effect);
                 activeEffect = effect;
                 return fn();
             } finally {
                 effectStack.pop();
-                // resetTracking();
+                resetTracking();
                 activeEffect = effectStack[effectStack.length - 1];
             }
         }
@@ -120,7 +138,6 @@ function cleanup(effect: ReactiveEffect) {
     }
 }
 
-// let shouldTrack = true;
 const targetMap = new WeakMap<any, KeyToDepMap>();
 type KeyToDepMap = Map<any, Dep>;
 type Dep = Set<ReactiveEffect>;
@@ -130,7 +147,6 @@ type Dep = Set<ReactiveEffect>;
 //         key1: [effect1, effect2];
 //     }
 // }
-let shouldTrack = true;
 export function track(target: object, type: TrackOpTypes, key: unknown) {
     if (!shouldTrack || activeEffect === undefined) {
         return;
@@ -160,9 +176,6 @@ export function track(target: object, type: TrackOpTypes, key: unknown) {
     }
 }
 
-// export const ITERATE_KEY = Symbol(__DEV__ ? 'iterate' : '');
-// export const MAP_KEY_ITERATE_KEY = Symbol(__DEV__ ? 'Map key iterate' : '');
-
 export function trigger(
     target: object,
     type: TriggerOpTypes,
@@ -178,34 +191,44 @@ export function trigger(
     }
 
     const effectsToExe = new Set<ReactiveEffect>();
+    const addEffects = (effectsToAdd) => {
+        if (!effectsToAdd) return;
+        effectsToAdd.forEach((effect) => {
+            // TODO: why need this check?
+            if (effect !== activeEffect || effect.allowRecurse) {
+                effectsToExe.add(effect);
+            }
+        });
+    };
 
     // TODO: TriggerOpTypes.CLEAR
 
     // schedule runs for SET | ADD | DELETE
-    //* I don't use void 0 here
-    // if (key !== void 0) {
     if (key !== undefined) {
+        // if (key !== void 0) {
+        //* I don't use void 0 here
         // add(depsMap.get(key));
-        const dep = depsMap.get(key);
-        if (dep) {
-            dep.forEach((effect) => {
-                // TODO: why need this check?
-                if (effect !== activeEffect || effect.allowRecurse) {
-                    effectsToExe.add(effect);
+        if (key === 'length') {
+            depsMap.forEach((dep, key) => {
+                if (key === 'length' || key >= (newValue as number)) {
+                    // if (key === 'length' || key >= (newValue as number)) {
+                    addEffects(dep);
                 }
             });
+        } else {
+            const dep = depsMap.get(key);
+            addEffects(dep);
         }
     }
+
     // IMO, the logic in Vue3 is not clean, maybe could refactor
     // TODO: also run for iteration key on ADD | DELETE | Map.SET
     if (type === TriggerOpTypes.ADD) {
         if (!isArray(target)) {
+            addEffects(depsMap.get(ITERATE_KEY));
+            // if (isMap(target)) addEffects(depsMap.get(MAP_KEY_ITERATE_KEY));
         } else if (isIntegerKey(key)) {
-            depsMap.get('length').forEach((effect) => {
-                if (effect !== activeEffect || effect.allowRecurse) {
-                    effectsToExe.add(effect);
-                }
-            });
+            addEffects(depsMap.get('length'));
         }
     }
 
