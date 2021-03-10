@@ -49,6 +49,8 @@ export const hasOwn = function (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 };
 
+export const NOOP = () => {};
+
 //* NOTE: compare whether a value has changed, accounting for NaN. (NaN === NaN => false)
 export const hasChanged = (value, oldValue) =>
     value !== oldValue && (value === value || oldValue === oldValue);
@@ -94,6 +96,8 @@ export const isIntegerKey = (key: unknown) =>
 export const isObject = function (obj) {
     return obj !== null && typeof obj === 'object';
 };
+export const isFunction = (val: unknown): val is Function =>
+    typeof val === 'function';
 
 export const isSymbol = (val: unknown): val is symbol =>
     typeof val === 'symbol';

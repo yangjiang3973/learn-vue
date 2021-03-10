@@ -1244,7 +1244,7 @@ make the basic reactivity done
 
 3. implemented some simple apis in effect and handler(such as scheduler, stop...)
 
-4. follow effect test case and finish all features:
+4. follow effect test case and finish all features
 
 # 2021-03-10
 
@@ -1276,3 +1276,11 @@ console.log('World!:~~~~~~', dummy);
 the track and trigger events list will contain duplicate events! look into it!
 
 2. test cases of effect are all done!
+
+3. TODO: Computed!!
+
+    3.1 typescript with `Class`(no need to do init things, like `this._setter = setter`)?
+
+    3.2 setter
+
+4. after computed, maybe I can start writing articles!!
