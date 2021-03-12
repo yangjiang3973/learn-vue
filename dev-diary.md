@@ -1277,10 +1277,42 @@ the track and trigger events list will contain duplicate events! look into it!
 
 2. test cases of effect are all done!
 
-3. TODO: Computed!!
+3. (DONE) Basic Computed!!
 
-    3.1 typescript with `Class`(no need to do init things, like `this._setter = setter`)?
+    3.1 (TODO) typescript with `Class`(no need to do init things, like `this._setter = setter`)?
 
-    3.2 setter
+    3.2 (TODO) setter
 
 4. after computed, maybe I can start writing articles!!
+
+5. start working on root entrance(include reactivity) and make a simple render
+
+    5.1 Evan You's video about how to create vue3
+
+    5.2 The repo for mini-vue3
+
+# 2021-03-12
+
+1. make a basic createApp with render and mount
+
+    then, merge reactivity into the structure
+
+    make the example work
+
+    ```js
+    const app = createApp({
+        data() {
+            return {
+                title: 'hello',
+            };
+        },
+        render() {
+            return <span>{this.title}</span>;
+        },
+    });
+
+    // do some necessary preparations
+    app.mount('#app');
+    ```
+
+2.
