@@ -26,14 +26,12 @@ export {
     toRaw,
     ReactiveFlags, // DeepReadonly,
 } from './reactive';
-// export {
-//     computed,
-//     ComputedRef,
-//     WritableComputedRef,
-//     WritableComputedOptions,
-//     ComputedGetter,
-//     ComputedSetter,
-// } from './computed';
+export { computed } from // ComputedRef,
+// WritableComputedRef,
+// WritableComputedOptions,
+// ComputedGetter,
+// ComputedSetter,
+'./computed';
 export {
     effect,
     stop,

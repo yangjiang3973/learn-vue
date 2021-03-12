@@ -14,25 +14,27 @@ import {
     track,
     trigger,
     ITERATE_KEY,
-    // pauseTracking,
-    // resetTracking
+    pauseTracking,
+    resetTracking,
 } from './effect';
 import {
     isObject,
     hasOwn,
-    // isSymbol,
+    isSymbol,
     hasChanged,
     isArray,
     isIntegerKey,
-    // isIntegerKey,
     // extend,
-    // makeMap
+    makeMap,
 } from '../../utils';
 
-// const raw = {};
-// const arr = reactive([{}, {}]);
-// arr.push(raw);
-// expect(arr.indexOf(raw)).toBe(2);
+const isNonTrackableKeys = makeMap(`__proto__,__v_isRef,__isVue`);
+
+const builtInSymbols = new Set(
+    Object.getOwnPropertyNames(Symbol)
+        .map((key) => (Symbol as any)[key])
+        .filter(isSymbol)
+);
 
 const arrayInstrumentations: Record<string, Function> = {};
 
@@ -62,9 +64,10 @@ const LAM = ['push', 'pop', 'shift', 'unshift', 'splice'];
 LAM.forEach((methodName) => {
     const method = Array.prototype[methodName] as any;
     arrayInstrumentations[methodName] = function (this, ...args) {
-        // pauseTracking();
+        // NOTE: for test case: `should avoid infinite recursive loops when use Array.prototype.push/unshift/pop/shift`
+        pauseTracking();
         const res = method.apply(this, args);
-        // resetTracking();
+        resetTracking();
         return res;
     };
 });
@@ -106,14 +109,14 @@ function get(target: Target, key: string | symbol, receiver: object) {
 
     const res = Reflect.get(target, key, receiver);
 
-    // TODO: deal with res
-    // if (
-    //   isSymbol(key)
-    //     ? builtInSymbols.has(key as symbol)
-    //     : isNonTrackableKeys(key)
-    // ) {
-    //   return res
-    // }
+    // NOTE: if the key is special, do not track
+    if (
+        isSymbol(key)
+            ? builtInSymbols.has(key as symbol)
+            : isNonTrackableKeys(key)
+    ) {
+        return res;
+    }
 
     // TODO: implement readonly
     // if (!isReadonly) {

@@ -162,90 +162,89 @@ describe('reactivity/effect', () => {
         expect(dummy).toBe(2);
     });
 
-    // TODO:
-    // it('should observe iteration', () => {
-    //     let dummy;
-    //     const list = reactive(['Hello']);
-    //     effect(() => (dummy = list.join(' ')));
+    it('should observe iteration', () => {
+        let dummy;
+        const list = reactive(['Hello']);
+        effect(() => (dummy = list.join(' ')));
 
-    //     expect(dummy).toBe('Hello');
-    //     list.push('World!');
-    //     expect(dummy).toBe('Hello World!');
-    //     list.shift();
-    //     expect(dummy).toBe('World!');
-    // });
+        expect(dummy).toBe('Hello');
+        list.push('World!');
+        expect(dummy).toBe('Hello World!');
+        list.shift();
+        expect(dummy).toBe('World!');
+    });
 
-    // it('should observe implicit array length changes', () => {
-    //     let dummy;
-    //     const list = reactive(['Hello']);
-    //     effect(() => (dummy = list.join(' ')));
+    it('should observe implicit array length changes', () => {
+        let dummy;
+        const list = reactive(['Hello']);
+        effect(() => (dummy = list.join(' ')));
 
-    //     expect(dummy).toBe('Hello');
-    //     list[1] = 'World!';
-    //     expect(dummy).toBe('Hello World!');
-    //     list[3] = 'Hello!';
-    //     expect(dummy).toBe('Hello World!  Hello!');
-    // });
+        expect(dummy).toBe('Hello');
+        list[1] = 'World!';
+        expect(dummy).toBe('Hello World!');
+        list[3] = 'Hello!';
+        expect(dummy).toBe('Hello World!  Hello!');
+    });
 
-    // it('should observe sparse array mutations', () => {
-    //     let dummy;
-    //     const list = reactive<string[]>([]);
-    //     list[1] = 'World!';
-    //     effect(() => (dummy = list.join(' ')));
+    it('should observe sparse array mutations', () => {
+        let dummy;
+        const list = reactive([]);
+        list[1] = 'World!';
+        effect(() => (dummy = list.join(' ')));
 
-    //     expect(dummy).toBe(' World!');
-    //     list[0] = 'Hello';
-    //     expect(dummy).toBe('Hello World!');
-    //     list.pop();
-    //     expect(dummy).toBe('Hello');
-    // });
+        expect(dummy).toBe(' World!');
+        list[0] = 'Hello';
+        expect(dummy).toBe('Hello World!');
+        list.pop();
+        expect(dummy).toBe('Hello');
+    });
 
-    // it('should observe enumeration', () => {
-    //     let dummy = 0;
-    //     const numbers = reactive<Record<string, number>>({ num1: 3 });
-    //     effect(() => {
-    //         dummy = 0;
-    //         for (let key in numbers) {
-    //             dummy += numbers[key];
-    //         }
-    //     });
+    it('should observe enumeration', () => {
+        let dummy = 0;
+        const numbers = reactive({ num1: 3 });
+        effect(() => {
+            dummy = 0;
+            for (let key in numbers) {
+                dummy += numbers[key];
+            }
+        });
 
-    //     expect(dummy).toBe(3);
-    //     numbers.num2 = 4;
-    //     expect(dummy).toBe(7);
-    //     delete numbers.num1;
-    //     expect(dummy).toBe(4);
-    // });
+        expect(dummy).toBe(3);
+        numbers.num2 = 4; // obj ADD
+        expect(dummy).toBe(7);
+        delete numbers.num1;
+        expect(dummy).toBe(4);
+    });
 
-    // it('should observe symbol keyed properties', () => {
-    //     const key = Symbol('symbol keyed prop');
-    //     let dummy, hasDummy;
-    //     const obj = reactive({ [key]: 'value' });
-    //     effect(() => (dummy = obj[key]));
-    //     effect(() => (hasDummy = key in obj));
+    it('should observe symbol keyed properties', () => {
+        const key = Symbol('symbol keyed prop');
+        let dummy, hasDummy;
+        const obj = reactive({ [key]: 'value' });
+        effect(() => (dummy = obj[key]));
+        effect(() => (hasDummy = key in obj));
 
-    //     expect(dummy).toBe('value');
-    //     expect(hasDummy).toBe(true);
-    //     obj[key] = 'newValue';
-    //     expect(dummy).toBe('newValue');
-    //     // @ts-ignore
-    //     delete obj[key];
-    //     expect(dummy).toBe(undefined);
-    //     expect(hasDummy).toBe(false);
-    // });
+        expect(dummy).toBe('value');
+        expect(hasDummy).toBe(true);
+        obj[key] = 'newValue';
+        expect(dummy).toBe('newValue');
+        // @ts-ignore
+        delete obj[key];
+        expect(dummy).toBe(undefined);
+        expect(hasDummy).toBe(false);
+    });
 
-    // it('should not observe well-known symbol keyed properties', () => {
-    //     const key = Symbol.isConcatSpreadable;
-    //     let dummy;
-    //     const array: any = reactive([]);
-    //     effect(() => (dummy = array[key]));
+    it('should not observe well-known symbol keyed properties', () => {
+        const key = Symbol.isConcatSpreadable;
+        let dummy;
+        const array: any = reactive([]);
+        effect(() => (dummy = array[key]));
 
-    //     expect(array[key]).toBe(undefined);
-    //     expect(dummy).toBe(undefined);
-    //     array[key] = true;
-    //     expect(array[key]).toBe(true);
-    //     expect(dummy).toBe(undefined);
-    // });
+        expect(array[key]).toBe(undefined);
+        expect(dummy).toBe(undefined);
+        array[key] = true;
+        expect(array[key]).toBe(true);
+        expect(dummy).toBe(undefined);
+    });
 
     it('should observe function valued properties', () => {
         const oldFunc = () => {};
@@ -365,29 +364,28 @@ describe('reactivity/effect', () => {
         expect(counterSpy).toHaveBeenCalledTimes(2);
     });
 
-    // TODO:
-    // it('should avoid infinite recursive loops when use Array.prototype.push/unshift/pop/shift', () => {
-    //     (['push', 'unshift'] as const).forEach((key) => {
-    //         const arr = reactive<number[]>([]);
-    //         const counterSpy1 = jest.fn(() => (arr[key] as any)(1));
-    //         const counterSpy2 = jest.fn(() => (arr[key] as any)(2));
-    //         effect(counterSpy1);
-    //         effect(counterSpy2);
-    //         expect(arr.length).toBe(2);
-    //         expect(counterSpy1).toHaveBeenCalledTimes(1);
-    //         expect(counterSpy2).toHaveBeenCalledTimes(1);
-    //     });
-    //     (['pop', 'shift'] as const).forEach((key) => {
-    //         const arr = reactive<number[]>([1, 2, 3, 4]);
-    //         const counterSpy1 = jest.fn(() => (arr[key] as any)());
-    //         const counterSpy2 = jest.fn(() => (arr[key] as any)());
-    //         effect(counterSpy1);
-    //         effect(counterSpy2);
-    //         expect(arr.length).toBe(2);
-    //         expect(counterSpy1).toHaveBeenCalledTimes(1);
-    //         expect(counterSpy2).toHaveBeenCalledTimes(1);
-    //     });
-    // });
+    it('should avoid infinite recursive loops when use Array.prototype.push/unshift/pop/shift', () => {
+        (['push', 'unshift'] as const).forEach((key) => {
+            const arr = reactive([]);
+            const counterSpy1 = jest.fn(() => (arr[key] as any)(1));
+            const counterSpy2 = jest.fn(() => (arr[key] as any)(2));
+            effect(counterSpy1);
+            effect(counterSpy2);
+            expect(arr.length).toBe(2);
+            expect(counterSpy1).toHaveBeenCalledTimes(1);
+            expect(counterSpy2).toHaveBeenCalledTimes(1);
+        });
+        (['pop', 'shift'] as const).forEach((key) => {
+            const arr = reactive([1, 2, 3, 4]);
+            const counterSpy1 = jest.fn(() => (arr[key] as any)());
+            const counterSpy2 = jest.fn(() => (arr[key] as any)());
+            effect(counterSpy1);
+            effect(counterSpy2);
+            expect(arr.length).toBe(2);
+            expect(counterSpy1).toHaveBeenCalledTimes(1);
+            expect(counterSpy2).toHaveBeenCalledTimes(1);
+        });
+    });
 
     it('should allow explicitly recursive raw function loops', () => {
         const counter = reactive({ num: 0 });
@@ -553,16 +551,15 @@ describe('reactivity/effect', () => {
         expect(childSpy).toHaveBeenCalledTimes(5);
     });
 
-    // TODO:
-    // it('should observe json methods', () => {
-    //     let dummy = <Record<string, number>>{};
-    //     const obj = reactive({});
-    //     effect(() => {
-    //         dummy = JSON.parse(JSON.stringify(obj));
-    //     });
-    //     obj.a = 1;
-    //     expect(dummy.a).toBe(1);
-    // });
+    it('should observe json methods', () => {
+        let dummy = <Record<string, number>>{};
+        const obj = reactive({});
+        effect(() => {
+            dummy = JSON.parse(JSON.stringify(obj));
+        });
+        obj.a = 1;
+        expect(dummy.a).toBe(1);
+    });
 
     it('should observe class method invocations', () => {
         class Model {
@@ -797,28 +794,27 @@ describe('reactivity/effect', () => {
         expect(fnSpy).toHaveBeenCalledTimes(1);
     });
 
-    // TODO:
-    // it('should trigger all effects when array length is set to 0', () => {
-    //     const observed: any = reactive([1]);
-    //     let dummy, record;
-    //     effect(() => {
-    //         dummy = observed.length;
-    //     });
-    //     effect(() => {
-    //         record = observed[0];
-    //     });
-    //     expect(dummy).toBe(1);
-    //     expect(record).toBe(1);
+    it('should trigger all effects when array length is set to 0', () => {
+        const observed: any = reactive([1]);
+        let dummy, record;
+        effect(() => {
+            dummy = observed.length;
+        });
+        effect(() => {
+            record = observed[0];
+        });
+        expect(dummy).toBe(1);
+        expect(record).toBe(1);
 
-    //     observed[1] = 2;
-    //     expect(observed[1]).toBe(2);
+        observed[1] = 2;
+        expect(observed[1]).toBe(2);
 
-    //     observed.unshift(3);
-    //     expect(dummy).toBe(3);
-    //     expect(record).toBe(3);
+        observed.unshift(3);
+        expect(dummy).toBe(3);
+        expect(record).toBe(3);
 
-    //     observed.length = 0;
-    //     expect(dummy).toBe(0);
-    //     expect(record).toBeUndefined();
-    // });
+        observed.length = 0;
+        expect(dummy).toBe(0);
+        expect(record).toBeUndefined();
+    });
 });

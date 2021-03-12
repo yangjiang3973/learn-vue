@@ -188,30 +188,38 @@
 
 // Reflect.get(a, 'func');
 
-let arr = [1, 2, 3];
-const handler = {
-    get: function (target, prop, reveiver) {
-        console.log('get');
-        return Reflect.get(...arguments);
-    },
-    set: function (target, prop, value, receiver) {
-        console.log('set');
-        Reflect.set(target, prop, value, receiver);
-        return true;
-    },
-    ownKeys(target) {
-        console.log('ownKeys');
-        return Reflect.ownKeys(target);
-    },
-    has(target, key) {
-        if (key[0] === '_') {
-            return false;
-        }
-        return key in target;
-    },
-};
-const proxy = new Proxy(arr, handler);
+// let arr = [1, 2, 3];
+// const handler = {
+//     get: function (target, prop, reveiver) {
+//         console.log('get');
+//         return Reflect.get(...arguments);
+//     },
+//     set: function (target, prop, value, receiver) {
+//         console.log('set');
+//         Reflect.set(target, prop, value, receiver);
+//         return true;
+//     },
+//     ownKeys(target) {
+//         console.log('ownKeys');
+//         return Reflect.ownKeys(target);
+//     },
+//     has(target, key) {
+//         if (key[0] === '_') {
+//             return false;
+//         }
+//         return key in target;
+//     },
+// };
+// const proxy = new Proxy(arr, handler);
 
-for (const key in proxy) {
-    console.log(key);
-}
+// for (const key in proxy) {
+//     console.log(key);
+// }
+
+const map = new Map();
+map.set('a', 1);
+map.set('v', 2);
+
+map.forEach((element, key) => {
+    console.log(element, key);
+});
