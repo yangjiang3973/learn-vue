@@ -220,5 +220,6 @@ export const mutableHandlers: ProxyHandler<object> = {
     set,
     deleteProperty,
     has,
+    // @ts-ignore
     ownKeys,
 };

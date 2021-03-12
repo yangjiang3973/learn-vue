@@ -1315,4 +1315,16 @@ the track and trigger events list will contain duplicate events! look into it!
     app.mount('#app');
     ```
 
-2.
+2. patch!
+
+3. change jsx preset to this plugin for vue3 :`@vue/babel-plugin-jsx`
+
+the old h function, set h=arguments[0] in render
+
+it seems that @vue/babel-plugin-jsx use `export 'createVNode' (imported as '_createVNode')`
+
+so it cannot work with mine
+
+FIXED:(temp) I have to install vue@3.0.5 for this plugin...should remove this dependency!
+
+NOTE: should remove depency from vue. I created an issue on this repo...wait and keep vue installed for now
