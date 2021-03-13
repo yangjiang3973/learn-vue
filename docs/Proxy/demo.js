@@ -216,10 +216,10 @@
 //     console.log(key);
 // }
 
-const map = new Map();
-map.set('a', 1);
-map.set('v', 2);
+// const map = new Map();
+// map.set('a', 1);
+// map.set('v', 2);
 
-map.forEach((element, key) => {
-    console.log(element, key);
-});
+// map.forEach((element, key) => {
+//     console.log(element, key);
+// });

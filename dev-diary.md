@@ -1327,4 +1327,27 @@ so it cannot work with mine
 
 FIXED:(temp) I have to install vue@3.0.5 for this plugin...should remove this dependency!
 
+BUG: then it will use the createVNode from vue instead of mine...
+
 NOTE: should remove depency from vue. I created an issue on this repo...wait and keep vue installed for now
+
+```js
+render() {
+    // it seems it use createVNode from vue
+    return Object(vue__WEBPACK_IMPORTED_MODULE_0__["createVNode"])("span", null, [this.title]);
+  }
+```
+
+(IN PROGRESS) need a new release from this plugin and try pragma
+
+# 2021-03-13
+
+1. right now switch back to `@vue/babel-preset-jsx` and pass h to render
+
+2. (DONE) should create text vnode in `createVnode`, should not check in patch
+
+3. (IN PROGRESS) watch videos(stop at composition)
+
+4. compiler follows the runtime. While writing runtime, consider how compiler can help to optimize!
+
+5. (IN PROGRESS) working on `createVDOM`
