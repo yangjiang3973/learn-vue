@@ -1,4 +1,4 @@
-import { createApp, h } from './runtime-dom/src/index';
+import { createApp, createVDOM } from './runtime-dom/src/index';
 
 const app = createApp({
     data() {

@@ -1,6 +1,6 @@
 import { h } from '../../runtime-core/src/h';
 import { render } from '../../runtime-core/src/renderer';
-import { createVNode } from '../../runtime-core/src/vnode';
+import { createVDOM } from '../../runtime-core/src/vnode';
 
 import { isString } from '../../utils';
 // import {h} from '../../runtime-core/src/h';
@@ -30,8 +30,7 @@ export const createApp = (rootComponent) => {
 
         const component = app._component;
         // build a virtual dom tree
-        const vnode = createVNode(component);
-        console.log('🚀 ~ file: index.ts ~ line 30 ~ createApp ~ vnode', vnode);
+        const vnode = createVDOM(component);
         // if (
         //     !isFunction(component) &&
         //     !component.render &&
