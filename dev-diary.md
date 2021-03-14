@@ -1351,3 +1351,11 @@ render() {
 4. compiler follows the runtime. While writing runtime, consider how compiler can help to optimize!
 
 5. (IN PROGRESS) working on `createVDOM`
+
+# 2021-03-14
+
+1. suggestion: make props in code of components instance in alphabetic order...
+
+2. `setupComponent` why return?? is this a typo in vue3?
+
+3. workflow of component
