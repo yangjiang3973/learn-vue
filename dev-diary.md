@@ -1366,3 +1366,8 @@ render() {
 
     this proxy is not for reacive..it is for shortcuts of options(`this.dataA`)
 
+2. start working on `vheel`
+
+    1. set up dev env (DONE)
+
+    2. polish redundant code and keep the necessary one
