@@ -1359,3 +1359,10 @@ render() {
 2. `setupComponent` why return?? is this a typo in vue3?
 
 3. workflow of component
+
+# 2021-03-15
+
+1. what is the proxy passed to render function call?
+
+    this proxy is not for reacive..it is for shortcuts of options(`this.dataA`)
+
