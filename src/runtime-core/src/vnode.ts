@@ -1,6 +1,10 @@
 import { ShapeFlags } from './shapeFlags';
 import { isString, isObject, isArray, isFunction } from '../../utils';
 
+export const Text = Symbol(__DEV__ ? 'Text' : undefined);
+// export const Comment = Symbol(__DEV__ ? 'Comment' : undefined)
+// export const Static = Symbol(__DEV__ ? 'Static' : undefined)
+
 export type VNodeTypes =
     | string
     | VNode
@@ -23,7 +27,7 @@ export interface VNode {
 // store the info into the vnode
 export function createVDOM(type, props?, children?) {
     // if no props, data will hold child nodes and children will be undefined
-    if (props && (Array.isArray(props) || typeof props !== 'object')) {
+    if (props && isArray(props)) {
         children = props;
         props = undefined;
     }
@@ -73,6 +77,7 @@ export function createVDOM(type, props?, children?) {
     // } else if (isObject(type)) {
     //     return vnode;
     // }
+    return vnode;
 }
 
 function normalizeChildren(vnode: VNode, children: unknown) {}

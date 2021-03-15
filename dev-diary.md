@@ -1351,3 +1351,23 @@ render() {
 4. compiler follows the runtime. While writing runtime, consider how compiler can help to optimize!
 
 5. (IN PROGRESS) working on `createVDOM`
+
+# 2021-03-14
+
+1. suggestion: make props in code of components instance in alphabetic order...
+
+2. `setupComponent` why return?? is this a typo in vue3?
+
+3. workflow of component
+
+# 2021-03-15
+
+1. what is the proxy passed to render function call?
+
+    this proxy is not for reacive..it is for shortcuts of options(`this.dataA`)
+
+2. start working on `vheel`
+
+    1. set up dev env (DONE)
+
+    2. polish redundant code and keep the necessary one
